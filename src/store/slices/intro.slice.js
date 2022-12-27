@@ -2,7 +2,7 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const initialState = {
-  IS_NEWLY_INSTALLED: false,
+  IS_NEWLY_INSTALLED: true,
   message: null,
 };
 

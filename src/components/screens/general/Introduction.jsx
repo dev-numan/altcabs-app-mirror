@@ -14,14 +14,16 @@ import {
 } from 'react-native';
 import {ExpandingDot} from 'react-native-animated-pagination-dots';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import colors from '../../../constants/colors';
-import {SET_APP_NEWLY_INSTALLED} from '../../../store/slices/introSlice';
+import {SET_APP_NEWLY_INSTALLED} from '../../../store/slices/intro.slice';
 
 const Introduction = () => {
   const appSlider = createRef();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const Intro = useSelector(state => state.Intro);
+
   const scrollX = React.useRef(new Animated.Value(0)).current;
   const slides = [
     {
