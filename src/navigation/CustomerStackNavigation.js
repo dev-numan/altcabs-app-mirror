@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import Introduction from '../components/screens/general/Introduction';
 import StarterScreen from '../components/screens/general/StartScreen';
 import CustomerLanding from '../components/screens/customer/CustomerLanding';
+import CustomerBottomTagNavigator from './CustomerBottonTabNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ const CustomerStackNavigation = () => {
       initialRouteName="Customer Landing">
       <Stack.Screen
         name="Customer Landing"
-        component={CustomerLanding}
+        component={CustomerBottomTagNavigator}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

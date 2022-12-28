@@ -1,8 +1,8 @@
 //Live
 // export const URL = 'https://altcabs.com/api';
 // export const SOCKET_URL = 'wss://altcabs.com/api';
-export const URL = 'http://10.135.49.53:8080/api';
-export const SOCKET_URL = 'ws://10.135.49.53:8080/api';
+export const URL = 'http://192.168.10.7:8080/api';
+export const SOCKET_URL = 'ws://192.168.10.7:8080/api';
 // export const URL = 'http://192.168.17.200:8080/api';
 // export const SOCKET_URL = 'ws://192.168.17.200:8080/api';
 

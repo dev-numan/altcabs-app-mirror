@@ -19,7 +19,7 @@ const CustomerAppDrawerNavigation = () => {
       <Drawer.Screen
         name="Main"
         component={CustomerStackNavigation}
-        options={{headerShown: false}}
+        options={{headerShown: true}}
       />
     </Drawer.Navigator>
   );
