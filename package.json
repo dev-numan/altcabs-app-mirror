@@ -25,7 +25,7 @@
     "react-native-animated-pagination-dots": "^0.1.73",
     "react-native-app-intro-slider": "^4.0.4",
     "react-native-gesture-handler": "^1.10.3",
-    "react-native-reanimated": "^2.2.3",
+    "react-native-reanimated": "2.2.1",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.18.2",
     "react-native-svg": "12.1.1",

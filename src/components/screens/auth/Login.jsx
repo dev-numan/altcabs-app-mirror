@@ -13,13 +13,27 @@ import {StyleSheet, View, ScrollView, TouchableOpacity} from 'react-native';
 import CustomButton from '../../common/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../../constants/colors';
+import {LOGIN} from '../../../store/slices/auth.slice';
 const Login = () => {
   const dispatch = useDispatch();
   const [login, setLogin] = useState({
     username: 'usman.akram@gmail.com',
     password: 'usman',
   });
-  const handleLogin = () => {};
+  const handleLogin = async () => {
+    let data = {
+      email: login.username.toLowerCase(),
+      password: login.password,
+    };
+    try {
+      await dispatch(LOGIN(data)).unwrap();
+    } catch (err) {
+      if (err === 'Your Email is not verified!') {
+        navigation.navigate('Resend Confirmation', {email: data.email});
+      }
+      console.log(err);
+    }
+  };
   const signIn = () => {};
   return (
     <View

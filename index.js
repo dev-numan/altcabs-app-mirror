@@ -2,6 +2,8 @@
  * @format
  */
 
+import {NavigationContainer} from '@react-navigation/native';
+import {NativeBaseProvider} from 'native-base';
 import {AppRegistry} from 'react-native';
 import {Provider} from 'react-redux';
 import App from './App';
@@ -12,7 +14,11 @@ AppRegistry.registerComponent(appName, () => AltCabsApp);
 const AltCabsApp = () => {
   return (
     <Provider store={store}>
-      <App />
+      <NavigationContainer>
+        <NativeBaseProvider>
+          <App />
+        </NativeBaseProvider>
+      </NavigationContainer>
     </Provider>
   );
 };

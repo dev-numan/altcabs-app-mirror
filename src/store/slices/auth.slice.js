@@ -116,8 +116,8 @@ export const RESEND_VERIFICATION_EMAIL = createAsyncThunk(
 
 function ErrorType(err) {
   if (err.response) {
-    console.log('response', err.response.data);
-    return err.response.data.error || 'Response Error';
+    // console.log('response', err.response.data);
+    return err.response?.data?.error || 'Response Error';
   } else if (err.request) {
     console.log('request', err);
     return 'Bad Request';
