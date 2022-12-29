@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Text, View} from 'native-base';
 import {TabBarOptions} from '../constants/NavigationStyle';
+import CabCompare from '../components/screens/customer/CabCompare';
 const CustomerBottomTagNavigator = () => {
   return (
     <BottomTab.Navigator
@@ -13,11 +14,7 @@ const CustomerBottomTagNavigator = () => {
       screenOptions={TabBarOptions}>
       <BottomTab.Screen
         name="Cab Compare"
-        component={() => (
-          <View>
-            <Text>Cab Compare</Text>
-          </View>
-        )}
+        component={CabCompare}
         options={{
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons
