@@ -8,23 +8,48 @@ import {
   Switch,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
 import colors from '../../../constants/colors';
 import BookingWidget from '../../booking-widget/BookingWidget';
 import Header from '../../common/Header';
 const CabCompare = () => {
   return (
-    <View style={{flex: 1, backgroundColor: colors.CAB_COMPARE}}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Header title="COMPARE" />
-        <Text style={styles.description}>Compare the cab fares online</Text>
-      </ScrollView>
-      <Text>Cab Compare</Text>
-      <BookingWidget />
+    <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+      <KeyboardAvoidingView>
+        <ScrollView
+          showsVerticalScrollIndicator={true}
+          keyboardShouldPersistTaps={'always'}>
+          <Header title="COMPARE" />
+          <Text style={styles.description}>Compare the cab fares online</Text>
+          <BookingWidget booking_type="normal" />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
-
+const getTitleTextByBookingType = booking_type => {
+  switch (booking_type) {
+    case 'client_bidding':
+      return {
+        title: 'Request Bids For Your Journey',
+        header: 'Bid',
+        bgColor: colors.PURPLE,
+      };
+    case 'cabmatch':
+      return {
+        title: 'Find out and book the cabs heading your way',
+        header: 'Match',
+        bgColor: colors.BLUE,
+      };
+    default:
+      return {
+        title: 'Compare the cab fares online',
+        header: 'COMPARE',
+        bgColor: colors.YELLOW,
+      };
+  }
+};
 export default CabCompare;
 const styles = StyleSheet.create({
   description: {

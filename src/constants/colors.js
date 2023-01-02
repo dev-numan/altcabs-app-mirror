@@ -11,5 +11,9 @@ const colors = {
   CAB_MATCH: 'rgba(0,147,233,1)',
   CAB_BID: 'rgba(118,75,162,1)',
   GRAY: 'rgba(173,173,173,1.0)',
+  GRAY_LIGHT: 'rgba(173,173,173,0.2)',
+  YELLOW: 'rgba(251, 191, 36, 1)',
+  BLUE: 'rgba(0, 147, 233, 1)',
+  PURPLE: 'rgba(118, 75, 162, 1)',
 };
 export default colors;

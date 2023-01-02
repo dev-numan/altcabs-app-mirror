@@ -3,9 +3,11 @@ import thunk from 'redux-thunk';
 import appReducer from './slices/app.slice';
 import introSlice from './slices/intro.slice';
 import loadingSlice from './slices/loading.slice';
+import bookingSlice from './slices/booking.slice';
 import luggageSlice from './slices/luggage.slice';
 import messageSlice from './slices/message.slice';
 import authSlice from './slices/auth.slice';
+
 export const store = configureStore({
   reducer: {
     app: appReducer,
@@ -14,6 +16,7 @@ export const store = configureStore({
     Auth: authSlice,
     Loading: loadingSlice,
     Luggage: luggageSlice,
+    booking: bookingSlice,
   },
   middleware: [thunk],
 });

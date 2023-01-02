@@ -7,6 +7,7 @@ import Introduction from '../components/screens/general/Introduction';
 import StarterScreen from '../components/screens/general/StartScreen';
 import CustomerLanding from '../components/screens/customer/CustomerLanding';
 import CustomerBottomTagNavigator from './CustomerBottonTabNavigator';
+import ProcessBooking from '../components/process-booking/ProcessBooking';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,11 +18,17 @@ const CustomerStackNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerBackTitle: '', headerShadowVisible: false}}
-      initialRouteName="Customer Landing">
+      initialRouteName="ProcessBooking"
+      initialParams={{bookingId: '63b29c78b31c84727f5910f8'}}>
       <Stack.Screen
         name="Customer Landing"
         component={CustomerBottomTagNavigator}
         options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="ProcessBooking"
+        component={ProcessBooking}
+        options={{title: 'Complete Booking'}}
       />
     </Stack.Navigator>
   );

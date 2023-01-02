@@ -3,6 +3,8 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import CustomerAppDrawer from './CustomerAppDrawer';
 import CustomerStackNavigation from './CustomerStackNavigation';
+import {View} from 'native-base';
+import colors from '../constants/colors';
 
 const Drawer = createDrawerNavigator();
 const CustomerAppDrawerNavigation = () => {
