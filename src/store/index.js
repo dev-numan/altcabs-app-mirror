@@ -7,6 +7,7 @@ import bookingSlice from './slices/booking.slice';
 import luggageSlice from './slices/luggage.slice';
 import messageSlice from './slices/message.slice';
 import authSlice from './slices/auth.slice';
+import settingsSlice from './slices/settings.slice';
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     Loading: loadingSlice,
     Luggage: luggageSlice,
     booking: bookingSlice,
+    settings: settingsSlice,
   },
   middleware: [thunk],
 });

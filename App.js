@@ -15,6 +15,7 @@ import CustomerAppDrawerNavigation from './src/navigation/CustomerAppDrawerNavig
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {MESSAGE_NULL} from './src/store/slices/message.slice';
 import SavingModel from './src/components/common/SavingModal';
+import {GET_ALL_SETTINGS} from './src/store/slices/settings.slice';
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -25,7 +26,8 @@ export default function App() {
   const IS_LOGGED = useSelector(state => state.Auth.IS_LOGGED);
   console.log(IS_LOGGED);
   const loadApp = async () => {
-    await dispatch(GET_ALL_LUGGAGE());
+    await dispatch(GET_ALL_SETTINGS());
+    // await dispatch(GET_ALL_LUGGAGE());
     await dispatch(USER_LOGIN_STATUS());
     setTimeout(() => {
       dispatch(loadClientApp());
@@ -63,6 +65,7 @@ export default function App() {
     <>
       <CustomerAppDrawerNavigation />
       <SavingModel />
+      <Toast />
     </>
   );
 }

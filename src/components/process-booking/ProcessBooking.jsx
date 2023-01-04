@@ -50,7 +50,7 @@ const ProcessBooking = () => {
               scrollable={true}
               scrollViewProps={{
                 showsVerticalScrollIndicator: false,
-                // pagingEnabled: true,
+                pagingEnabled: false,
               }}
               // removeBtnRow={true}
               label="Quotations">
@@ -99,7 +99,7 @@ const ProcessBooking = () => {
               }}
               removeBtnRow={true}
               label="Confirmation">
-              <QuotationSuccess />
+              <QuotationSuccess booking={booking} />
             </ProgressStep>
           </ProgressSteps>
         </>

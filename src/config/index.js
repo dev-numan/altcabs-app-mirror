@@ -1,10 +1,11 @@
+let baseURL = '192.168.10.7:8080';
 //Live
 // export const URL = 'https://altcabs.com/api';
 // export const SOCKET_URL = 'wss://altcabs.com/api';
 // export const URL = 'http://192.168.18.90:8080/api';
 // export const SOCKET_URL = 'ws://192.168.18.90:8080/api';
-export const URL = 'http://10.135.18.13:8080/api';
-export const SOCKET_URL = 'ws://10.135.18.13:8080/api';
+export const URL = `http://${baseURL}/api`;
+export const SOCKET_URL = `ws://${baseURL}/api`;
 
 import {Platform} from 'react-native';
 

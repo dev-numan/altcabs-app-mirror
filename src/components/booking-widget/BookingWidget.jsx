@@ -17,6 +17,7 @@ import {
   SET_IS_PROCESSING,
 } from '../../store/slices/loading.slice';
 import {useNavigation} from '@react-navigation/native';
+import {selectLuggageTypes} from '../../store/selectors';
 const BookingWidget = ({booking_type}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -41,8 +42,8 @@ const BookingWidget = ({booking_type}) => {
     fetching: true,
     distance: 2000,
   });
-  const luggageTypes = useSelector(state => state.Luggage.luggage);
-  const state = useSelector(state => state.Luggage);
+  const luggageTypes = useSelector(selectLuggageTypes);
+
   const [showLuggageModal, setShowLuggageModal] = useState(false);
   const [totalLuggage, setTotalLuggage] = useState([]);
   const fetchDistance = () => {

@@ -6,8 +6,13 @@ class BookingService extends GenericService {
   }
   getById = bookingId =>
     this.post(`/mobileapp/booking_process_mobile/${bookingId}/get`);
-  getQuotationsById = bookingId =>
-    this.post(`/mobileapp/booking_process_mobile/${bookingId}/get-quotations`);
+  getQuotationsById = (bookingId, filter) => {
+    // console.log(filter);
+    return this.post(
+      `/mobileapp/booking_process_mobile/${bookingId}/get-quotations`,
+      filter,
+    );
+  };
 }
 const bookingService = new BookingService();
 export default bookingService;

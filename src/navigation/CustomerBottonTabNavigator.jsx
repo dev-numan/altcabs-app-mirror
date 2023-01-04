@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {Text, View} from 'native-base';
 import {TabBarOptions} from '../constants/NavigationStyle';
 import CabCompare from '../components/screens/customer/CabCompare';
+import Profile from '../components/screens/customer/Profile';
 const CustomerBottomTagNavigator = () => {
   return (
     <BottomTab.Navigator
@@ -19,6 +20,22 @@ const CustomerBottomTagNavigator = () => {
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons
               name="car-multiple"
+              color={color}
+              size={20}
+              style={{marginBottom: -3}}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          // headerTitle: 'Profile',
+          // headerShown: true,
+          tabBarIcon: ({color}) => (
+            <FontAwesome
+              name="user"
               color={color}
               size={20}
               style={{marginBottom: -3}}

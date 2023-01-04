@@ -11,7 +11,7 @@ const Header = ({title}) => {
     <View style={{width: '88%', marginTop: '8%'}}>
       <HStack style={styles.header}>
         <IconButton
-          icon={<Icon size="md" as={Ionicons} name="menu" />}
+          icon={<Icon size="lg" as={Ionicons} name="menu" />}
           style={{borderRadius: 25}}
           _icon={{color: colors.SECONDARY}}
           _pressed={{bg: colors.SECONDARY, _icon: {color: colors.WHITE}}}
