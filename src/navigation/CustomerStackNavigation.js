@@ -12,6 +12,8 @@ import MyBookings from '../components/screens/customer/MyBookings';
 import BookingDetails from '../components/screens/customer/BookingDetails';
 import MyDetails from '../components/screens/customer/MyDetails';
 import {View} from 'native-base';
+import ConfirmedBookings from '../components/screens/customer/account/ConfirmedBookings';
+import HistoryBookings from '../components/screens/customer/account/HistoryBookings';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,7 +24,9 @@ const CustomerStackNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{headerBackTitle: '', headerShadowVisible: false}}
-      initialRouteName="ProcessBooking"
+      // initialRouteName="ProcessBooking"
+      // initialRouteName="HistoryBookings"
+      initialRouteName="Customer Landing"
       initialParams={{bookingId: '63b29c78b31c84727f5910f8'}}>
       <Stack.Screen
         name="Customer Landing"
@@ -34,7 +38,8 @@ const CustomerStackNavigation = () => {
         component={ProcessBooking}
         options={{title: 'Complete Booking'}}
       />
-      <Stack.Screen name="My Bookings" component={MyBookings} />
+      <Stack.Screen name="My Bookings" component={ConfirmedBookings} />
+      <Stack.Screen name="Bookings History" component={HistoryBookings} />
       <Stack.Screen name="Booking Details" component={BookingDetails} />
       <Stack.Screen name="My Details" component={MyDetails} />
     </Stack.Navigator>

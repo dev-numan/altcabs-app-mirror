@@ -12,14 +12,18 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-native-community/datetimepicker": "^6.7.1",
+    "@react-native-google-signin/google-signin": "^9.0.2",
     "@react-native-masked-view/masked-view": "^0.2.8",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.9.7",
     "@reduxjs/toolkit": "^1.9.1",
+    "add": "^2.0.6",
     "axios": "^0.24.0",
+    "joi": "^17.7.0",
     "jwt-decode": "^3.1.2",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "native-base": "^3.4.25",
     "react": "18.1.0",
@@ -37,9 +41,13 @@
     "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-svg": "12.1.1",
     "react-native-toast-message": "^2.1.5",
+    "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^9.2.0",
     "react-redux": "^8.0.5",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "websocket": "^1.0.34",
+    "yarn": "^1.22.19",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

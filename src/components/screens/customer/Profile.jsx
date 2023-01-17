@@ -24,10 +24,17 @@ const Profile = () => {
   const list = [
     {
       name: 'My Bookings',
+      label: 'Confirmed Bookings',
+      icon: <AntDesign name="calendar" color="white" size={28} />,
+    },
+    {
+      name: 'Bookings History',
+      label: 'History',
       icon: <AntDesign name="calendar" color="white" size={28} />,
     },
     {
       name: 'My Details',
+      label: 'My Details',
       icon: <FontAwesome name="id-card" color="white" size={28} />,
     },
   ];
@@ -60,7 +67,7 @@ const Profile = () => {
               <HStack space={5} alignItems="center" my="2">
                 <View style={styles.IconView}>{item.icon}</View>
                 <Text style={{flexGrow: 1, color: colors.WHITE}}>
-                  {item.name}
+                  {item.label}
                 </Text>
                 <AntDesign name="right" color={colors.WHITE} size={28} />
               </HStack>

@@ -1,17 +1,25 @@
-import {Button, HStack, Select, Text, View} from 'native-base';
+import {Button, HStack, Select, Text, View, CheckIcon} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import bookingService from '../../api/BookingService';
 import colors from '../../constants/colors';
 import {selectFleetTypes} from '../../store/selectors';
-import {SUCCESS} from '../../store/slices/message.slice';
+import {ERROR, SUCCESS} from '../../store/slices/message.slice';
 import CustomButton from '../common/CustomButton';
 import QuotationLoaderSkeleton from '../common/skeletons/QuotationLoaderSkeleton';
 import QuotationLogo from './partials/QuotationLogo';
-
-const QuotationSelector = ({booking}) => {
+import QuotationTopCard from './partials/QuotationTopCard';
+import webSocketService from '../../api/WebSocketService';
+import {
+  SET_IS_PROCESSING,
+  SET_IS_PROCESSING_FINISHED,
+} from '../../store/slices/loading.slice';
+const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   const dispatch = useDispatch();
+  const {quotationCreated, quotationCreatedFor} = useSelector(
+    state => state.booking,
+  );
   const fleetTypes = useSelector(selectFleetTypes);
   const [vehicle_type, setVehicleType] = useState('all');
   const [quotation_type, setQuotationType] = useState('all'); // all, standard, prestige
@@ -19,14 +27,15 @@ const QuotationSelector = ({booking}) => {
   const [per_page, setPerPage] = useState(10);
   const [total, setTotal] = useState(0);
   const [fetching, setFetching] = useState(true);
+  const [processing, setProcessing] = useState(false);
   const [state, setState] = useState({
     quotations: [],
     topCards: {},
     fetched: false,
   });
-  const fetchBooking = () => {
+  const fetchQuotations = () => {
     bookingService
-      .getQuotationsById(booking._id, {
+      .getQuotationsById(bookingId, {
         vehicle_type,
         quotation_type,
         page,
@@ -41,85 +50,143 @@ const QuotationSelector = ({booking}) => {
         });
         setPage(data.page);
         setPerPage(data.per_page);
+        setTotal(data.total);
         setFetching(false);
       })
       .catch(err => {
         console.log(err);
       });
   };
-  useEffect(() => {
-    //enable in production as this component will be loaded even when the new quotations are being calculated
-    // setTimeout(fetchBooking, 1000);
-    // setTimeout(fetchBooking, 2000);
-    // setTimeout(fetchBooking, 3000);
-    // setTimeout(fetchBooking, 4000);
-    // setTimeout(fetchBooking, 5000);
-  }, []);
+  useEffect(() => fetchQuotations, []);
   useEffect(() => {
     setFetching(true);
-    fetchBooking();
-  }, [page, per_page, vehicle_type, quotation_type]);
+    fetchQuotations();
+  }, [page, per_page, vehicle_type, quotation_type, bookingId]);
+  useEffect(() => {
+    //set booking id to socket
+    if (bookingId) webSocketService.setBookingId(bookingId);
+  }, []);
+  useEffect(() => {
+    if (
+      quotationCreatedFor &&
+      quotationCreated &&
+      bookingId &&
+      quotationCreatedFor == bookingId
+    ) {
+      fetchQuotations();
+    }
+  }, [quotationCreatedFor, quotationCreated]);
   let quotations = state.quotations;
   const onQuotationSelect = index => {
-    console.log(index);
+    // nextStep();
+    // return;
+    dispatch(SET_IS_PROCESSING('Assigning Quotation ...'));
+    bookingService
+      .bookNormal(bookingId, index)
+      .then(() => {
+        nextStep();
+      })
+      .catch(err => {
+        dispatch(ERROR('Unable to Select Quotation'));
+      })
+      .finally(() => {
+        dispatch(SET_IS_PROCESSING_FINISHED());
+      });
   };
-  //   console.log(
-  //     quotations
-  //       .slice(0, 1)
-  //       .map(q => 'http://altcabs.com/fleet-types-icons/' + q.vehicle_type),
-  //   );
+
   return (
     <View style={{margin: 14}}>
       <View style={{display: 'flex', justifyContent: 'space-between'}}>
-        <Button.Group isAttached={true}>
-          <CustomButton
-            size={'xs'}
-            isDisabled={quotation_type == 'all'}
-            onPress={() => {
-              setQuotationType('all');
-            }}>
-            ALL
-          </CustomButton>
-          <CustomButton
-            size={'xs'}
-            isDisabled={quotation_type == 'standard'}
-            onPress={() => {
-              setQuotationType('standard');
-            }}>
-            Standard
-          </CustomButton>
-          <CustomButton
-            size={'xs'}
-            isDisabled={quotation_type == 'prestige'}
-            onPress={() => {
-              setQuotationType('prestige');
-            }}>
-            Prestige
-          </CustomButton>
-        </Button.Group>
-        <Select
-          selectedValue={vehicle_type}
-          // minWidth="100"
-          accessibilityLabel="Filter By Fleet Type"
-          placeholder="Filter By Fleet Type"
-          variant="filled"
-          _focus={{borderColor: colors.PRIMARY}}
-          _selectedItem={{
-            bg: colors.PRIMARY,
-            _text: {color: 'white'},
-          }}
-          mt={1}
-          onValueChange={itemValue => setVehicleType(itemValue)}>
-          <Select.Item label="all" value="all" />
-          {fleetTypes.map(ft => (
-            <Select.Item label={ft.name} value={ft._id} key={ft._id} />
-          ))}
-        </Select>
+        {/* <Text style={{color: 'white', padding: 5}}>
+          Booking: {bookingId} Total: {total}
+        </Text> */}
+        <HStack>
+          <Button.Group
+            isAttached={true}
+            rounded="md"
+            p="3"
+            _text={{fontSize: 14, fontWeight: 'bold'}}
+            colorScheme={colors.PRIMARY}
+            _disabled={{bg: colors.YELLOW, color: colors.YELLOW}}
+            my="2">
+            <Button
+              isDisabled={quotation_type == 'all' || processing}
+              onPress={() => {
+                setQuotationType('all');
+              }}>
+              ALL
+            </Button>
+            <Button
+              isDisabled={quotation_type == 'standard' || processing}
+              onPress={() => {
+                setQuotationType('standard');
+              }}>
+              Standard
+            </Button>
+            <Button
+              isDisabled={quotation_type == 'prestige' || processing}
+              onPress={() => {
+                setQuotationType('prestige');
+              }}>
+              Prestige
+            </Button>
+          </Button.Group>
+          <Select
+            selectedValue={vehicle_type}
+            isDisabled={processing}
+            minWidth="150"
+            size="xs"
+            accessibilityLabel="Filter By Fleet Type"
+            placeholder="Filter By Fleet Type"
+            variant="underlined"
+            _focus={{borderColor: colors.PRIMARY}}
+            _selectedItem={{
+              bg: colors.PRIMARY,
+              _text: {color: 'white'},
+              endIcon: <CheckIcon size={1} />,
+            }}
+            color="white"
+            mt={1}
+            onValueChange={itemValue => setVehicleType(itemValue)}>
+            <Select.Item label="All Fleet Types" value="all" />
+            {fleetTypes.map(ft => (
+              <Select.Item label={ft.name} value={ft._id} key={ft._id} />
+            ))}
+          </Select>
+        </HStack>
       </View>
       {!state.fetched || fetching ? (
         <QuotationsLoader />
       ) : (
         <>
+          <HStack>
+            <QuotationTopCard
+              processing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="lowest"
+              quotation={state.topCards.lowestQuote}
+            />
+            <QuotationTopCard
+              rocessing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="best-rated"
+              quotation={state.topCards.bestRatedQuote}
+            />
+          </HStack>
+          <HStack>
+            <QuotationTopCard
+              rocessing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="top-executive"
+              quotation={state.topCards.topExecutiveQuote}
+            />
+            <QuotationTopCard
+              rocessing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="recommended"
+              quotation={state.topCards.recommendedQuote}
+            />
+          </HStack>
           {quotations.map(item => (
             <HStack
               key={item.index}
@@ -139,17 +206,14 @@ const QuotationSelector = ({booking}) => {
                 </Text>
               </View>
               <View style={{marginRight: 12}}>
-                <Text style={styles.priceText}>
-                  {item.priceToCharge.toFixed(2)}$
-                </Text>
-                <TouchableOpacity
-                  onPress={() => onQuotationSelect(item.index)}
-                  style={[
-                    styles.typeTextView,
-                    {backgroundColor: '#FB2681', padding: 8, borderRadius: 7},
-                  ]}>
-                  <Text style={styles.typeText}>Book Now</Text>
-                </TouchableOpacity>
+                <Button
+                  size="xs"
+                  colorScheme={colors.YELLOW}
+                  onPress={() => onQuotationSelect(item.index)}>
+                  <Text>
+                    £ {item.priceToCharge.toFixed(2)} {'\n'} Book Now
+                  </Text>
+                </Button>
               </View>
             </HStack>
           ))}

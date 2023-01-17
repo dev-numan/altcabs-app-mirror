@@ -1,13 +1,31 @@
 import {Checkbox, HStack, Input, Text, View} from 'native-base';
-import React, {createRef, useState} from 'react';
+import React, {createRef, useEffect, useState} from 'react';
 import moment from 'moment';
 import {TouchableOpacity} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../common/CustomButton';
-const QuotationDetails = ({booking}) => {
+import DetailsViewInput from '../common/DetailsViewInput';
+import VStack from '../common/VStack';
+import {
+  ADD_BOOKING_DETAILS,
+  LOAD_BOOKING,
+} from '../../store/slices/booking.slice';
+import colors from '../../constants/colors';
+import bookingService from '../../api/BookingService';
+import {ERROR, SUCCESS} from '../../store/slices/message.slice';
+import {
+  SET_IS_PROCESSING,
+  SET_IS_PROCESSING_FINISHED,
+} from '../../store/slices/loading.slice';
+const QuotationDetails = ({booking, nextStep}) => {
+  const dispatch = useDispatch();
   const {name, email, phone} = useSelector(state => state.Auth.TOKEN);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [interested, setInterested] = useState(true);
+  const [fetching, setFetching] = useState(false);
+  const [termsAndConditionsAccepted, setTermsAndConditionsAccepted] =
+    useState(true);
   const [form, setForm] = useState({
     name,
     email,
@@ -17,8 +35,10 @@ const QuotationDetails = ({booking}) => {
     flightNum: '',
     additionalInformation: '',
     departureTime: new Date(),
+    minutesAfterLanding: 30,
     forElse: false,
   });
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -158,8 +178,34 @@ const QuotationDetails = ({booking}) => {
       onPressIn: () => {},
     },
   ];
-  const color = 'rgba(118,75,162,1.0)';
+
   const darkShadeColor = '#472d61';
+  const addDetails = () => {
+    // nextStep();
+    // return;
+    setFetching(true);
+    dispatch(SET_IS_PROCESSING('Saving Passanger Details ...'));
+    bookingService
+      .addDetails(booking._id, {interested, ...form})
+      .then(updatedBooking => {
+        dispatch(LOAD_BOOKING(updatedBooking));
+        dispatch(SUCCESS('Booking Details Saved'));
+        nextStep();
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(
+          ERROR(
+            err?.response?.data ? err.response.data : 'Unable to save booking',
+          ),
+        );
+      })
+      .finally(() => {
+        setFetching(false);
+        dispatch(SET_IS_PROCESSING_FINISHED());
+      });
+  };
+
   return (
     <View style={{flex: 1, margin: 12}}>
       <DateTimePickerModal
@@ -168,97 +214,140 @@ const QuotationDetails = ({booking}) => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
       />
-      <Text style={{fontSize: 24, color: 'white', marginVertical: 14}}>
+      <Text style={{fontSize: 24, color: 'white', marginVertical: 16}}>
         Booking Information
       </Text>
-
+      <VStack>
+        <DetailsViewInput
+          value={form.name}
+          isReadOnly={true}
+          onChange={name => setForm({...form, name})}
+        />
+        <DetailsViewInput
+          value={form.email}
+          isReadOnly={true}
+          onChange={email => setForm({...form, email})}
+        />
+        <DetailsViewInput
+          value={form.phone}
+          onChange={phone => setForm({...form, phone})}
+        />
+      </VStack>
       <HStack
         style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
         <Checkbox
           accessibilityLabel="Terms and Condition"
           isChecked={form.forElse}
-          // borderColor={color}
-          // colorScheme={color}
           bg="#27323D"
           onChange={state => {
-            if (!form.forElse) {
-              setForm({
-                ...form,
-                forElse: state,
-                name: '',
-                email: '',
-                phone: '',
-              });
-            } else {
-              setForm({...form, forElse: state, name, email, phone});
-            }
+            setForm({
+              ...form,
+              forElse: state,
+            });
           }}
-          my="2"
+          my="1"
         />
+
         <Text style={{color: '#FFF', marginLeft: 7}}>
-          Booking Ride
-          <Text style={{color, fontWeight: 'bold'}}> For Some Else.</Text>
+          Booking Ride For Some Else.
         </Text>
       </HStack>
-
-      {List.map((item, index) => (
-        <Input
-          key={index}
-          my={2}
-          p="2"
-          variant="filled"
-          bgColor="#27323D"
-          color="white"
-          // placeholder="Full Name"
-          _focus={{borderColor: '#14191f'}}
-          autoCapitalize="none"
-          autoCorrect={false}
-          size="lg"
-          ref={item.ref}
-          editable={item.editable}
-          onChangeText={item.onChange}
-          value={item.value}
-          placeholder={item.placeholder}
-          keyboardType={item.keyboardType}
-          onSubmitEditing={item.onSubmitEditing}
-          blurOnSubmit={item.blur}
-          returnKeyType={item.submitType}
-          multiline={item.multiLine}
-          numberOfLines={item.noOfLines}
-          onPressIn={item.onPressIn}
+      {form.forElse && (
+        <VStack>
+          <DetailsViewInput
+            placeholder="Passanger Name"
+            value={form.pname}
+            isReadOnly={true}
+            onChange={pname => setForm({...form, pname})}
+          />
+          <DetailsViewInput
+            placeholder="Passanger Email"
+            value={form.pemail}
+            isReadOnly={true}
+            onChange={pemail => setForm({...form, pemail})}
+          />
+          <DetailsViewInput
+            placeholder="Passanger Phone"
+            value={form.pphone}
+            onChange={pphone => setForm({...form, pphone})}
+          />
+        </VStack>
+      )}
+      <DetailsViewInput
+        placeholder="PickUp Full Address"
+        value={form.pickUpFullAddress}
+        onChange={pickUpFullAddress => {
+          setForm({...form, pickUpFullAddress});
+        }}
+      />
+      <DetailsViewInput
+        placeholder="Drop Off Full Address"
+        value={form.dropOffFullAddress}
+        onChange={dropOffFullAddress => {
+          setForm({...form, dropOffFullAddress});
+        }}
+      />
+      <DetailsViewInput
+        placeholder="Flight Number"
+        value={form.flightNum}
+        onChange={flightNum => {
+          setForm({...form, flightNum});
+        }}
+      />
+      <DetailsViewInput
+        placeholder="How Many Minutes After Landing"
+        value={form.minutesAfterLanding}
+        onChange={minutesAfterLanding => {
+          setForm({...form, minutesAfterLanding});
+        }}
+      />
+      <DetailsViewInput
+        placeholder="Additional Info"
+        value={form.additionalInformation}
+        onChange={additionalInformation => {
+          setForm({...form, additionalInformation});
+        }}
+      />
+      <HStack
+        style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
+        <Checkbox
+          accessibilityLabel="Terms and ConditionI am interested in altCABS marketing and offers sent via email"
+          isChecked={interested}
+          bg="#27323D"
+          onChange={state => {
+            setInterested(state);
+          }}
+          my="1"
         />
-      ))}
+
+        <Text style={{color: '#FFF', marginLeft: 7}}>
+          I am interested in altCABS marketing and offers sent via email
+        </Text>
+      </HStack>
       <HStack
         style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
         <Checkbox
           accessibilityLabel="Terms and Condition"
-          isChecked={form.terms}
-          borderColor={color}
-          colorScheme={color}
-          bg="#27323D"
+          isChecked={termsAndConditionsAccepted}
           onChange={state => {
-            setForm({...form, terms: state});
+            setTermsAndConditionsAccepted(state);
           }}
           my="2"
         />
-        <TouchableOpacity
-          onPress={() => {
-            // navigation.navigate('Terms and Condition');
-          }}>
-          <Text style={{color: '#FFF', marginLeft: 7}}>
-            I accept your
-            <Text style={{color, fontWeight: 'bold'}}>
-              {' '}
-              Terms and Condition
-            </Text>
+
+        <Text style={{color: '#FFF', marginLeft: 7}}>
+          I accept your
+          <Text style={{color: colors.YELLOW, fontWeight: 'bold'}}>
+            Terms and Condition
           </Text>
-        </TouchableOpacity>
+        </Text>
       </HStack>
       <CustomButton
-        colorScheme={color}
-        onPress={() => onNext(form)}
+        isDisabled={!termsAndConditionsAccepted || fetching}
+        colorScheme={colors.YELLOW}
+        onPress={addDetails}
         _pressed={{bg: darkShadeColor}}
-        _text={{color: 'white'}}>
+        _text={{color: colors.PRIMARY}}>
         Confirm Booking
       </CustomButton>
     </View>

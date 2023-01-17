@@ -4,6 +4,7 @@ import jwtdecode from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ERROR, SUCCESS} from './message.slice';
 import {SET_IS_PROCESSING, SET_IS_PROCESSING_FINISHED} from './loading.slice';
+import webSocketService from '../../api/WebSocketService';
 const initialState = {
   IS_LOGGED: false,
   TOKEN: null,
@@ -25,6 +26,7 @@ export const USER_LOGIN_STATUS = createAsyncThunk(
   async (data, {dispatch, rejectWithValue}) => {
     const token = await AsyncStorage.getItem('Token');
     console.log('saved token', token ? true : false);
+    webSocketService.authenticate(token);
     if (token) {
       return jwtdecode(token);
     } else {

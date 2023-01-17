@@ -14,8 +14,10 @@ import CustomButton from '../../common/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../../constants/colors';
 import {LOGIN} from '../../../store/slices/auth.slice';
+import {useNavigation} from '@react-navigation/native';
 const Login = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [login, setLogin] = useState({
     username: 'usman.akram@gmail.com',
     password: 'usman',

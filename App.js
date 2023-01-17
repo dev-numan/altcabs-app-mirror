@@ -13,9 +13,11 @@ import {USER_LOGIN_STATUS} from './src/store/slices/auth.slice';
 
 import CustomerAppDrawerNavigation from './src/navigation/CustomerAppDrawerNavigation';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {MESSAGE_NULL} from './src/store/slices/message.slice';
+import {MESSAGE_NULL, SUCCESS} from './src/store/slices/message.slice';
 import SavingModel from './src/components/common/SavingModal';
 import {GET_ALL_SETTINGS} from './src/store/slices/settings.slice';
+import webSocketService from './src/api/WebSocketService';
+import {QUOTATION_CREATED} from './src/store/slices/booking.slice';
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -24,7 +26,7 @@ export default function App() {
   const msg = useSelector(state => state.Message);
   const {app, isLoadingComplete} = useSelector(state => state.app);
   const IS_LOGGED = useSelector(state => state.Auth.IS_LOGGED);
-  console.log(IS_LOGGED);
+
   const loadApp = async () => {
     await dispatch(GET_ALL_SETTINGS());
     // await dispatch(GET_ALL_LUGGAGE());
@@ -35,7 +37,16 @@ export default function App() {
   };
   useEffect(() => {
     loadApp();
+    // dispatch(SUCCESS('App Loaded'));
   }, []);
+  useEffect(() => {
+    if (isLoadingComplete) {
+      console.log('Attaching function to web socket event');
+      webSocketService.on('quotes-added-to-booking', booking_id => {
+        dispatch(QUOTATION_CREATED(booking_id));
+      });
+    }
+  }, [isLoadingComplete]);
   useEffect(() => {
     if (msg?.message) {
       console.log(msg);
@@ -51,9 +62,9 @@ export default function App() {
       }, 3000);
     }
   }, [msg]);
-  console.log(isLoadingComplete);
+
   if (!isLoadingComplete) return <SplashScreen />;
-  if (!IS_LOGGED) return <AuthStackNavigator />;
+  // if (!IS_LOGGED) return <AuthStackNavigator />;
 
   // return (
   //   <Drawer.Navigator initialRouteName="Home">
@@ -63,7 +74,8 @@ export default function App() {
   // );
   return (
     <>
-      <CustomerAppDrawerNavigation />
+      {IS_LOGGED ? <CustomerAppDrawerNavigation /> : <AuthStackNavigator />}
+
       <SavingModel />
       <Toast />
     </>

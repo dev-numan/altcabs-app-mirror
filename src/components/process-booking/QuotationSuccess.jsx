@@ -1,55 +1,35 @@
 import {Text, View} from 'native-base';
 import React from 'react';
-import Surface from '../common/Surface';
-import moment from 'moment';
-import {Button, HStack} from 'native-base';
 
+import {Button, HStack} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 import {Image, ScrollView, StyleSheet} from 'react-native';
+import BookingJourneyDetails from './partials/BookingJourneyDetails';
+import colors from '../../constants/colors';
 const QuotationSuccess = ({booking}) => {
+  const navigation = useNavigation();
   const color = 'rgba(118,75,162,1.0)';
   const darkShadeColor = '#472d61';
-  const onNext = () => {};
+  const onNext = () => {
+    navigation.navigate('Customer Landing');
+  };
   return (
     <View style={{margin: 14}}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Surface style={styles.DetailsView}>
-          <Text style={styles.title}>Journey Details</Text>
-          <Text style={styles.heading}>Ref# {booking.reference}</Text>
-          <HStack style={styles.HStack}>
-            <Text style={styles.leftText}>Price</Text>
-            <Text style={styles.rightText}>{booking.totalPrice}$</Text>
-          </HStack>
-          <HStack style={styles.HStack}>
-            <Text style={styles.leftText}>Departure</Text>
-            <Text style={styles.rightText}>
-              {moment(booking.startTime).format('LLL')}
-            </Text>
-          </HStack>
-          <HStack style={styles.HStack}>
-            <Text style={styles.leftText}>Drop Off</Text>
-            <Text style={styles.rightText}>{booking.to_desc}</Text>
-          </HStack>
-          <HStack style={styles.HStack}>
-            <Text style={styles.leftText}>Pick Up</Text>
-            <Text style={styles.rightText}> {booking.from_desc}</Text>
-          </HStack>
-          <HStack style={styles.HStack}>
-            <Text style={styles.leftText}>Duration</Text>
-            <Text style={styles.rightText}>{booking.durationText}</Text>
-          </HStack>
-        </Surface>
-        <Surface style={styles.DetailsView}>
-          <Text style={styles.title}>Vehicle Details</Text>
-          <Text style={styles.heading}>{booking?.vehicle_type_name}</Text>
-          <HStack style={styles.HStack}>
-            <Text style={styles.leftText}>Company</Text>
-            <Text style={styles.rightText}>{booking?.companyName}</Text>
-          </HStack>
-          <HStack style={styles.HStack}>
-            <Text style={styles.leftText}>Vehicle Type</Text>
-            <Text style={styles.rightText}>{booking?.type}</Text>
-          </HStack>
-        </Surface>
+        {booking.hasReturnBooking ? (
+          <>
+            <BookingJourneyDetails booking={booking} title="Outbound Journey" />
+            <BookingJourneyDetails
+              booking={booking.returnBooking}
+              title="Inbound Journey"
+            />
+          </>
+        ) : (
+          <>
+            <BookingJourneyDetails booking={booking} />
+          </>
+        )}
+
         <Image
           source={{uri: booking.staticmap}}
           style={{height: 250, borderRadius: 14, marginVertical: 14}}
@@ -57,11 +37,11 @@ const QuotationSuccess = ({booking}) => {
         <Button
           my="4"
           rounded="full"
-          colorScheme={color}
-          _text={{color: 'white'}}
+          colorScheme={colors.YELLOW}
+          _text={{color: colors.PRIMARY}}
           onPress={onNext}
           _pressed={{bg: darkShadeColor}}>
-          Go Back
+          Book Again ?
         </Button>
       </ScrollView>
     </View>

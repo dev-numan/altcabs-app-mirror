@@ -18,6 +18,8 @@ import {
 } from '../../store/slices/loading.slice';
 import {useNavigation} from '@react-navigation/native';
 import {selectLuggageTypes} from '../../store/selectors';
+import {POST_NEW_BOOKING} from '../../store/slices/booking.slice';
+import bookingService from '../../api/BookingService';
 const BookingWidget = ({booking_type}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -46,6 +48,7 @@ const BookingWidget = ({booking_type}) => {
 
   const [showLuggageModal, setShowLuggageModal] = useState(false);
   const [totalLuggage, setTotalLuggage] = useState([]);
+  const [prestige, setPrestige] = useState(false);
   const fetchDistance = () => {
     let data = {
       from_id: form.from_place_id,
@@ -102,6 +105,7 @@ const BookingWidget = ({booking_type}) => {
     form.from_place_id,
     form.to_place_id,
   ]);
+
   const showProgressMessage = () => {
     switch (booking_type) {
       case 'cabmatch':
@@ -117,14 +121,26 @@ const BookingWidget = ({booking_type}) => {
     }
   };
   const submitBooking = () => {
-    console.log('Submitting ...');
     showProgressMessage();
-    navigation.navigate('ProcessBooking', {
-      bookingId: '63b29c78b31c84727f5910f8',
-    });
-    setTimeout(() => {
-      dispatch(SET_IS_PROCESSING_FINISHED());
-    }, 3000);
+    console.log('Submitting ...');
+    // dispatch(POST_NEW_BOOKING({booking: form, prestige}));
+    bookingService
+      .postNewBooking({booking: form, prestige}, booking_type)
+      .then(data => {
+        // dispatch(POST_NEW_BOOKING(data))
+
+        console.log(`New Booking: ${data}`);
+        navigation.navigate('ProcessBooking', {
+          bookingId: data,
+        });
+      })
+      .catch(err => {
+        console.log(err.response.data);
+        if (err?.response?.data) dispatch(ERROR(err?.response?.data));
+      })
+      .finally(() => {
+        dispatch(SET_IS_PROCESSING_FINISHED());
+      });
   };
   const bgColor = getBgColorByType(booking_type);
   // console.log(state);
