@@ -26,6 +26,7 @@ const CustomerStackNavigation = () => {
       screenOptions={{headerBackTitle: '', headerShadowVisible: false}}
       // initialRouteName="ProcessBooking"
       // initialRouteName="HistoryBookings"
+      // initialRouteName="Chat With AltCabs"
       initialRouteName="Customer Landing"
       initialParams={{bookingId: '63b29c78b31c84727f5910f8'}}>
       <Stack.Screen

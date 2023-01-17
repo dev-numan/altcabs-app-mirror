@@ -8,10 +8,11 @@ import {Text, View} from 'native-base';
 import {TabBarOptions} from '../constants/NavigationStyle';
 import CabCompare from '../components/screens/customer/CabCompare';
 import Profile from '../components/screens/customer/Profile';
+import FrontCustomerChat from '../components/screens/customer/FrontCustomerChat';
 const CustomerBottomTagNavigator = () => {
   return (
     <BottomTab.Navigator
-      initialRouteName="Screen1"
+      initialRouteName="Cab Compare"
       screenOptions={TabBarOptions}>
       <BottomTab.Screen
         name="Cab Compare"
@@ -30,6 +31,22 @@ const CustomerBottomTagNavigator = () => {
       <BottomTab.Screen
         name="Profile"
         component={Profile}
+        options={{
+          // headerTitle: 'Profile',
+          // headerShown: true,
+          tabBarIcon: ({color}) => (
+            <FontAwesome
+              name="user"
+              color={color}
+              size={20}
+              style={{marginBottom: -3}}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Chat With AltCabs"
+        component={FrontCustomerChat}
         options={{
           // headerTitle: 'Profile',
           // headerShown: true,
