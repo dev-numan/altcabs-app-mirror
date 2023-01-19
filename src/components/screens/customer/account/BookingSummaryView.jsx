@@ -3,7 +3,9 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import moment from 'moment';
 import colors from '../../../../constants/colors';
+import {useNavigation} from '@react-navigation/native';
 const BookingSummaryView = ({booking, showContactDriver}) => {
+  const navigation = useNavigation();
   return (
     <View>
       <View style={styles.container}>
@@ -39,7 +41,14 @@ const BookingSummaryView = ({booking, showContactDriver}) => {
         </HStack>
         <Button.Group>
           {showContactDriver && (
-            <Button colorScheme={colors.YELLOW} size="xs">
+            <Button
+              colorScheme={colors.YELLOW}
+              size="xs"
+              onPress={() => {
+                navigation.navigate('BookingChat', {
+                  bookingId: booking._id,
+                });
+              }}>
               Contact Driver
             </Button>
           )}

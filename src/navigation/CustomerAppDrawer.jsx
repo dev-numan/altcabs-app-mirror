@@ -17,12 +17,7 @@ export default function CustomerAppDrawer(props) {
       type: Ionicons,
       screen: 'TabOneScreen',
     },
-    {
-      name: 'Setting',
-      icon: 'setting',
-      type: AntDesign,
-      screen: 'TabFourStack',
-    },
+
     {
       name: 'Sign Out',
       icon: 'logout',
@@ -103,7 +98,7 @@ export default function CustomerAppDrawer(props) {
           <Image
             source={require('../assets/images/altcabsNewLongLogo2.png')}
             style={{
-              height: 50,
+              height: 20,
               marginBottom: 21,
               resizeMode: 'contain',
             }}
