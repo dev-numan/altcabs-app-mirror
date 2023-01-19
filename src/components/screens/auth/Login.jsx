@@ -121,7 +121,7 @@ const Login = () => {
                   textAlign: 'center',
                   fontSize: 11,
                 }}>
-                Forgot Password ?
+                Forgott Password ?
               </Text>
             </TouchableOpacity>
           </View>

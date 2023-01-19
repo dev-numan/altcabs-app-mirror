@@ -1,4 +1,12 @@
-import {Badge, Checkbox, Select, Switch, Text, View} from 'native-base';
+import {
+  Badge,
+  Checkbox,
+  CheckIcon,
+  Select,
+  Switch,
+  Text,
+  View,
+} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useEffect, useState} from 'react';
 import {KeyboardAvoidingView, SafeAreaView, StyleSheet} from 'react-native';
@@ -20,9 +28,12 @@ import {useNavigation} from '@react-navigation/native';
 import {selectLuggageTypes} from '../../store/selectors';
 import {POST_NEW_BOOKING} from '../../store/slices/booking.slice';
 import bookingService from '../../api/BookingService';
+import {Picker} from '@react-native-picker/picker';
+
 const BookingWidget = ({booking_type}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const [service, setService] = React.useState('');
   const [form, setForm] = useState({
     from_desc: 'Slough Station, Slough, UK',
     from_place_id: 'ChIJq1arfcp6dkgRYVocPLV6oDo',
@@ -268,6 +279,7 @@ const BookingWidget = ({booking_type}) => {
         value={form.startTime}
         onChange={startTime => setForm({...form, startTime})}
       />
+
       {!form.oneWay && (
         <WidgetDatePicker
           label="Return Pick Up Time"
@@ -275,7 +287,6 @@ const BookingWidget = ({booking_type}) => {
           onChange={startTimeReturn => setForm({...form, startTimeReturn})}
         />
       )}
-
       <HStack style={{alignItems: 'center', marginVertical: 9}}>
         <CustomButton
           alignSelf="flex-start"
@@ -293,10 +304,63 @@ const BookingWidget = ({booking_type}) => {
             color: 'white',
             marginRight: 7,
           }}>
-          passengers
+          Passengers
         </Text>
-
-        <Select
+        <View
+          style={{
+            height: 35,
+            width: 102,
+            borderWidth: 0.5,
+            borderColor: colors.PRIMARY,
+            backgroundColor: colors.PRIMARY,
+            color: colors.WHITE,
+            borderRadius: 12,
+            marginTop: '1%',
+            left: '15%',
+            justifyContent: 'center',
+          }}>
+          <Picker
+            selectedValue={form.passangers}
+            mode="dropdown" // Android only
+            dropdownIconColor={colors.WHITE}
+            placeholder={'#323F4B'}
+            // onValueChange={(itemValue, itemIndex) => setService(itemValue)}
+            onValueChange={itemValue =>
+              setForm({...form, passangers: itemValue})
+            }
+            style={{
+              color: colors.WHITE,
+              alignSelf: 'center',
+              height: 35,
+              width: 150,
+              fontSize: 16,
+              fontWeight: '400',
+              paddingLeft: 20,
+              transform: [{scaleX: 0.7}, {scaleY: 0.7}],
+            }}>
+            {[
+              '1',
+              '2',
+              '3',
+              '4',
+              '5',
+              '6',
+              '7',
+              '8',
+              '9',
+              '10',
+              '11',
+              '12',
+              '13',
+              '14',
+              '15',
+              '16',
+            ].map((item, i) => (
+              <Picker.Item label={item} value={item} key={i} />
+            ))}
+          </Picker>
+        </View>
+        {/* <Select
           selectedValue={form.passangers}
           minWidth="100"
           accessibilityLabel="Select Passengers"
@@ -311,7 +375,7 @@ const BookingWidget = ({booking_type}) => {
           onValueChange={itemValue =>
             setForm({...form, passangers: itemValue})
           }>
-          {[
+         {[
             '1',
             '2',
             '3',
@@ -330,9 +394,11 @@ const BookingWidget = ({booking_type}) => {
             '16',
           ].map((item, i) => (
             <Select.Item label={item} value={item} key={i} />
-          ))}
-        </Select>
+          ))} 
+          <Select.Item label="ABC" value="abc" />
+        </Select> */}
       </HStack>
+
       <HStack style={{alignItems: 'center', flexWrap: 'wrap'}}>
         {totalLuggage.map((item, i) => (
           <Badge
@@ -361,6 +427,7 @@ const BookingWidget = ({booking_type}) => {
           </Badge>
         ))}
       </HStack>
+
       <HStack style={{alignItems: 'center', marginVertical: 4}}>
         <Switch
           value={form.oneWay}
@@ -380,14 +447,14 @@ const BookingWidget = ({booking_type}) => {
           }}>
           One Way ?
         </Text>
-        <Checkbox
+        {/* <Checkbox
           colorScheme={colors.PRIMARY}
           _text={{color: 'white'}}
           onChange={e => {
             setPrestige(e);
           }}>
           Prestige
-        </Checkbox>
+        </Checkbox> */}
       </HStack>
       {!form.oneWay && (
         <>

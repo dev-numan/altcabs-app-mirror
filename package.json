@@ -1,11 +1,12 @@
 {
-  "name": "AltcabsApp",
+  "name": "altcabsapp",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "assemble": "cd android && ./gradlew assembleRelease && cd .. && npx react-native run-android --variant=release",
     "test": "jest",
     "lint": "eslint ."
   },
@@ -14,6 +15,7 @@
     "@react-native-community/datetimepicker": "^6.7.1",
     "@react-native-google-signin/google-signin": "^9.0.2",
     "@react-native-masked-view/masked-view": "^0.2.8",
+    "@react-native-picker/picker": "^2.4.8",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
