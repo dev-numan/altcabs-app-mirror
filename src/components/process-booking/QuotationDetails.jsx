@@ -1,7 +1,7 @@
 import {Button, Checkbox, HStack, Input, Text, View} from 'native-base';
 import React, {createRef, useEffect, useState} from 'react';
 import moment from 'moment';
-import {SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
+import {Image, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../common/CustomButton';
@@ -18,8 +18,12 @@ import {
   SET_IS_PROCESSING,
   SET_IS_PROCESSING_FINISHED,
 } from '../../store/slices/loading.slice';
+// import {check, checked} from '../../assets/images';
+const check = require('../../assets/images/check.png');
+const checked = require('../../assets/images/checked.png');
+
 const QuotationDetails = ({booking, nextStep}) => {
-  console.log('Booking in QuotationDetails: ', booking);
+  // console.log('Booking in QuotationDetails: ', booking);
   const dispatch = useDispatch();
   const {name, email, phone} = useSelector(state => state.Auth.TOKEN);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -230,7 +234,6 @@ const QuotationDetails = ({booking, nextStep}) => {
           }}>
           Booking Information
         </Text>
-
         <VStack>
           <DetailsViewInput
             value={form.name}
@@ -247,25 +250,73 @@ const QuotationDetails = ({booking, nextStep}) => {
             onChange={phone => setForm({...form, phone})}
           />
         </VStack>
-        <HStack
-          style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
-          <Checkbox
-            accessibilityLabel="Terms and Condition"
-            isChecked={form.forElse}
-            bg="#27323D"
-            onChange={state => {
+        <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
+          <TouchableOpacity
+            style={{
+              width: 25,
+              height: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => {
               setForm({
                 ...form,
-                forElse: state,
+                forElse: !form.forElse,
+              });
+            }}>
+            {!form.forElse ? (
+              <Image
+                source={check}
+                style={{
+                  width: 16,
+                  height: 16,
+                  tintColor: colors.YELLOW,
+                }}
+              />
+            ) : (
+              <Image
+                source={checked}
+                style={[
+                  {
+                    width: 16,
+                    height: 16,
+                    tintColor: colors.YELLOW,
+                  },
+                  {tintColor: colors.YELLOW},
+                ]}
+              />
+            )}
+          </TouchableOpacity>
+          <Text
+            style={[
+              {
+                marginTop: 4,
+                fontSize: 14,
+                fontFamily: 'Poppins',
+                fontWeight: '400',
+                color: colors.YELLOW,
+              },
+              {marginTop: 0, color: colors.WHITE},
+            ]}>
+            Booking Ride For Some Else.
+          </Text>
+        </View>
+        {/* <HStack
+          style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
+          <Checkbox
+            value={form.forElse}
+            onChange={e => {
+              setForm({
+                ...form,
+                forElse: e,
               });
             }}
-            my="1"
           />
 
           <Text style={{color: '#FFF', marginLeft: 7}}>
             Booking Ride For Some Else.
           </Text>
-        </HStack>
+        </HStack> */}
         {form.forElse && (
           <VStack>
             <DetailsViewInput
@@ -287,6 +338,7 @@ const QuotationDetails = ({booking, nextStep}) => {
             />
           </VStack>
         )}
+
         <DetailsViewInput
           placeholder="PickUp Full Address"
           value={form.pickUpFullAddress}
@@ -322,17 +374,118 @@ const QuotationDetails = ({booking, nextStep}) => {
             setForm({...form, additionalInformation});
           }}
         />
+
         <View style={{height: 300}}>
-          <HStack
+          <View
+            style={{flexDirection: 'row', alignItems: 'center', padding: 5}}>
+            <TouchableOpacity
+              style={{
+                width: 25,
+                height: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                setInterested(interested => !interested);
+              }}>
+              {!interested ? (
+                <Image
+                  source={check}
+                  style={{
+                    width: 16,
+                    height: 16,
+                    tintColor: colors.YELLOW,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={checked}
+                  style={[
+                    {
+                      width: 16,
+                      height: 16,
+                      tintColor: colors.YELLOW,
+                    },
+                    {tintColor: colors.YELLOW},
+                  ]}
+                />
+              )}
+            </TouchableOpacity>
+            <Text
+              style={[
+                {
+                  marginTop: 4,
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                  fontWeight: '400',
+                  color: colors.YELLOW,
+                },
+                {marginTop: 0, color: colors.WHITE},
+              ]}>
+              I am interested in altCABS marketing and offers sent via email
+            </Text>
+          </View>
+          <View
+            style={{flexDirection: 'row', alignItems: 'center', padding: 5}}>
+            <TouchableOpacity
+              style={{
+                width: 25,
+                height: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onPress={() => {
+                setTermsAndConditionsAccepted(
+                  termsAndConditionsAccepted => !termsAndConditionsAccepted,
+                );
+              }}>
+              {!termsAndConditionsAccepted ? (
+                <Image
+                  source={check}
+                  style={{
+                    width: 16,
+                    height: 16,
+                    tintColor: colors.YELLOW,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={checked}
+                  style={[
+                    {
+                      width: 16,
+                      height: 16,
+                      tintColor: colors.YELLOW,
+                    },
+                    {tintColor: colors.YELLOW},
+                  ]}
+                />
+              )}
+            </TouchableOpacity>
+            <Text
+              style={[
+                {
+                  marginTop: 4,
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                  fontWeight: '400',
+                  color: colors.YELLOW,
+                },
+                {marginTop: 0, color: colors.WHITE},
+              ]}>
+              I accept your{' '}
+              <Text style={{color: colors.YELLOW, fontWeight: 'bold'}}>
+                Terms and Condition
+              </Text>
+            </Text>
+          </View>
+          {/* <HStack
             style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
             <Checkbox
-              accessibilityLabel="Terms and ConditionI am interested in altCABS marketing and offers sent via email"
-              isChecked={interested}
-              bg="#27323D"
-              onChange={state => {
-                setInterested(state);
+              value={interested}
+              onChange={e => {
+                setInterested(e);
               }}
-              my="1"
             />
 
             <Text style={{color: '#FFF', marginLeft: 7}}>
@@ -342,13 +495,12 @@ const QuotationDetails = ({booking, nextStep}) => {
           <HStack
             style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
             <Checkbox
-              accessibilityLabel="Terms and Condition"
-              isChecked={termsAndConditionsAccepted}
-              onChange={state => {
-                setTermsAndConditionsAccepted(state);
+              value={termsAndConditionsAccepted}
+              onChange={e => {
+                setTermsAndConditionsAccepted(e);
               }}
-              my="2"
             />
+         
 
             <Text style={{color: '#FFF', marginLeft: 7}}>
               I accept your{' '}
@@ -356,7 +508,7 @@ const QuotationDetails = ({booking, nextStep}) => {
                 Terms and Condition
               </Text>
             </Text>
-          </HStack>
+          </HStack> */}
           <CustomButton
             isDisabled={!termsAndConditionsAccepted || fetching}
             colorScheme={colors.YELLOW}
@@ -366,7 +518,6 @@ const QuotationDetails = ({booking, nextStep}) => {
             Confirm Booking
           </CustomButton>
         </View>
-        <Text style={{color: colors.YELLOW}}>Text hereee</Text>
       </View>
     </ScrollView>
     // </SafeArreaView>

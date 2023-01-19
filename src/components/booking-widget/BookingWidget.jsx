@@ -133,7 +133,7 @@ const BookingWidget = ({booking_type}) => {
   };
   const submitBooking = () => {
     showProgressMessage();
-    console.log('Submitting ...');
+    console.log('Submitting ...', form.oneWay);
     // dispatch(POST_NEW_BOOKING({booking: form, prestige}));
     bookingService
       .postNewBooking({booking: form, prestige}, booking_type)
@@ -434,6 +434,7 @@ const BookingWidget = ({booking_type}) => {
           trackColor={{false: colors.GRAY, true: colors.PRIMARY}}
           ios_backgroundColor={colors.GRAY}
           onValueChange={r => {
+            console.log('oneWay', form.oneWay);
             setForm({...form, oneWay: !form.oneWay});
           }}
         />

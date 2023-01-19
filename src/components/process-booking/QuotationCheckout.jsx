@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import {Button, Icon, Radio} from 'native-base';
 import colors from '../../constants/colors';
@@ -7,6 +14,8 @@ import CustomButton from '../common/CustomButton';
 import bookingService from '../../api/BookingService';
 import {useDispatch} from 'react-redux';
 import {ERROR, SUCCESS} from '../../store/slices/message.slice';
+const check = require('../../assets/images/check.png');
+const checked = require('../../assets/images/checked.png');
 const QuotationCheckout = ({booking, nextStep}) => {
   const dispatch = useDispatch();
   const [fetching, setFetching] = useState(false);
@@ -38,7 +47,105 @@ const QuotationCheckout = ({booking, nextStep}) => {
   };
   return (
     <View style={styles.container}>
-      <Radio.Group
+      <View style={{flexDirection: 'row', alignItems: 'center', padding: 5}}>
+        <TouchableOpacity
+          style={{
+            width: 25,
+            height: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => {
+            setValue('one');
+          }}>
+          {value !== 'one' ? (
+            <Image
+              source={check}
+              style={{
+                width: 20,
+                height: 20,
+                tintColor: colors.YELLOW,
+              }}
+            />
+          ) : (
+            <Image
+              source={checked}
+              style={[
+                {
+                  width: 20,
+                  height: 20,
+                  tintColor: colors.YELLOW,
+                },
+                {tintColor: colors.YELLOW},
+              ]}
+            />
+          )}
+        </TouchableOpacity>
+        <Text
+          style={[
+            {
+              marginTop: 4,
+              marginLeft: 10,
+              fontSize: 17,
+              fontFamily: 'Poppins',
+              fontWeight: '400',
+              color: colors.YELLOW,
+            },
+            {marginTop: 0, color: colors.WHITE},
+          ]}>
+          Pay with Cash
+        </Text>
+      </View>
+      <View style={{flexDirection: 'row', alignItems: 'center', padding: 5}}>
+        <TouchableOpacity
+          style={{
+            width: 25,
+            height: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => {
+            setValue('two');
+          }}>
+          {value !== 'two' ? (
+            <Image
+              source={check}
+              style={{
+                width: 20,
+                height: 20,
+                tintColor: colors.YELLOW,
+              }}
+            />
+          ) : (
+            <Image
+              source={checked}
+              style={[
+                {
+                  width: 20,
+                  height: 20,
+                  tintColor: colors.YELLOW,
+                },
+                {tintColor: colors.YELLOW},
+              ]}
+            />
+          )}
+        </TouchableOpacity>
+        <Text
+          style={[
+            {
+              marginTop: 4,
+              marginLeft: 10,
+              fontSize: 17,
+              fontFamily: 'Poppins',
+              fontWeight: '400',
+              color: colors.YELLOW,
+            },
+            {marginTop: 0, color: colors.WHITE},
+          ]}>
+          Pay with Card
+        </Text>
+      </View>
+      {/* <Radio.Group
         name="myPaymentRadioGroup"
         accessibilityLabel="Payment"
         my="4"
@@ -70,7 +177,7 @@ const QuotationCheckout = ({booking, nextStep}) => {
           my={1}>
           Pay with Card
         </Radio>
-      </Radio.Group>
+      </Radio.Group> */}
       {value == 'two' && (
         <View>
           <TextInput

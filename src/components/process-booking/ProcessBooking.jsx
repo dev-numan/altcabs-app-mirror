@@ -31,7 +31,7 @@ const ProcessBooking = () => {
   }, [bookingId]);
   const nextStep = () => setActiveStep(activeStep + 1);
   const previousStep = () => setActiveStep(activeStep - 1);
-
+  console.log('booking.hasReturnBooking', booking?.hasReturnBooking);
   const steps = [
     {
       label: 1,
