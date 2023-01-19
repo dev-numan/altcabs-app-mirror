@@ -13,7 +13,8 @@ const DetailsViewInput = props => {
       _focus={{borderColor: '#14191f'}}
       autoCapitalize="none"
       autoCorrect={false}
-      size="xs"
+      // placeholder="xl Input"
+      size="md"
       {...props}
     />
   );

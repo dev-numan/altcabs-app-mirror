@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {Heading, Spinner, Modal, HStack, Text} from 'native-base';
 import {useSelector} from 'react-redux';
 const SavingModel = () => {
@@ -18,6 +18,7 @@ const SavingModel = () => {
         </Modal.Body>
       </Modal.Content>
     </Modal>
+    // <View>{/* <Text></Text> */}</View>
   );
 };
 

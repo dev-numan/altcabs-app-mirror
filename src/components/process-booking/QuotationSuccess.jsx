@@ -30,19 +30,21 @@ const QuotationSuccess = ({booking}) => {
           </>
         )}
 
-        <Image
-          source={{uri: booking.staticmap}}
-          style={{height: 250, borderRadius: 14, marginVertical: 14}}
-        />
-        <Button
-          my="4"
-          rounded="full"
-          colorScheme={colors.YELLOW}
-          _text={{color: colors.PRIMARY}}
-          onPress={onNext}
-          _pressed={{bg: darkShadeColor}}>
-          Book Again ?
-        </Button>
+        <View style={{height: 640}}>
+          <Image
+            source={{uri: booking.staticmap}}
+            style={{height: 250, borderRadius: 14, marginVertical: 14}}
+          />
+          <Button
+            my="4"
+            rounded="full"
+            colorScheme={colors.YELLOW}
+            _text={{color: colors.PRIMARY}}
+            onPress={onNext}
+            _pressed={{bg: darkShadeColor}}>
+            Book Again ?
+          </Button>
+        </View>
       </ScrollView>
     </View>
   );

@@ -114,7 +114,7 @@ const QuotationCheckout = ({booking, nextStep}) => {
 export default QuotationCheckout;
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     padding: 16,
     // backgroundColor: '#fff',
   },

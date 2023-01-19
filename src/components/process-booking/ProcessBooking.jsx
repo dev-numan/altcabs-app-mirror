@@ -11,6 +11,8 @@ import QuotationDetails from './QuotationDetails';
 import QuotationCheckout from './QuotationCheckout';
 import QuotationSuccess from './QuotationSuccess';
 import QuotationLoaderSkeleton from '../common/skeletons/QuotationLoaderSkeleton';
+import CustomProgressSteps from '../common/ProgressSteps';
+import CustomProgressStep from '../common/ProgressStep';
 const ProcessBooking = () => {
   const {params} = useRoute();
   const dispatch = useDispatch();
@@ -23,19 +25,114 @@ const ProcessBooking = () => {
   // console.log('params');
   // console.log(params);
   useEffect(() => {
+    // console.log('booking', booking);
     if (!booking);
     dispatch(LOAD_PROCESS_BOOKING(bookingId));
   }, [bookingId]);
   const nextStep = () => setActiveStep(activeStep + 1);
   const previousStep = () => setActiveStep(activeStep - 1);
 
+  const steps = [
+    {
+      label: 1,
+    },
+    {
+      label: 2,
+    },
+    {
+      label: 3,
+    },
+    {
+      label: 4,
+    },
+  ];
   return (
     <View style={{flex: 1, backgroundColor: '#1C2B39'}}>
       {!booking ? (
         <QuotationLoaderSkeleton />
       ) : (
         <>
-          <ProgressSteps
+          {booking.hasReturnBooking ? (
+            <CustomProgressSteps steps={5} activeStep={activeStep}>
+              {activeStep == 0 && (
+                <CustomProgressStep
+                  label={
+                    booking.hasReturnBooking
+                      ? 'Outbound Quotations'
+                      : 'Quotations'
+                  }>
+                  <QuotationSelector
+                    nextStep={nextStep}
+                    hasReturnBooking={booking.hasReturnBooking}
+                    bookingId={booking._id}
+                  />
+                </CustomProgressStep>
+              )}
+              {activeStep == 1 && (
+                <CustomProgressStep label={'Inbound Quotations'}>
+                  <QuotationSelector
+                    nextStep={nextStep}
+                    hasReturnBooking={booking.hasReturnBooking}
+                    bookingId={booking.returnBooking._id}
+                  />
+                </CustomProgressStep>
+              )}
+
+              {activeStep == 2 && (
+                <CustomProgressStep label={'Passanger Details'}>
+                  <QuotationDetails nextStep={nextStep} booking={booking} />
+                </CustomProgressStep>
+              )}
+              {activeStep == 3 && (
+                <CustomProgressStep label={'Payment'}>
+                  <QuotationCheckout nextStep={nextStep} booking={booking} />
+                </CustomProgressStep>
+              )}
+              {activeStep == 4 && (
+                <CustomProgressStep label={'Confirmation'}>
+                  <QuotationSuccess booking={booking} />
+                </CustomProgressStep>
+              )}
+
+              {/* <Text>Text here</Text> */}
+            </CustomProgressSteps>
+          ) : (
+            <CustomProgressSteps steps={4} activeStep={activeStep}>
+              {activeStep == 0 && (
+                <CustomProgressStep
+                  label={
+                    booking.hasReturnBooking
+                      ? 'Outbound Quotations'
+                      : 'Quotations'
+                  }>
+                  <QuotationSelector
+                    nextStep={nextStep}
+                    hasReturnBooking={booking.hasReturnBooking}
+                    bookingId={booking._id}
+                  />
+                </CustomProgressStep>
+              )}
+              {activeStep == 1 && (
+                <CustomProgressStep label={'Passanger Details'}>
+                  <QuotationDetails nextStep={nextStep} booking={booking} />
+                </CustomProgressStep>
+              )}
+              {activeStep == 2 && (
+                <CustomProgressStep label={'Payment'}>
+                  <QuotationCheckout nextStep={nextStep} booking={booking} />
+                </CustomProgressStep>
+              )}
+              {activeStep == 3 && (
+                <CustomProgressStep label={'Confirmation'}>
+                  <QuotationSuccess booking={booking} />
+                </CustomProgressStep>
+              )}
+
+              {/* <Text>Text here</Text> */}
+            </CustomProgressSteps>
+          )}
+
+          {/* <ProgressSteps
             activeStepIconBorderColor={colors.YELLOW}
             activeStepIconColor={colors.YELLOW}
             activeStepNumColor={colors.PRIMARY}
@@ -144,7 +241,7 @@ const ProcessBooking = () => {
               label="Confirmation">
               <QuotationSuccess booking={booking} />
             </ProgressStep>
-          </ProgressSteps>
+          </ProgressSteps> */}
         </>
       )}
     </View>

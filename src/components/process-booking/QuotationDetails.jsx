@@ -1,7 +1,7 @@
-import {Checkbox, HStack, Input, Text, View} from 'native-base';
+import {Button, Checkbox, HStack, Input, Text, View} from 'native-base';
 import React, {createRef, useEffect, useState} from 'react';
 import moment from 'moment';
-import {TouchableOpacity} from 'react-native';
+import {SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../common/CustomButton';
@@ -19,6 +19,7 @@ import {
   SET_IS_PROCESSING_FINISHED,
 } from '../../store/slices/loading.slice';
 const QuotationDetails = ({booking, nextStep}) => {
+  console.log('Booking in QuotationDetails: ', booking);
   const dispatch = useDispatch();
   const {name, email, phone} = useSelector(state => state.Auth.TOKEN);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -183,11 +184,13 @@ const QuotationDetails = ({booking, nextStep}) => {
   const addDetails = () => {
     // nextStep();
     // return;
+    console.log('Add Detail');
     setFetching(true);
     dispatch(SET_IS_PROCESSING('Saving Passanger Details ...'));
     bookingService
       .addDetails(booking._id, {interested, ...form})
       .then(updatedBooking => {
+        console.log('Updated booking: ', updatedBooking);
         dispatch(LOAD_BOOKING(updatedBooking));
         dispatch(SUCCESS('Booking Details Saved'));
         nextStep();
@@ -207,150 +210,166 @@ const QuotationDetails = ({booking, nextStep}) => {
   };
 
   return (
-    <View style={{flex: 1, margin: 12}}>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="datetime"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
-      />
-      <Text style={{fontSize: 24, color: 'white', marginVertical: 16}}>
-        Booking Information
-      </Text>
-      <VStack>
-        <DetailsViewInput
-          value={form.name}
-          isReadOnly={true}
-          onChange={name => setForm({...form, name})}
+    // <SafeAreaView>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      style={{marginHorizontal: 20}}>
+      <View style={{margin: 12}}>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="datetime"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
         />
-        <DetailsViewInput
-          value={form.email}
-          isReadOnly={true}
-          onChange={email => setForm({...form, email})}
-        />
-        <DetailsViewInput
-          value={form.phone}
-          onChange={phone => setForm({...form, phone})}
-        />
-      </VStack>
-      <HStack
-        style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
-        <Checkbox
-          accessibilityLabel="Terms and Condition"
-          isChecked={form.forElse}
-          bg="#27323D"
-          onChange={state => {
-            setForm({
-              ...form,
-              forElse: state,
-            });
-          }}
-          my="1"
-        />
-
-        <Text style={{color: '#FFF', marginLeft: 7}}>
-          Booking Ride For Some Else.
+        <Text
+          style={{
+            fontSize: 24,
+            color: 'white',
+            marginVertical: 16,
+            paddingTop: 5,
+          }}>
+          Booking Information
         </Text>
-      </HStack>
-      {form.forElse && (
+
         <VStack>
           <DetailsViewInput
-            placeholder="Passanger Name"
-            value={form.pname}
+            value={form.name}
             isReadOnly={true}
-            onChange={pname => setForm({...form, pname})}
+            onChange={name => setForm({...form, name})}
           />
           <DetailsViewInput
-            placeholder="Passanger Email"
-            value={form.pemail}
+            value={form.email}
             isReadOnly={true}
-            onChange={pemail => setForm({...form, pemail})}
+            onChange={email => setForm({...form, email})}
           />
           <DetailsViewInput
-            placeholder="Passanger Phone"
-            value={form.pphone}
-            onChange={pphone => setForm({...form, pphone})}
+            value={form.phone}
+            onChange={phone => setForm({...form, phone})}
           />
         </VStack>
-      )}
-      <DetailsViewInput
-        placeholder="PickUp Full Address"
-        value={form.pickUpFullAddress}
-        onChange={pickUpFullAddress => {
-          setForm({...form, pickUpFullAddress});
-        }}
-      />
-      <DetailsViewInput
-        placeholder="Drop Off Full Address"
-        value={form.dropOffFullAddress}
-        onChange={dropOffFullAddress => {
-          setForm({...form, dropOffFullAddress});
-        }}
-      />
-      <DetailsViewInput
-        placeholder="Flight Number"
-        value={form.flightNum}
-        onChange={flightNum => {
-          setForm({...form, flightNum});
-        }}
-      />
-      <DetailsViewInput
-        placeholder="How Many Minutes After Landing"
-        value={form.minutesAfterLanding}
-        onChange={minutesAfterLanding => {
-          setForm({...form, minutesAfterLanding});
-        }}
-      />
-      <DetailsViewInput
-        placeholder="Additional Info"
-        value={form.additionalInformation}
-        onChange={additionalInformation => {
-          setForm({...form, additionalInformation});
-        }}
-      />
-      <HStack
-        style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
-        <Checkbox
-          accessibilityLabel="Terms and ConditionI am interested in altCABS marketing and offers sent via email"
-          isChecked={interested}
-          bg="#27323D"
-          onChange={state => {
-            setInterested(state);
-          }}
-          my="1"
-        />
+        <HStack
+          style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
+          <Checkbox
+            accessibilityLabel="Terms and Condition"
+            isChecked={form.forElse}
+            bg="#27323D"
+            onChange={state => {
+              setForm({
+                ...form,
+                forElse: state,
+              });
+            }}
+            my="1"
+          />
 
-        <Text style={{color: '#FFF', marginLeft: 7}}>
-          I am interested in altCABS marketing and offers sent via email
-        </Text>
-      </HStack>
-      <HStack
-        style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
-        <Checkbox
-          accessibilityLabel="Terms and Condition"
-          isChecked={termsAndConditionsAccepted}
-          onChange={state => {
-            setTermsAndConditionsAccepted(state);
-          }}
-          my="2"
-        />
-
-        <Text style={{color: '#FFF', marginLeft: 7}}>
-          I accept your
-          <Text style={{color: colors.YELLOW, fontWeight: 'bold'}}>
-            Terms and Condition
+          <Text style={{color: '#FFF', marginLeft: 7}}>
+            Booking Ride For Some Else.
           </Text>
-        </Text>
-      </HStack>
-      <CustomButton
-        isDisabled={!termsAndConditionsAccepted || fetching}
-        colorScheme={colors.YELLOW}
-        onPress={addDetails}
-        _pressed={{bg: darkShadeColor}}
-        _text={{color: colors.PRIMARY}}>
-        Confirm Booking
-      </CustomButton>
-    </View>
+        </HStack>
+        {form.forElse && (
+          <VStack>
+            <DetailsViewInput
+              placeholder="Passanger Name"
+              value={form.pname}
+              // isReadOnly={true}
+              onChange={pname => setForm({...form, pname})}
+            />
+            <DetailsViewInput
+              placeholder="Passanger Email"
+              value={form.pemail}
+              // isReadOnly={true}
+              onChange={pemail => setForm({...form, pemail})}
+            />
+            <DetailsViewInput
+              placeholder="Passanger Phone"
+              value={form.pphone}
+              onChange={pphone => setForm({...form, pphone})}
+            />
+          </VStack>
+        )}
+        <DetailsViewInput
+          placeholder="PickUp Full Address"
+          value={form.pickUpFullAddress}
+          onChange={pickUpFullAddress => {
+            setForm({...form, pickUpFullAddress});
+          }}
+        />
+        <DetailsViewInput
+          placeholder="Drop Off Full Address"
+          value={form.dropOffFullAddress}
+          onChange={dropOffFullAddress => {
+            setForm({...form, dropOffFullAddress});
+          }}
+        />
+        <DetailsViewInput
+          placeholder="Flight Number"
+          value={form.flightNum}
+          onChange={flightNum => {
+            setForm({...form, flightNum});
+          }}
+        />
+        <DetailsViewInput
+          placeholder="How Many Minutes After Landing"
+          value={form.minutesAfterLanding}
+          onChange={minutesAfterLanding => {
+            setForm({...form, minutesAfterLanding});
+          }}
+        />
+        <DetailsViewInput
+          placeholder="Additional Info"
+          value={form.additionalInformation}
+          onChange={additionalInformation => {
+            setForm({...form, additionalInformation});
+          }}
+        />
+        <View style={{height: 300}}>
+          <HStack
+            style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
+            <Checkbox
+              accessibilityLabel="Terms and ConditionI am interested in altCABS marketing and offers sent via email"
+              isChecked={interested}
+              bg="#27323D"
+              onChange={state => {
+                setInterested(state);
+              }}
+              my="1"
+            />
+
+            <Text style={{color: '#FFF', marginLeft: 7}}>
+              I am interested in altCABS marketing and offers sent via email
+            </Text>
+          </HStack>
+          <HStack
+            style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
+            <Checkbox
+              accessibilityLabel="Terms and Condition"
+              isChecked={termsAndConditionsAccepted}
+              onChange={state => {
+                setTermsAndConditionsAccepted(state);
+              }}
+              my="2"
+            />
+
+            <Text style={{color: '#FFF', marginLeft: 7}}>
+              I accept your{' '}
+              <Text style={{color: colors.YELLOW, fontWeight: 'bold'}}>
+                Terms and Condition
+              </Text>
+            </Text>
+          </HStack>
+          <CustomButton
+            isDisabled={!termsAndConditionsAccepted || fetching}
+            colorScheme={colors.YELLOW}
+            onPress={addDetails}
+            _pressed={{bg: darkShadeColor}}
+            _text={{color: colors.PRIMARY}}>
+            Confirm Booking
+          </CustomButton>
+        </View>
+        <Text style={{color: colors.YELLOW}}>Text hereee</Text>
+      </View>
+    </ScrollView>
+    // </SafeArreaView>
   );
 };
 
