@@ -3,6 +3,8 @@ import GenericService from './GenericService';
 class BookingService extends GenericService {
   getById = bookingId =>
     this.post(`/mobileapp/booking_process_mobile/${bookingId}/get`);
+  cancelBooking = bookingId =>
+    this.post(`/mobileapp/booking_process_mobile/cancel-booking/${bookingId}`);
   getQuotationsById = (bookingId, filter) => {
     // console.log(filter);
     return this.post(

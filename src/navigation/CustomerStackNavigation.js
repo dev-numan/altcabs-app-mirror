@@ -14,6 +14,8 @@ import MyDetails from '../components/screens/customer/MyDetails';
 import {View} from 'native-base';
 import ConfirmedBookings from '../components/screens/customer/account/ConfirmedBookings';
 import HistoryBookings from '../components/screens/customer/account/HistoryBookings';
+import CustomerBookingChat from '../components/screens/customer/CustomerBookingChat';
+import CancelBookingConfirmation from '../components/screens/customer/account/CancelBookingConfirmation';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,9 +28,8 @@ const CustomerStackNavigation = () => {
       screenOptions={{headerBackTitle: '', headerShadowVisible: false}}
       // initialRouteName="ProcessBooking"
       // initialRouteName="HistoryBookings"
-      // initialRouteName="Chat With AltCabs"
-      initialRouteName="Customer Landing"
-      initialParams={{bookingId: '63b29c78b31c84727f5910f8'}}>
+      // initialRouteName="BookingChat"
+      initialRouteName="Customer Landing">
       <Stack.Screen
         name="Customer Landing"
         component={CustomerBottomTabNavigator}
@@ -43,6 +44,11 @@ const CustomerStackNavigation = () => {
       <Stack.Screen name="Bookings History" component={HistoryBookings} />
       <Stack.Screen name="Booking Details" component={BookingDetails} />
       <Stack.Screen name="My Details" component={MyDetails} />
+      <Stack.Screen name="BookingChat" component={CustomerBookingChat} />
+      <Stack.Screen
+        name="Booking Cancellation Confirmation"
+        component={CancelBookingConfirmation}
+      />
     </Stack.Navigator>
   );
 };

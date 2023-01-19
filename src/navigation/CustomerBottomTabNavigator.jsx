@@ -52,7 +52,7 @@ const CustomerBottomTabNavigator = () => {
           // headerShown: true,
           tabBarIcon: ({color}) => (
             <FontAwesome
-              name="user"
+              name="comments"
               color={color}
               size={20}
               style={{marginBottom: -3}}

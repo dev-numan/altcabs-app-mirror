@@ -22,12 +22,14 @@ import styles from './utils/chatStyles';
 import Colors from './utils/chatColors';
 import chatService from '../../../api/ChatService';
 
-const ChatCanvas = ({chat}) => {
+const ChatCanvas = ({chat, chatTitle}) => {
   const [newMessage, setNewMessage] = useState('New Message');
   const [messageFromServer, setMEssageFromServer] = useState(null);
 
   const {_id, name, email} = useSelector(state => state.Auth.TOKEN);
-  const [title, setTitle] = useState('Chat With AltCabs');
+  const [title, setTitle] = useState(
+    chatTitle ? chatTitle : 'Chat With AltCabs',
+  );
   //   console.log(token);
   const [messages, setMessages] = useState(chat.messages);
   useEffect(() => {
@@ -87,6 +89,7 @@ const ChatCanvas = ({chat}) => {
         <View style={styles.headerContainer}>
           <View style={styles.headerInnerContainer}>
             <View style={styles.headerMain}>
+              {/* <Text style={styles.userNameTxt}>{chat._id}</Text> */}
               <Text style={styles.userNameTxt}>{title}</Text>
             </View>
           </View>
