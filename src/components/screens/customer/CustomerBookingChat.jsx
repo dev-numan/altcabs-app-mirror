@@ -9,7 +9,7 @@ import ChatCanvas from '../chat/ChatCanvas';
 const CustomerBookingChat = props => {
   const dispatch = useDispatch();
   const {params} = useRoute();
-  console.log(params);
+  // console.log(params);
   const [state, setState] = useState(null);
   useEffect(() => {
     if (params?.bookingId)

@@ -53,7 +53,14 @@ const BookingSummaryView = ({booking, showContactDriver}) => {
             </Button>
           )}
           {moment(booking.cancellationTime).diff(moment(), 'minutes') > 0 && (
-            <Button size="xs" colorScheme={colors.YELLOW}>
+            <Button
+              size="xs"
+              colorScheme={colors.YELLOW}
+              onPress={() => {
+                navigation.navigate('Booking Cancellation Confirmation', {
+                  booking,
+                });
+              }}>
               Cancel
             </Button>
           )}

@@ -15,6 +15,7 @@ import {View} from 'native-base';
 import ConfirmedBookings from '../components/screens/customer/account/ConfirmedBookings';
 import HistoryBookings from '../components/screens/customer/account/HistoryBookings';
 import CustomerBookingChat from '../components/screens/customer/CustomerBookingChat';
+import CancelBookingConfirmation from '../components/screens/customer/account/CancelBookingConfirmation';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,10 @@ const CustomerStackNavigation = () => {
       <Stack.Screen name="Booking Details" component={BookingDetails} />
       <Stack.Screen name="My Details" component={MyDetails} />
       <Stack.Screen name="BookingChat" component={CustomerBookingChat} />
+      <Stack.Screen
+        name="Booking Cancellation Confirmation"
+        component={CancelBookingConfirmation}
+      />
     </Stack.Navigator>
   );
 };
