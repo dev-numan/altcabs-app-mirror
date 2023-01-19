@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import Introduction from '../components/screens/general/Introduction';
 import StarterScreen from '../components/screens/general/StartScreen';
 import CustomerLanding from '../components/screens/customer/CustomerLanding';
-import CustomerBottomTagNavigator from './CustomerBottonTabNavigator';
+import CustomerBottomTabNavigator from './CustomerBottomTabNavigator';
 import ProcessBooking from '../components/process-booking/ProcessBooking';
 import MyBookings from '../components/screens/customer/MyBookings';
 import BookingDetails from '../components/screens/customer/BookingDetails';
@@ -31,7 +31,7 @@ const CustomerStackNavigation = () => {
       initialRouteName="Customer Landing">
       <Stack.Screen
         name="Customer Landing"
-        component={CustomerBottomTagNavigator}
+        component={CustomerBottomTabNavigator}
         options={{headerShown: false}}
       />
       <Stack.Screen

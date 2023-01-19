@@ -1,10 +1,11 @@
 import {Box, FormControl, Input, Pressable, Text} from 'native-base';
 import React, {useState} from 'react';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+
 import colors from '../../../constants/colors';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {marginBottom} from 'styled-system';
+import {TouchableOpacity} from 'react-native';
 const WidgetDatePicker = ({label, value, onChange}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const showDatePicker = () => {
