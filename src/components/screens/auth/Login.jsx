@@ -15,9 +15,12 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../../constants/colors';
 import {LOGIN} from '../../../store/slices/auth.slice';
 import {useNavigation} from '@react-navigation/native';
+import ContactTextInput from '../general/ContactTextInput';
+import GoogleLogin from '../general/GoogleLogin';
 const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [displayPassword, setDisplayPassword] = useState(true);
   const [login, setLogin] = useState({
     username: 'usman.akram@gmail.com',
     password: 'usman',
@@ -36,7 +39,18 @@ const Login = () => {
       console.log(err);
     }
   };
+
   const signIn = () => {};
+  const handleGoogleLogin = async () => {
+    let info = await GoogleLogin();
+    console.log('INFO: ', info);
+
+    if (info.Error === undefined) {
+      console.log('INFO: ', info);
+    } else {
+      console.log(JSON.stringify(info.Error));
+    }
+  };
   return (
     <View
       style={{
@@ -54,27 +68,69 @@ const Login = () => {
               />
             </Center>
             <View style={{height: 80}}></View>
-            <Input
-              variant="filled"
-              value={login.username}
-              _focus={{borderColor: '#1C2B39'}}
-              placeholder="Email Address"
-              onChangeText={text => setLogin({...login, username: text})}
-              autoCapitalize="none"
-              style={{marginVertical: 7}}
-              fontSize="lg"
-            />
-            <Input
-              variant="filled"
-              fontSize="lg"
-              _focus={{borderColor: '#1C2B39'}}
-              value={login.password}
-              placeholder="Password"
-              secureTextEntry={true}
-              onChangeText={text => setLogin({...login, password: text})}
-              autoCapitalize="none"
-              style={{marginVertical: 7}}
-            />
+            <View style={{marginBottom: 10}}>
+              {/* <Input
+                variant="filled"
+                value={login.username}
+                _focus={{borderColor: '#1C2B39'}}
+                placeholder="Email Address"
+                onChangeText={text => setLogin({...login, username: text})}
+                autoCapitalize="none"
+                style={{marginVertical: 7, marginBottom: 10}}
+                fontSize="lg"
+              /> */}
+              <ContactTextInput
+                // refInner={emailRef}
+                placeHolderColor={colors.PRIMARY}
+                placeHolder={'Email address'}
+                headingName={'Email address'}
+                multiline={false}
+                value={login.username}
+                maxLength={50}
+                onChangeText={txt => setLogin({...login, username: txt})}
+                keyboardType={'email-address'}
+                autoCapitalize="none"
+                returnKeyType={'next'}
+                blurOnSubmit={false}
+                // onSubmitEditing={() => {
+                //     passwordRef.current.focus();
+                // }}
+              />
+            </View>
+            <View style={{marginBottom: 10}}>
+              <ContactTextInput
+                // refInner={emailRef}
+                placeHolderColor={colors.PRIMARY}
+                placeHolder={'Password'}
+                headingName={'Password'}
+                multiline={false}
+                value={login.password}
+                maxLength={50}
+                onChangeText={txt => setLogin({...login, password: txt})}
+                keyboardType={'default'}
+                autoCapitalize="none"
+                returnKeyType={'next'}
+                blurOnSubmit={false}
+                secureTextEntry={displayPassword}
+                eyeOpen={displayPassword}
+                onPress={() => setDisplayPassword(!displayPassword)}
+                secureText
+                // onSubmitEditing={() => {
+                //     passwordRef.current.focus();
+                // }}
+              />
+              {/* <Input
+                variant="filled"
+                fontSize="lg"
+                _focus={{borderColor: '#1C2B39'}}
+                value={login.password}
+                placeholder="Password"
+                secureTextEntry={true}
+                onChangeText={text => setLogin({...login, password: text})}
+                autoCapitalize="none"
+                style={{marginVertical: 7}}
+              /> */}
+            </View>
             <CustomButton rounded="full" onPress={handleLogin}>
               Login
             </CustomButton>
@@ -93,7 +149,7 @@ const Login = () => {
               justifyContent="center">
               <Center>
                 <IconButton
-                  onPress={signIn}
+                  onPress={handleGoogleLogin}
                   variant="solid"
                   rounded={25}
                   bg="#ea4335"

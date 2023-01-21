@@ -28,7 +28,7 @@ const Introduction = () => {
   const slides = [
     {
       key: 1,
-      title: 'cabCOMPARE',
+      title: 'CabCompare',
       text: `Compare the fares for your journey from different cab operators in your area. Simply enter your journey details and quotes will be generated. Fixed prices and free cancellations (subject to terms and conditions).`,
       text2: `Happy comparing!`,
       image: require('../../../assets/images/cabCompare.png'),
@@ -36,7 +36,7 @@ const Introduction = () => {
     },
     {
       key: 2,
-      title: 'cabMATCH',
+      title: 'CabMatch',
       text: `If you are ready to travel, check out if any driver is heading your way. You can negotiate a discount directly with the operator in real-time chat via our platform.`,
       text2: `More savings for you!`,
       image: require('../../../assets/images/cabMatch.png'),
@@ -44,7 +44,7 @@ const Introduction = () => {
     },
     {
       key: 3,
-      title: 'cabBid',
+      title: 'CabBid',
       text: `Do you have some special requirements, not sure which vehicle type you need, it is a large group of people or you just want to see if you can save more on your journey? You can use our CabBid function to invite bids from different cab operators. You can select a bid to book your journey.`,
       text2: `More convenience for you!`,
       image: require('../../../assets/images/cabBid.png'),
