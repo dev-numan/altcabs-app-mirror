@@ -19,7 +19,7 @@ const Header = ({title}) => {
         />
         <HStack
           style={[styles.header, {width: '78%', justifyContent: 'center'}]}>
-          <Text style={[styles.headerTitle]}>cab</Text>
+          <Text style={[styles.headerTitle]}>Cab</Text>
           <Text style={[styles.headerTitle, {fontWeight: 'bold'}]}>
             {title}
           </Text>

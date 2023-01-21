@@ -9,10 +9,14 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Image,
 } from 'react-native';
 import colors from '../../../constants/colors';
 import BookingWidget from '../../booking-widget/BookingWidget';
 import Header from '../../common/Header';
+
+import {Center} from 'native-base';
+
 const CabCompare = () => {
   return (
     <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
@@ -20,7 +24,7 @@ const CabCompare = () => {
         <ScrollView
           showsVerticalScrollIndicator={true}
           keyboardShouldPersistTaps={'always'}>
-          <Header title="COMPARE" />
+          <Header title="Compare" />
           <Text style={styles.description}>Compare the cab fares online</Text>
           <BookingWidget booking_type="normal" />
         </ScrollView>
@@ -74,5 +78,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     margin: 7,
+  },
+  image: {
+    height: 50,
+    width: '88%',
+    resizeMode: 'contain',
   },
 });

@@ -18,6 +18,8 @@ import {
   SET_IS_PROCESSING,
   SET_IS_PROCESSING_FINISHED,
 } from '../../store/slices/loading.slice';
+import ContactTextInput from '../screens/general/ContactTextInput';
+import DetailsScreenInput from '../common/DetailsScreenInput';
 // import {check, checked} from '../../assets/images';
 const check = require('../../assets/images/check.png');
 const checked = require('../../assets/images/checked.png');
@@ -235,7 +237,69 @@ const QuotationDetails = ({booking, nextStep}) => {
           Booking Information
         </Text>
         <VStack>
-          <DetailsViewInput
+          <DetailsScreenInput
+            // refInner={emailRef}
+            placeHolderColor={colors.WHITE}
+            // placeHolder={'Name'}
+            headingName={'Name'}
+            multiline={false}
+            value={form.name}
+            maxLength={50}
+            // onChangeText={txt => setLogin({...login, password: txt})}
+            onChangeText={name => setForm({...form, name})}
+            keyboardType={'default'}
+            autoCapitalize="none"
+            returnKeyType={'next'}
+            blurOnSubmit={false}
+            editable={false}
+            textColor={colors.WHITE}
+            // onSubmitEditing={() => {
+            //     passwordRef.current.focus();
+            // }}
+          />
+          <DetailsScreenInput
+            // refInner={emailRef}
+            placeHolderColor={colors.YELLOW}
+            // placeHolder={'Email'}
+            headingName={'Email'}
+            multiline={false}
+            value={form.email}
+            maxLength={50}
+            // onChangeText={txt => setLogin({...login, password: txt})}
+            onChangeText={email => setForm({...form, email})}
+            keyboardType={'default'}
+            autoCapitalize="none"
+            returnKeyType={'next'}
+            blurOnSubmit={false}
+            editable={false}
+            textColor={colors.WHITE}
+            // onSubmitEditing={() => {
+            //     passwordRef.current.focus();
+            // }}
+          />
+          <DetailsScreenInput
+            // refInner={emailRef}
+            placeHolderColor={colors.WHITE}
+            // placeHolder={'Phone'}
+            headingName={'Phone'}
+            multiline={false}
+            value={form.phone}
+            maxLength={50}
+            // onChangeText={txt => setLogin({...login, password: txt})}
+            onChangeText={phone => setForm({...form, phone})}
+            keyboardType={'default'}
+            autoCapitalize="none"
+            returnKeyType={'next'}
+            blurOnSubmit={false}
+            style={{color: 'red'}}
+            textColor={colors.WHITE}
+            // editable={false}
+
+            // onSubmitEditing={() => {
+            //     passwordRef.current.focus();
+            // }}
+          />
+          {/* <DetailsViewInput
             value={form.name}
             isReadOnly={true}
             onChange={name => setForm({...form, name})}
@@ -248,7 +312,7 @@ const QuotationDetails = ({booking, nextStep}) => {
           <DetailsViewInput
             value={form.phone}
             onChange={phone => setForm({...form, phone})}
-          />
+          /> */}
         </VStack>
         <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
           <TouchableOpacity
@@ -319,7 +383,74 @@ const QuotationDetails = ({booking, nextStep}) => {
         </HStack> */}
         {form.forElse && (
           <VStack>
-            <DetailsViewInput
+            <DetailsScreenInput
+              // refInner={emailRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Passanger Name'}
+              headingName={'Passanger Name'}
+              multiline={false}
+              value={form.pname}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={pname => setForm({...form, pname})}
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.WHITE}
+              // editable={false}
+
+              // onSubmitEditing={() => {
+              //     passwordRef.current.focus();
+              // }}
+            />
+            <DetailsScreenInput
+              // refInner={emailRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Passanger Email'}
+              headingName={'Passanger Email'}
+              multiline={false}
+              value={form.pemail}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={pemail => setForm({...form, pemail})}
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.WHITE}
+              // editable={false}
+
+              // onSubmitEditing={() => {
+              //     passwordRef.current.focus();
+              // }}
+            />
+            <DetailsScreenInput
+              // refInner={emailRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Passanger Phone'}
+              headingName={'Passanger Phone'}
+              multiline={false}
+              value={form.pemail}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={pphone => setForm({...form, pphone})}
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.WHITE}
+              // editable={false}
+
+              // onSubmitEditing={() => {
+              //     passwordRef.current.focus();
+              // }}
+            />
+
+            {/* <DetailsViewInput
               placeholder="Passanger Name"
               value={form.pname}
               // isReadOnly={true}
@@ -335,11 +466,129 @@ const QuotationDetails = ({booking, nextStep}) => {
               placeholder="Passanger Phone"
               value={form.pphone}
               onChange={pphone => setForm({...form, pphone})}
-            />
+            /> */}
           </VStack>
         )}
 
-        <DetailsViewInput
+        <DetailsScreenInput
+          // refInner={emailRef}
+          placeHolderColor={colors.WHITE}
+          // placeHolder={'Phone'}
+          headingName={'PickUp Full Address'}
+          multiline={false}
+          value={form.pickUpFullAddress}
+          maxLength={50}
+          // onChangeText={txt => setLogin({...login, password: txt})}
+          onChangeText={pickUpFullAddress =>
+            setForm({...form, pickUpFullAddress})
+          }
+          keyboardType={'default'}
+          autoCapitalize="none"
+          returnKeyType={'next'}
+          blurOnSubmit={false}
+          style={{color: 'red'}}
+          textColor={colors.WHITE}
+          // editable={false}
+
+          // onSubmitEditing={() => {
+          //     passwordRef.current.focus();
+          // }}
+        />
+        <DetailsScreenInput
+          // refInner={emailRef}
+          placeHolderColor={colors.WHITE}
+          // placeHolder={'Phone'}
+          headingName={'Drop Off Full Address'}
+          multiline={false}
+          value={form.dropOffFullAddress}
+          maxLength={50}
+          // onChangeText={txt => setLogin({...login, password: txt})}
+          onChangeText={dropOffFullAddress =>
+            setForm({...form, dropOffFullAddress})
+          }
+          keyboardType={'default'}
+          autoCapitalize="none"
+          returnKeyType={'next'}
+          blurOnSubmit={false}
+          style={{color: 'red'}}
+          textColor={colors.WHITE}
+          // editable={false}
+
+          // onSubmitEditing={() => {
+          //     passwordRef.current.focus();
+          // }}
+        />
+        <DetailsScreenInput
+          // refInner={emailRef}
+          placeHolderColor={colors.WHITE}
+          // placeHolder={'Phone'}
+          headingName={'Flight Number'}
+          multiline={false}
+          value={form.flightNum}
+          maxLength={50}
+          // onChangeText={txt => setLogin({...login, password: txt})}
+          onChangeText={flightNum => setForm({...form, flightNum})}
+          keyboardType={'default'}
+          autoCapitalize="none"
+          returnKeyType={'next'}
+          blurOnSubmit={false}
+          style={{color: 'red'}}
+          textColor={colors.WHITE}
+          // editable={false}
+
+          // onSubmitEditing={() => {
+          //     passwordRef.current.focus();
+          // }}
+        />
+        <DetailsScreenInput
+          // refInner={emailRef}
+          placeHolderColor={colors.WHITE}
+          // placeHolder={'Phone'}
+          headingName={'How Many Minutes After Landing'}
+          multiline={false}
+          value={form.minutesAfterLanding}
+          maxLength={50}
+          // onChangeText={txt => setLogin({...login, password: txt})}
+          onChangeText={minutesAfterLanding =>
+            setForm({...form, minutesAfterLanding})
+          }
+          keyboardType={'default'}
+          autoCapitalize="none"
+          returnKeyType={'next'}
+          blurOnSubmit={false}
+          style={{color: 'red'}}
+          textColor={colors.WHITE}
+          // editable={false}
+
+          // onSubmitEditing={() => {
+          //     passwordRef.current.focus();
+          // }}
+        />
+        <DetailsScreenInput
+          // refInner={emailRef}
+          placeHolderColor={colors.WHITE}
+          // placeHolder={'Phone'}
+          headingName={'Additional Info'}
+          multiline={false}
+          value={form.additionalInformation}
+          maxLength={50}
+          // onChangeText={txt => setLogin({...login, password: txt})}
+          onChangeText={additionalInformation =>
+            setForm({...form, additionalInformation})
+          }
+          keyboardType={'default'}
+          autoCapitalize="none"
+          returnKeyType={'next'}
+          blurOnSubmit={false}
+          style={{color: 'red'}}
+          textColor={colors.WHITE}
+          // editable={false}
+
+          // onSubmitEditing={() => {
+          //     passwordRef.current.focus();
+          // }}
+        />
+        {/* <DetailsViewInput
           placeholder="PickUp Full Address"
           value={form.pickUpFullAddress}
           onChange={pickUpFullAddress => {
@@ -373,7 +622,7 @@ const QuotationDetails = ({booking, nextStep}) => {
           onChange={additionalInformation => {
             setForm({...form, additionalInformation});
           }}
-        />
+        /> */}
 
         <View style={{height: 300}}>
           <View

@@ -1,9 +1,9 @@
 import {Input} from 'native-base';
 import React from 'react';
 import {View, TextInput, Image, TouchableOpacity, Text} from 'react-native';
-import styles from '../screens/general/ContactTextInput/styles';
+import styles from './styles';
 
-const DetailsViewInput = props => {
+const DetailsScreenInput = props => {
   return (
     <View style={[styles.container, props.container]}>
       {props.headingName ? (
@@ -37,4 +37,4 @@ const DetailsViewInput = props => {
   );
 };
 
-export default DetailsViewInput;
+export default DetailsScreenInput;

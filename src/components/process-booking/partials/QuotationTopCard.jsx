@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '50%',
     backgroundColor: colors.PRIMARY_40_DARK,
+    borderColor: colors.YELLOW,
+    borderWidth: 0.5,
   },
   typeTextView: {
     alignSelf: 'center',
