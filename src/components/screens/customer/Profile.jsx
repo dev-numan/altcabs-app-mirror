@@ -63,7 +63,7 @@ const Profile = () => {
           {list.map((item, i) => (
             <TouchableOpacity
               key={i}
-              onPress={() => navigation.navigate(item.name)}>
+              onPress={() => navigation.navigate(item?.name)}>
               <HStack space={5} alignItems="center" my="2">
                 <View style={styles.IconView}>{item.icon}</View>
                 <Text style={{flexGrow: 1, color: colors.WHITE}}>

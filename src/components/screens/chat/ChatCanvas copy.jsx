@@ -21,7 +21,7 @@ const ChatCanvas = ({chat}) => {
   //   console.log(token);
   const [messages, setMessages] = useState(chat.messages);
   useEffect(() => {
-    webSocketService.setChatId(chat._id);
+    webSocketService.setChatId(chat?._id);
     return () => {
       //   setMessages([]);
     };
@@ -45,7 +45,7 @@ const ChatCanvas = ({chat}) => {
           </Text>
         </View>
         {messages.map(m => (
-          <Message item={m} key={m._id} />
+          <Message item={m} key={m?._id} />
         ))}
         <TextInput
           editable

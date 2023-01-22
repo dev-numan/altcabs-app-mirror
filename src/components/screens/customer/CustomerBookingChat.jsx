@@ -16,8 +16,8 @@ const CustomerBookingChat = props => {
       chatService.getBookingChat(params.bookingId).then(({chat, booking}) => {
         setState({chat, booking});
         console.log(params.bookingId);
-        console.log(`Chat Id: ${chat._id}`);
-        console.log(`Booking Id: ${booking._id}`);
+        console.log(`Chat Id: ${chat?._id}`);
+        console.log(`Booking Id: ${booking?._id}`);
       });
     else {
       dispatch(ERROR('No Booking Specified'));
@@ -28,7 +28,7 @@ const CustomerBookingChat = props => {
       {state?.chat ? (
         <ChatCanvas
           chat={state.chat}
-          chatTitle={`Booking # ${state.booking.reference} Chat With Company ${state.booking.company.name}`}
+          chatTitle={`Booking # ${state.booking.reference} Chat With Company ${state.booking.company?.name}`}
         />
       ) : (
         <CustomerBookingViewSkeleton />

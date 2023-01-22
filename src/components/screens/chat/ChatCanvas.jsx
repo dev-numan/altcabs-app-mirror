@@ -10,6 +10,7 @@ import {
   StatusBar,
   KeyboardAvoidingView,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import webSocketService from '../../../api/WebSocketService';
@@ -33,7 +34,7 @@ const ChatCanvas = ({chat, chatTitle}) => {
   //   console.log(token);
   const [messages, setMessages] = useState(chat.messages);
   useEffect(() => {
-    webSocketService.setChatId(chat._id);
+    webSocketService.setChatId(chat?._id);
     webSocketService.on('message_received', messageReceivedFromServer);
     return () => {
       console.log('Cleaning Chat Canvas...');
@@ -53,7 +54,7 @@ const ChatCanvas = ({chat, chatTitle}) => {
     }
   }, [messageFromServer]);
   const messageReceivedFromServer = (chatId, message) => {
-    if (chatId == chat._id) setMEssageFromServer(message);
+    if (chatId == chat?._id) setMEssageFromServer(message);
   };
   const sendMessage = () => {
     let data = {
@@ -66,7 +67,7 @@ const ChatCanvas = ({chat, chatTitle}) => {
     data.userEmail = email;
     data.userName = name;
     chatService
-      .sendMessage(chat._id, data)
+      .sendMessage(chat?._id, data)
       .then(data => {
         console.log('____________');
         console.log(data);

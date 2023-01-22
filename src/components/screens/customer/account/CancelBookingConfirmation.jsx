@@ -12,7 +12,7 @@ const CancelBookingConfirmation = ({}) => {
   const [fetching, setFetching] = useState(false);
   const cancelBooking = () => {
     bookingService
-      .cancelBooking(booking._id)
+      .cancelBooking(booking?._id)
       .then(data => {
         setFetching(false);
         navigation.goBack();

@@ -14,7 +14,7 @@ export const MessageBubble = ({item}) => {
     // Align sent messages to right side of the screen, with a grey'ish background.
     return (
       <View
-        key={`${item._id}`}
+        key={`${item?._id}`}
         style={[styles.messageBubble, styles.myMessageBubble]}>
         <Text style={styles.myMessageText}>{item.message}</Text>
       </View>

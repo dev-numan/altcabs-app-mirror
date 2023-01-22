@@ -33,7 +33,7 @@ const ConfirmedBookings = () => {
         <>
           {state.bookings.map(booking => (
             <BookingSummaryView
-              key={booking._id}
+              key={booking?._id}
               booking={booking}
               showContactDriver={true}
             />

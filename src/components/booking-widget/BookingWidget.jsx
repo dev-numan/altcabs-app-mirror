@@ -9,7 +9,14 @@ import {
 } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, {useEffect, useState} from 'react';
-import {KeyboardAvoidingView, SafeAreaView, StyleSheet} from 'react-native';
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import colors from '../../constants/colors';
 import PlaceSelector from '../common/PlaceSelector/PlaceSelector';
 import moment from 'moment';
@@ -29,6 +36,9 @@ import {selectLuggageTypes} from '../../store/selectors';
 import {POST_NEW_BOOKING} from '../../store/slices/booking.slice';
 import bookingService from '../../api/BookingService';
 import {Picker} from '@react-native-picker/picker';
+import PassengerModal from './PassengerModal';
+const check = require('../../assets/images/check.png');
+const checked = require('../../assets/images/checked.png');
 
 const BookingWidget = ({booking_type}) => {
   const navigation = useNavigation();
@@ -58,6 +68,7 @@ const BookingWidget = ({booking_type}) => {
   const luggageTypes = useSelector(selectLuggageTypes);
 
   const [showLuggageModal, setShowLuggageModal] = useState(false);
+  const [showPassengerModal, setShowPassengerModal] = useState(false);
   const [totalLuggage, setTotalLuggage] = useState([]);
   const [prestige, setPrestige] = useState(false);
   const fetchDistance = () => {
@@ -166,6 +177,12 @@ const BookingWidget = ({booking_type}) => {
         setForm={setForm}
         totalLuggage={totalLuggage}
         setTotalLuggage={setTotalLuggage}
+      />
+      <PassengerModal
+        open={showPassengerModal}
+        setOpen={setShowPassengerModal}
+        form={form}
+        setForm={setForm}
       />
       <SafeAreaView>
         <PlaceSelector
@@ -287,7 +304,12 @@ const BookingWidget = ({booking_type}) => {
           onChange={startTimeReturn => setForm({...form, startTimeReturn})}
         />
       )}
-      <HStack style={{alignItems: 'center', marginVertical: 9}}>
+      <HStack
+        style={{
+          alignItems: 'center',
+          marginVertical: 9,
+          justifyContent: 'space-between',
+        }}>
         <CustomButton
           alignSelf="flex-start"
           _text={{fontSize: 10, fontWeight: 'bold'}}
@@ -296,107 +318,83 @@ const BookingWidget = ({booking_type}) => {
           onPress={() => setShowLuggageModal(true)}>
           Luggage
         </CustomButton>
-        <Text
-          style={{
-            flexGrow: 1,
-            fontSize: 14,
-            textAlign: 'right',
-            color: 'white',
-            marginRight: 7,
-          }}>
-          Passengers
-        </Text>
-        <View
-          style={{
-            height: 35,
-            width: 102,
-            borderWidth: 0.5,
-            borderColor: colors.PRIMARY,
-            backgroundColor: colors.PRIMARY,
-            color: colors.WHITE,
-            borderRadius: 12,
-            marginTop: '1%',
-            left: '15%',
-            justifyContent: 'center',
-          }}>
-          <Picker
-            selectedValue={form.passangers}
-            mode="dropdown" // Android only
-            dropdownIconColor={colors.WHITE}
-            placeholder={'#323F4B'}
-            // onValueChange={(itemValue, itemIndex) => setService(itemValue)}
-            onValueChange={itemValue =>
-              setForm({...form, passangers: itemValue})
-            }
-            style={{
-              color: colors.WHITE,
-              alignSelf: 'center',
-              height: 35,
-              width: 150,
-              fontSize: 16,
-              fontWeight: '400',
-              paddingLeft: 20,
-              transform: [{scaleX: 0.7}, {scaleY: 0.7}],
-            }}>
-            {[
-              '1',
-              '2',
-              '3',
-              '4',
-              '5',
-              '6',
-              '7',
-              '8',
-              '9',
-              '10',
-              '11',
-              '12',
-              '13',
-              '14',
-              '15',
-              '16',
-            ].map((item, i) => (
-              <Picker.Item label={item} value={item} key={i} />
-            ))}
-          </Picker>
-        </View>
-        {/* <Select
-          selectedValue={form.passangers}
-          minWidth="100"
-          accessibilityLabel="Select Passengers"
-          placeholder="Select Passengers"
-          variant="filled"
-          _focus={{borderColor: colors.PRIMARY}}
-          _selectedItem={{
-            bg: colors.PRIMARY,
-            _text: {color: 'white'},
-          }}
-          mt={1}
-          onValueChange={itemValue =>
-            setForm({...form, passangers: itemValue})
-          }>
-         {[
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            '10',
-            '11',
-            '12',
-            '13',
-            '14',
-            '15',
-            '16',
-          ].map((item, i) => (
-            <Select.Item label={item} value={item} key={i} />
-          ))} 
-          <Select.Item label="ABC" value="abc" />
-        </Select> */}
+        {Platform.OS === 'android' ? (
+          <>
+            <Text
+              style={{
+                flexGrow: 1,
+                fontSize: 14,
+                textAlign: 'right',
+                color: 'white',
+                marginRight: 7,
+              }}>
+              Passengers
+            </Text>
+            <View
+              style={{
+                height: 35,
+                width: 102,
+                borderWidth: 0.5,
+                borderColor: colors.PRIMARY,
+                backgroundColor: colors.PRIMARY,
+                color: colors.WHITE,
+                borderRadius: 12,
+                marginTop: '1%',
+                left: '15%',
+                justifyContent: 'center',
+              }}>
+              <Picker
+                selectedValue={form.passangers}
+                mode="dropdown" // Android only
+                dropdownIconColor={colors.WHITE}
+                placeholder={'#323F4B'}
+                // onValueChange={(itemValue, itemIndex) => setService(itemValue)}
+                onValueChange={itemValue =>
+                  setForm({...form, passangers: itemValue})
+                }
+                style={{
+                  color: colors.WHITE,
+                  alignSelf: 'center',
+                  height: 35,
+                  width: 150,
+                  fontSize: 16,
+                  fontWeight: '400',
+                  paddingLeft: 20,
+                  transform: [{scaleX: 0.7}, {scaleY: 0.7}],
+                }}>
+                {[
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '10',
+                  '11',
+                  '12',
+                  '13',
+                  '14',
+                  '15',
+                  '16',
+                ].map((item, i) => (
+                  <Picker.Item label={item} value={item} key={i} />
+                ))}
+              </Picker>
+            </View>
+          </>
+        ) : (
+          <CustomButton
+            alignSelf="flex-start"
+            _text={{fontSize: 10, fontWeight: 'bold'}}
+            size="sm"
+            p="2"
+            onPress={() => setShowPassengerModal(true)}>
+            Select Passengers
+          </CustomButton>
+        )}
       </HStack>
 
       <HStack style={{alignItems: 'center', flexWrap: 'wrap'}}>
@@ -409,7 +407,7 @@ const BookingWidget = ({booking_type}) => {
             p={2}
             borderRadius="full">
             <Text style={{color: 'white'}}>
-              {item.name}({item.quantity})
+              {item?.name}({item?.quantity})
             </Text>
             <AntDesign
               name="close"
@@ -417,10 +415,10 @@ const BookingWidget = ({booking_type}) => {
               size={18}
               onPress={() => {
                 let a = totalLuggage;
-                a = a.filter(luggage => luggage.id != item.id);
+                a = a.filter(luggage => luggage?.id != item?.id);
                 setTotalLuggage(a);
                 a = {...form};
-                delete a.luggage[`${item.id}`];
+                delete a.luggage[`${item?.id}`];
                 setForm(a);
               }}
             />
@@ -429,33 +427,66 @@ const BookingWidget = ({booking_type}) => {
       </HStack>
 
       <HStack style={{alignItems: 'center', marginVertical: 4}}>
-        <Switch
-          value={form.oneWay}
-          trackColor={{false: colors.GRAY, true: colors.PRIMARY}}
-          ios_backgroundColor={colors.GRAY}
-          onValueChange={r => {
-            console.log('oneWay', form.oneWay);
-            setForm({...form, oneWay: !form.oneWay});
-          }}
-        />
-        <Text
+        <View
           style={{
-            flexGrow: 1,
-            fontSize: 14,
-            textAlign: 'left',
-            color: 'white',
-            marginLeft: 7,
+            flexDirection: 'row',
+            flex: 1,
+            alignItems: 'center',
+            marginTop: 10,
           }}>
-          One Way ?
-        </Text>
-        {/* <Checkbox
-          colorScheme={colors.PRIMARY}
-          _text={{color: 'white'}}
-          onChange={e => {
-            setPrestige(e);
-          }}>
-          Prestige
-        </Checkbox> */}
+          <TouchableOpacity
+            style={{
+              width: 25,
+              height: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => {
+              setForm({
+                ...form,
+                oneWay: !form.oneWay,
+              });
+            }}>
+            {!form.oneWay ? (
+              <Image
+                source={check}
+                style={{
+                  width: 16,
+                  height: 16,
+                  borderWidth: 10,
+                  tintColor: colors.PRIMARY,
+                }}
+              />
+            ) : (
+              <Image
+                source={checked}
+                style={[
+                  {
+                    width: 16,
+                    height: 16,
+                    borderWidth: 10,
+                    tintColor: colors.PRIMARY,
+                  },
+                  {tintColor: colors.PRIMARY},
+                ]}
+              />
+            )}
+          </TouchableOpacity>
+          <Text
+            style={[
+              {
+                marginTop: 4,
+                marginLeft: 4,
+                fontSize: 14,
+                // fontFamily: 'Poppins',
+                fontWeight: '400',
+                color: colors.YELLOW,
+              },
+              {marginTop: 0, color: colors.WHITE},
+            ]}>
+            One Way ?
+          </Text>
+        </View>
       </HStack>
       {!form.oneWay && (
         <>
@@ -584,5 +615,31 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     alignItems: 'center',
     margin: 7,
+  },
+  screen: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: 'yellow',
+  },
+  text: {
+    fontSize: 12,
+  },
+  picker: {
+    marginVertical: 30,
+    width: 300,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: colors.PRIMARY,
+    height: 35,
+    // width: 102,
+    borderWidth: 0.5,
+    borderColor: colors.YELLOW,
+    backgroundColor: colors.YELLOW,
+    color: colors.WHITE,
+    borderRadius: 12,
+    marginTop: '1%',
+    left: '15%',
+    justifyContent: 'center',
   },
 });

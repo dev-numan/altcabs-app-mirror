@@ -64,7 +64,7 @@ const ProcessBooking = () => {
                   <QuotationSelector
                     nextStep={nextStep}
                     hasReturnBooking={booking.hasReturnBooking}
-                    bookingId={booking._id}
+                    bookingId={booking?._id}
                   />
                 </CustomProgressStep>
               )}
@@ -73,7 +73,7 @@ const ProcessBooking = () => {
                   <QuotationSelector
                     nextStep={nextStep}
                     hasReturnBooking={booking.hasReturnBooking}
-                    bookingId={booking.returnBooking._id}
+                    bookingId={booking.returnBooking?._id}
                   />
                 </CustomProgressStep>
               )}

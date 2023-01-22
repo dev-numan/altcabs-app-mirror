@@ -1,5 +1,5 @@
 import {Button, Checkbox, HStack, Input, Text, View} from 'native-base';
-import React, {createRef, useEffect, useState} from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 import moment from 'moment';
 import {Image, SafeAreaView, ScrollView, TouchableOpacity} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -27,6 +27,9 @@ const checked = require('../../assets/images/checked.png');
 const QuotationDetails = ({booking, nextStep}) => {
   // console.log('Booking in QuotationDetails: ', booking);
   const dispatch = useDispatch();
+  const flightNumRef = useRef('');
+  const additionalInfoRef = useRef('');
+  const minutesAfterLandingRef = useRef('');
   const {name, email, phone} = useSelector(state => state.Auth.TOKEN);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [interested, setInterested] = useState(true);
@@ -63,7 +66,7 @@ const QuotationDetails = ({booking, nextStep}) => {
     {
       placeholder: 'Full Name',
       ref: createRef(),
-      value: form.name,
+      value: form?.name,
       blur: false,
       submitType: 'next',
       onChange: text => setForm({...form, name: text}),
@@ -194,7 +197,7 @@ const QuotationDetails = ({booking, nextStep}) => {
     setFetching(true);
     dispatch(SET_IS_PROCESSING('Saving Passanger Details ...'));
     bookingService
-      .addDetails(booking._id, {interested, ...form})
+      .addDetails(booking?._id, {interested, ...form})
       .then(updatedBooking => {
         console.log('Updated booking: ', updatedBooking);
         dispatch(LOAD_BOOKING(updatedBooking));
@@ -218,6 +221,7 @@ const QuotationDetails = ({booking, nextStep}) => {
   return (
     // <SafeAreaView>
     <ScrollView
+      scrollEnabled={true}
       showsVerticalScrollIndicator={false}
       style={{marginHorizontal: 20}}>
       <View style={{margin: 12}}>
@@ -243,7 +247,7 @@ const QuotationDetails = ({booking, nextStep}) => {
             // placeHolder={'Name'}
             headingName={'Name'}
             multiline={false}
-            value={form.name}
+            value={form?.name}
             maxLength={50}
             // onChangeText={txt => setLogin({...login, password: txt})}
             onChangeText={name => setForm({...form, name})}
@@ -300,7 +304,7 @@ const QuotationDetails = ({booking, nextStep}) => {
             // }}
           />
           {/* <DetailsViewInput
-            value={form.name}
+            value={form?.name}
             isReadOnly={true}
             onChange={name => setForm({...form, name})}
           />
@@ -314,7 +318,13 @@ const QuotationDetails = ({booking, nextStep}) => {
             onChange={phone => setForm({...form, phone})}
           /> */}
         </VStack>
-        <View style={{flexDirection: 'row', flex: 1, alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
           <TouchableOpacity
             style={{
               width: 25,
@@ -541,7 +551,7 @@ const QuotationDetails = ({booking, nextStep}) => {
           // }}
         />
         <DetailsScreenInput
-          // refInner={emailRef}
+          refInner={minutesAfterLandingRef}
           placeHolderColor={colors.WHITE}
           // placeHolder={'Phone'}
           headingName={'How Many Minutes After Landing'}
@@ -560,12 +570,12 @@ const QuotationDetails = ({booking, nextStep}) => {
           textColor={colors.WHITE}
           // editable={false}
 
-          // onSubmitEditing={() => {
-          //     passwordRef.current.focus();
-          // }}
+          onSubmitEditing={() => {
+            additionalInfoRef.current.focus();
+          }}
         />
         <DetailsScreenInput
-          // refInner={emailRef}
+          refInner={additionalInfoRef}
           placeHolderColor={colors.WHITE}
           // placeHolder={'Phone'}
           headingName={'Additional Info'}

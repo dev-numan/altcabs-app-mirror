@@ -46,7 +46,7 @@ const BookingSummaryView = ({booking, showContactDriver}) => {
               size="xs"
               onPress={() => {
                 navigation.navigate('BookingChat', {
-                  bookingId: booking._id,
+                  bookingId: booking?._id,
                 });
               }}>
               Contact Driver

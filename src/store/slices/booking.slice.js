@@ -36,7 +36,7 @@ export const bookingSlice = createSlice({
   initialState,
   reducers: {
     LOAD_BOOKING: (state, {payload}) => {
-      state.processBookings[payload._id] = payload;
+      state.processBookings[payload?._id] = payload;
     },
     QUOTATION_CREATED: (state, action) => {
       state.quotationCreated = uuid.v4();
@@ -46,13 +46,13 @@ export const bookingSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(LOAD_PROCESS_BOOKING.fulfilled, (state, {payload}) => {
-      state.processBookings[payload._id] = payload;
+      state.processBookings[payload?._id] = payload;
     });
     builder.addCase(LOAD_PROCESS_BOOKING.rejected, (state, {payload}) => {
       console.log('Error', payload);
     });
     builder.addCase(POST_NEW_BOOKING.fulfilled, (state, {payload}) => {
-      state.processBookings[payload._id] = payload;
+      state.processBookings[payload?._id] = payload;
     });
   },
 });

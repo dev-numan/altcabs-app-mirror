@@ -59,7 +59,7 @@ export default function CustomerAppDrawer(props) {
           {list.map((item, i) => (
             <Pressable
               onPress={() => {
-                if (item.name === 'Sign Out') {
+                if (item?.name === 'Sign Out') {
                   props.navigation.closeDrawer();
                   dispatch(USER_STATUS_LOG_OUT());
                 } else props.navigation.navigate(item.screen);
@@ -86,7 +86,7 @@ export default function CustomerAppDrawer(props) {
                   />
                 </Center>
                 <Center>
-                  <Text style={[styles.text]}>{item.name}</Text>
+                  <Text style={[styles.text]}>{item?.name}</Text>
                 </Center>
               </HStack>
             </Pressable>

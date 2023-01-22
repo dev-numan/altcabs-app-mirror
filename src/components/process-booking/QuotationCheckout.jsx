@@ -24,12 +24,12 @@ const QuotationCheckout = ({booking, nextStep}) => {
   const [expiryDate, setExpiryDate] = useState('');
   const [cvv, setCvv] = useState('');
   const color = colors.YELLOW;
-  console.log(booking._id);
+  console.log(booking?._id);
   const payment = () => {
     setFetching(true);
     if (value == 'one') {
       bookingService
-        .payWithCash(booking._id)
+        .payWithCash(booking?._id)
         .then(() => {
           console.log('Request completed');
           dispatch(SUCCESS('Pay With Cash Selected...'));

@@ -9,7 +9,7 @@ const DocPicker = ({docUrl}) => {
       const file = await DocumentPicker.pickSingle({
         type: 'application/pdf',
       });
-      docUrl({uri: file.uri, name: file.name, type: file.type});
+      docUrl({uri: file.uri, name: file?.name, type: file.type});
     } catch (err) {
       alert(err);
     }

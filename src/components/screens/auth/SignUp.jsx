@@ -44,7 +44,7 @@ const SignUp = () => {
     {
       name: `Your Name`,
       label: `Name`,
-      value: form.name,
+      value: form?.name,
       ref: createRef(),
       blur: false,
       submitType: 'next',
@@ -137,7 +137,7 @@ const SignUp = () => {
                 <View key={i} style={{marginVertical: 7}}>
                   <Input
                     label={item.label}
-                    placeholder={item.name}
+                    placeholder={item?.name}
                     value={item.value}
                     dense
                     _focus={{borderColor: '#1C2B39'}}

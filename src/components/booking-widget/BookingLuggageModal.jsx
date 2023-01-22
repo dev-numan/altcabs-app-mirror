@@ -48,14 +48,14 @@ const BookingLuggageModal = ({
     //         my={4}
     //         onValueChange={itemValue => {
     //           let luggage = luggageTypes.filter(
-    //             item => item.name === itemValue,
+    //             item => item?.name === itemValue,
     //           )[0];
 
     //           setQuantity(form.luggage[luggage._id]);
     //           setLuggage(itemValue);
     //         }}>
     //         {luggageTypes.map((item, i) => (
-    //           <Select.Item label={item.name} value={item.name} key={i} />
+    //           <Select.Item label={item?.name} value={item?.name} key={i} />
     //         ))}
     //       </Select> */}
     //       <Text style={{}}>Quantity</Text>
@@ -82,7 +82,7 @@ const BookingLuggageModal = ({
     //       </CustomButton>
     //       <CustomButton
     //         onPress={() => {
-    //           let lug = luggageTypes.filter(item => item.name === luggage)[0];
+    //           let lug = luggageTypes.filter(item => item?.name === luggage)[0];
 
     //           let a = {...form};
     //           a.luggage[`${lug._id}`] = quantity;
@@ -98,7 +98,7 @@ const BookingLuggageModal = ({
     //           }
     //           if (flag) {
     //             a.push({
-    //               name: lug.name,
+    //               name: lug?.name,
     //               quantity,
     //               id: lug._id,
     //             });
@@ -164,10 +164,10 @@ const BookingLuggageModal = ({
                 placeholder={colors.WHITE}
                 onValueChange={itemValue => {
                   let luggage = luggageTypes.filter(
-                    item => item.name === itemValue,
+                    item => item?.name === itemValue,
                   )[0];
 
-                  setQuantity(form.luggage[luggage._id]);
+                  setQuantity(form.luggage[luggage?._id]);
                   setLuggage(itemValue);
                 }}
                 style={{
@@ -181,7 +181,7 @@ const BookingLuggageModal = ({
                   transform: [{scaleX: 1.0}, {scaleY: 0.9}],
                 }}>
                 {luggageTypes.map((item, i) => (
-                  <Picker.Item label={item.name} value={item.name} key={i} />
+                  <Picker.Item label={item?.name} value={item?.name} key={i} />
                 ))}
               </Picker>
             </View>
@@ -205,15 +205,17 @@ const BookingLuggageModal = ({
             <TouchableOpacity
               style={styles.saveButton}
               onPress={() => {
-                let lug = luggageTypes.filter(item => item.name === luggage)[0];
+                let lug = luggageTypes.filter(
+                  item => item?.name === luggage,
+                )[0];
 
                 let a = {...form};
-                a.luggage[`${lug._id}`] = quantity;
+                a.luggage[`${lug?._id}`] = quantity;
                 setForm(a);
                 a = totalLuggage;
                 let flag = true;
                 for (var i in a) {
-                  if (a[i].id === lug._id) {
+                  if (a[i].id === lug?._id) {
                     a[i].quantity = quantity;
                     flag = false;
                     break;
@@ -221,9 +223,9 @@ const BookingLuggageModal = ({
                 }
                 if (flag) {
                   a.push({
-                    name: lug.name,
+                    name: lug?.name,
                     quantity,
-                    id: lug._id,
+                    id: lug?._id,
                   });
                 }
                 setTotalLuggage(a);

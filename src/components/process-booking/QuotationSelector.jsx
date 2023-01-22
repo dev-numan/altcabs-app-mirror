@@ -50,6 +50,32 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
         per_page,
       })
       .then(data => {
+        // console.log('DATA QUOTATIONS: ', data.quotations);
+        setState({
+          ...state,
+          // quotations: [...state.quotations, data.quotations],
+          quotations: data.quotations,
+          topCards: data.topCards,
+          fetched: true,
+        });
+        setPage(data.page);
+        setPerPage(data.per_page);
+        setTotal(data.total);
+        setFetching(false);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+  const nextPageQuotations = () => {
+    bookingService
+      .getQuotationsById(bookingId, {
+        vehicle_type,
+        quotation_type,
+        page,
+        per_page,
+      })
+      .then(data => {
         // console.log('data?.quotations?.length', data?.quotations);
         // setNotificationData([...notificationData, ...responseJson?.data]);
         let prevQuotations = [...state.quotations];
@@ -75,7 +101,12 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   useEffect(() => {
     // setFetching(true);
     fetchQuotations();
-  }, [page, per_page, vehicle_type, quotation_type, bookingId]);
+  }, [vehicle_type, quotation_type, bookingId]);
+
+  useEffect(() => {
+    // setFetching(true);
+    nextPageQuotations();
+  }, [page, per_page]);
   useEffect(() => {
     //set booking id to socket
     if (bookingId) webSocketService.setBookingId(bookingId);
@@ -215,7 +246,10 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                   mode="dropdown" // Android only
                   dropdownIconColor={colors.WHITE}
                   placeholder={'#323F4B'}
-                  onValueChange={itemValue => setVehicleType(itemValue)}
+                  onValueChange={itemValue => {
+                    console.log('itemValue', itemValue);
+                    setVehicleType(itemValue);
+                  }}
                   style={{
                     color: colors.WHITE,
                     alignSelf: 'center',
@@ -228,7 +262,11 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                   }}>
                   <Picker.Item label="All Fleet Types" value="all" />
                   {fleetTypes.map(ft => (
-                    <Picker.Item label={ft.name} value={ft._id} key={ft._id} />
+                    <Picker.Item
+                      label={ft?.name}
+                      value={ft?._id}
+                      key={ft?._id}
+                    />
                   ))}
                 </Picker>
               </View>
