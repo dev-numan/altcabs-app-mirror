@@ -366,11 +366,11 @@ const QuotationDetails = ({booking, nextStep}) => {
               {
                 marginTop: 4,
                 fontSize: 14,
-                fontFamily: 'Poppins',
+                // fontFamily: 'Poppins',
                 fontWeight: '400',
                 color: colors.YELLOW,
               },
-              {marginTop: 0, color: colors.WHITE},
+              // {marginTop: 0, color: colors.WHITE},
             ]}>
             Booking Ride For Some Else.
           </Text>

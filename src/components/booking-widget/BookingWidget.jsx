@@ -37,6 +37,7 @@ import {POST_NEW_BOOKING} from '../../store/slices/booking.slice';
 import bookingService from '../../api/BookingService';
 import {Picker} from '@react-native-picker/picker';
 import PassengerModal from './PassengerModal';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const check = require('../../assets/images/check.png');
 const checked = require('../../assets/images/checked.png');
 
@@ -392,7 +393,18 @@ const BookingWidget = ({booking_type}) => {
             size="sm"
             p="2"
             onPress={() => setShowPassengerModal(true)}>
-            Select Passengers
+            <HStack>
+              <Text
+                style={{
+                  color: colors.WHITE,
+                }}>{`Passengers: ${form.passangers}`}</Text>
+              <MaterialCommunityIcons
+                name="menu-down"
+                color={colors.YELLOW}
+                size={20}
+                style={{marginBottom: -3}}
+              />
+            </HStack>
           </CustomButton>
         )}
       </HStack>

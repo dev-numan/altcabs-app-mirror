@@ -87,7 +87,6 @@ const QuotationCheckout = ({booking, nextStep}) => {
               marginTop: 4,
               marginLeft: 10,
               fontSize: 17,
-              fontFamily: 'Poppins',
               fontWeight: '400',
               color: colors.YELLOW,
             },
@@ -136,7 +135,7 @@ const QuotationCheckout = ({booking, nextStep}) => {
               marginTop: 4,
               marginLeft: 10,
               fontSize: 17,
-              fontFamily: 'Poppins',
+
               fontWeight: '400',
               color: colors.YELLOW,
             },
