@@ -11,9 +11,7 @@ const FrontCustomerChat = () => {
     });
   }, []);
   return (
-    <View>
-      {chat ? <ChatCanvas chat={chat} /> : <CustomerBookingViewSkeleton />}
-    </View>
+    <>{chat ? <ChatCanvas chat={chat} /> : <CustomerBookingViewSkeleton />}</>
   );
 };
 

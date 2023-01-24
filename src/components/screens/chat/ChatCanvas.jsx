@@ -79,7 +79,7 @@ const ChatCanvas = ({chat, chatTitle}) => {
   };
   console.log(`Messages Length: ${messages.length}`);
   return (
-    <View style={{height: '100%'}}>
+    <View style={{height: 400}}>
       <SafeAreaView style={styles.container}>
         <StatusBar
           translucent={false}

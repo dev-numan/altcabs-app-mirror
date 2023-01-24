@@ -438,68 +438,67 @@ const BookingWidget = ({booking_type}) => {
         ))}
       </HStack>
 
-      <HStack style={{alignItems: 'center', marginVertical: 4}}>
-        <View
+      <HStack style={{alignItems: 'center', marginVertical: 4}}></HStack>
+      <View
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          alignItems: 'center',
+          marginTop: 10,
+        }}>
+        <TouchableOpacity
           style={{
-            flexDirection: 'row',
-            flex: 1,
+            width: 25,
+            height: 25,
             alignItems: 'center',
-            marginTop: 10,
+            justifyContent: 'center',
+          }}
+          onPress={() => {
+            setForm({
+              ...form,
+              oneWay: !form.oneWay,
+            });
           }}>
-          <TouchableOpacity
-            style={{
-              width: 25,
-              height: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onPress={() => {
-              setForm({
-                ...form,
-                oneWay: !form.oneWay,
-              });
-            }}>
-            {!form.oneWay ? (
-              <Image
-                source={check}
-                style={{
+          {!form.oneWay ? (
+            <Image
+              source={check}
+              style={{
+                width: 16,
+                height: 16,
+                borderWidth: 10,
+                tintColor: colors.PRIMARY,
+              }}
+            />
+          ) : (
+            <Image
+              source={checked}
+              style={[
+                {
                   width: 16,
                   height: 16,
                   borderWidth: 10,
                   tintColor: colors.PRIMARY,
-                }}
-              />
-            ) : (
-              <Image
-                source={checked}
-                style={[
-                  {
-                    width: 16,
-                    height: 16,
-                    borderWidth: 10,
-                    tintColor: colors.PRIMARY,
-                  },
-                  {tintColor: colors.PRIMARY},
-                ]}
-              />
-            )}
-          </TouchableOpacity>
-          <Text
-            style={[
-              {
-                marginTop: 4,
-                marginLeft: 4,
-                fontSize: 14,
-                // fontFamily: 'Poppins',
-                fontWeight: '400',
-                color: colors.YELLOW,
-              },
-              {marginTop: 0, color: colors.WHITE},
-            ]}>
-            One Way ?
-          </Text>
-        </View>
-      </HStack>
+                },
+                {tintColor: colors.PRIMARY},
+              ]}
+            />
+          )}
+        </TouchableOpacity>
+        <Text
+          style={[
+            {
+              marginTop: 4,
+              marginLeft: 4,
+              fontSize: 14,
+              // fontFamily: 'Poppins',
+              fontWeight: '400',
+              color: colors.YELLOW,
+            },
+            {marginTop: 0, color: colors.WHITE},
+          ]}>
+          One Way ?
+        </Text>
+      </View>
       {!form.oneWay && (
         <>
           <View

@@ -11,7 +11,7 @@
       "type": "UNIVERSAL",
       "filters": [],
       "attributes": [],
-      "versionCode": 2,
+      "versionCode": 5,
       "versionName": "1.0",
       "outputFile": "app-universal-release.apk"
     },
@@ -24,7 +24,7 @@
         }
       ],
       "attributes": [],
-      "versionCode": 2001,
+      "versionCode": 5001,
       "versionName": "1.0",
       "outputFile": "app-armeabi-v7a-release.apk"
     },
@@ -37,7 +37,7 @@
         }
       ],
       "attributes": [],
-      "versionCode": 2004,
+      "versionCode": 5004,
       "versionName": "1.0",
       "outputFile": "app-x86_64-release.apk"
     },
@@ -50,7 +50,7 @@
         }
       ],
       "attributes": [],
-      "versionCode": 2003,
+      "versionCode": 5003,
       "versionName": "1.0",
       "outputFile": "app-arm64-v8a-release.apk"
     },
@@ -63,7 +63,7 @@
         }
       ],
       "attributes": [],
-      "versionCode": 2002,
+      "versionCode": 5002,
       "versionName": "1.0",
       "outputFile": "app-x86-release.apk"
     }
