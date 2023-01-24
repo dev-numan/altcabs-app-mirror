@@ -11,10 +11,32 @@ import {name as appName} from './app.json';
 import {store} from './src/store';
 AppRegistry.registerComponent(appName, () => AltCabsApp);
 
+const linking = {
+  prefixes: ['altcabs://', 'altcabs.com://'],
+  config: {
+    screens: {
+      // Profile: 'Profile',
+      // MyBookings: 'MyBookings',
+      // MyDetails: 'MyDetails',
+      // SettingsScreen: 'settingsscreen',
+    },
+    // screens: {
+    //   NoBottom: {
+    //     screens: {
+    //       profile: 'MyBookings',
+    //       // MyBookings: 'MyBookings',
+    //       MyDetails: 'MyDetails',
+    //     },
+    //   },
+    //   App: 'MainStack',
+    // },
+  },
+};
+
 const AltCabsApp = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer linking={linking}>
         <NativeBaseProvider>
           <App />
         </NativeBaseProvider>

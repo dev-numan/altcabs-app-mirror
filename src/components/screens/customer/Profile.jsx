@@ -23,7 +23,7 @@ const Profile = () => {
   const dispatch = useDispatch();
   const list = [
     {
-      name: 'My Bookings',
+      name: 'MyBookings',
       label: 'Confirmed Bookings',
       icon: <AntDesign name="calendar" color="white" size={28} />,
     },
@@ -33,7 +33,7 @@ const Profile = () => {
       icon: <AntDesign name="calendar" color="white" size={28} />,
     },
     {
-      name: 'My Details',
+      name: 'MyDetails',
       label: 'My Details',
       icon: <FontAwesome name="id-card" color="white" size={28} />,
     },
