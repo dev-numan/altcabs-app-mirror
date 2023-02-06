@@ -43,10 +43,10 @@ const CustomerStackNavigation = () => {
         component={ProcessBooking}
         options={{title: 'Complete Booking'}}
       />
-      <Stack.Screen name="My Bookings" component={ConfirmedBookings} />
+      <Stack.Screen name="MyBookings" component={ConfirmedBookings} />
       <Stack.Screen name="Bookings History" component={HistoryBookings} />
       <Stack.Screen name="Booking Details" component={BookingDetails} />
-      <Stack.Screen name="My Details" component={MyDetails} />
+      <Stack.Screen name="MyDetails" component={MyDetails} />
       <Stack.Screen name="BookingChat" component={CustomerBookingChat} />
       <Stack.Screen name="TestPayment" component={TestPayment} />
 
