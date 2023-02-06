@@ -16,6 +16,7 @@ import ConfirmedBookings from '../components/screens/customer/account/ConfirmedB
 import HistoryBookings from '../components/screens/customer/account/HistoryBookings';
 import CustomerBookingChat from '../components/screens/customer/CustomerBookingChat';
 import CancelBookingConfirmation from '../components/screens/customer/account/CancelBookingConfirmation';
+import TestPayment from '../components/process-booking/TestPayment';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +30,9 @@ const CustomerStackNavigation = () => {
       // initialRouteName="ProcessBooking"
       // initialRouteName="HistoryBookings"
       // initialRouteName="BookingChat"
-      initialRouteName="Customer Landing">
+      initialRouteName="TestPayment"
+      // initialRouteName="Customer Landing"
+    >
       <Stack.Screen
         name="Customer Landing"
         component={CustomerBottomTabNavigator}
@@ -45,6 +48,8 @@ const CustomerStackNavigation = () => {
       <Stack.Screen name="Booking Details" component={BookingDetails} />
       <Stack.Screen name="My Details" component={MyDetails} />
       <Stack.Screen name="BookingChat" component={CustomerBookingChat} />
+      <Stack.Screen name="TestPayment" component={TestPayment} />
+
       <Stack.Screen
         name="Booking Cancellation Confirmation"
         component={CancelBookingConfirmation}
