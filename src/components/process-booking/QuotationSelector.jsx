@@ -22,6 +22,7 @@ import {
   SET_IS_PROCESSING_FINISHED,
 } from '../../store/slices/loading.slice';
 import {Picker} from '@react-native-picker/picker';
+import DirectionMaps from './DirectionMaps';
 
 const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   const dispatch = useDispatch();
@@ -36,6 +37,8 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   const [total, setTotal] = useState(0);
   const [fetching, setFetching] = useState(true);
   const [processing, setProcessing] = useState(false);
+  const [fromToLocation, setFromToLocation] = useState(null);
+  const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     quotations: [],
     topCards: {},
@@ -80,7 +83,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
         // setNotificationData([...notificationData, ...responseJson?.data]);
         let prevQuotations = [...state.quotations];
         let newQuotations = [...prevQuotations, ...data.quotations];
-        console.log('newQuotations', newQuotations);
+        // console.log('newQuotations', newQuotations);
         setState({
           ...state,
           // quotations: [...state.quotations, data.quotations],
@@ -97,10 +100,24 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
         console.log(err);
       });
   };
+  const getBookingsDetail = () => {
+    bookingService.getById(bookingId).then(res => {
+      console.log('RES: ', res.from);
+      console.log('To: ', res.to);
+      console.log('To: ', res.via);
+      setFromToLocation({
+        from: res?.from,
+        to: res?.to,
+        via: res?.via,
+        viaReturn: res?.viaReturn,
+      });
+    });
+  };
   useEffect(() => fetchQuotations(), []);
   useEffect(() => {
     // setFetching(true);
     fetchQuotations();
+    getBookingsDetail();
   }, [vehicle_type, quotation_type, bookingId]);
 
   useEffect(() => {
@@ -193,7 +210,14 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
               quotation={state.topCards.recommendedQuote}
             />
           </HStack>
-
+          {fromToLocation && (
+            <>
+              <DirectionMaps
+                bookingId={bookingId}
+                fromToLocation={fromToLocation}
+              />
+            </>
+          )}
           <View style={{justifyContent: 'space-between'}}>
             <HStack>
               <Button.Group

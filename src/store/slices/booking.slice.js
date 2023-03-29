@@ -17,6 +17,7 @@ export const LOAD_PROCESS_BOOKING = createAsyncThunk(
   async (bookingId, {dispatch, rejectWithValue}) => {
     try {
       let booking = await bookingService.getById(bookingId);
+      console.log('Herrrrrreeee', booking);
       return booking;
     } catch (err) {
       console.log(err);

@@ -25,7 +25,7 @@ const ContactTextInput = props => {
           onChangeText={props.onChangeText}
           keyboardType={props.keyboardType}
           textAlignVertical={props.textAlignVertical}
-          color={props.textColor}
+          // color={props.textColor}
           maxLength={props.maxLength}
           autoCapitalize={props.autoCapitalize}
           returnKeyType={props.returnKeyType}

@@ -84,7 +84,7 @@ const Introduction = () => {
     return (
       <TouchableOpacity
         onPress={() => appSlider.current.goToSlide(i + 1, true)}>
-        <Text style={{fontSize: 12}}>NEXT</Text>
+        <Text style={{fontSize: 12, color: colors.PRIMARY}}>NEXT</Text>
       </TouchableOpacity>
     );
   };
@@ -92,7 +92,7 @@ const Introduction = () => {
     return (
       <TouchableOpacity
         onPress={() => appSlider.current.goToSlide(i - 1, true)}>
-        <Text style={{fontSize: 12}}>PREV</Text>
+        <Text style={{fontSize: 12, color: colors.PRIMARY}}>PREV</Text>
       </TouchableOpacity>
     );
   };
@@ -100,7 +100,10 @@ const Introduction = () => {
     return (
       <TouchableOpacity
         onPress={() => appSlider.current.goToSlide(slides.length - 1, true)}>
-        <Text style={{color: colors.CAPTION, fontSize: 12}}>SKIP</Text>
+        <Text
+          style={{color: colors.CAPTION, fontSize: 12, color: colors.PRIMARY}}>
+          SKIP
+        </Text>
       </TouchableOpacity>
     );
   };
