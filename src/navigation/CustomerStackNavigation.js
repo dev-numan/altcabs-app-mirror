@@ -30,9 +30,8 @@ const CustomerStackNavigation = () => {
       // initialRouteName="ProcessBooking"
       // initialRouteName="HistoryBookings"
       // initialRouteName="BookingChat"
-      initialRouteName="TestPayment"
-      // initialRouteName="Customer Landing"
-    >
+      // initialRouteName="TestPayment"
+      initialRouteName="Customer Landing">
       <Stack.Screen
         name="Customer Landing"
         component={CustomerBottomTabNavigator}

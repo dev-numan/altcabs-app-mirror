@@ -28,22 +28,24 @@ const QuotationCheckout = ({booking, nextStep}) => {
   const payment = () => {
     setFetching(true);
     if (value == 'one') {
-      bookingService
-        .payWithCash(booking?._id)
-        .then(() => {
-          console.log('Request completed');
-          dispatch(SUCCESS('Pay With Cash Selected...'));
-          nextStep();
-        })
-        .catch(err => {
-          console.log(err);
-          dispatch(ERROR('Unable to Pay With Cash Selected...'));
-        })
-        .finally(() => {
-          setFetching(false);
-        });
     } else {
     }
+  };
+  const payWithCash = () => {
+    bookingService
+      .payWithCash(booking?._id)
+      .then(() => {
+        console.log('Request completed');
+        dispatch(SUCCESS('Pay With Cash Selected...'));
+        nextStep();
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch(ERROR('Unable to Pay With Cash Selected...'));
+      })
+      .finally(() => {
+        setFetching(false);
+      });
   };
   return (
     <View style={styles.container}>
