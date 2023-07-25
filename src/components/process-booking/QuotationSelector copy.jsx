@@ -1,9 +1,8 @@
-import {Button, HStack, Text, View, CheckIcon, StatusBar} from 'native-base';
+import {Button, HStack, Text, View, CheckIcon} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
@@ -15,7 +14,6 @@ import {selectFleetTypes} from '../../store/selectors';
 import {ERROR, SUCCESS} from '../../store/slices/message.slice';
 import CustomButton from '../common/CustomButton';
 import QuotationLoaderSkeleton from '../common/skeletons/QuotationLoaderSkeleton';
-import StarRating from 'react-native-star-rating-widget';
 import QuotationLogo from './partials/QuotationLogo';
 import QuotationTopCard from './partials/QuotationTopCard';
 import webSocketService from '../../api/WebSocketService';
@@ -54,7 +52,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     for (let i = 0; i < newQuotations.length; i++) {
       let nquo = newQuotations[i];
       let quo = oldQuotations.find(q => {
-        q.index.toString() == nquo.index.toString();
+        q.index == nquo.index;
       });
       if (!quo) {
         oldQuotations.push(nquo);
@@ -139,7 +137,10 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     // setFetching(true);
     // nextPageQuotations();
   }, [page, per_page]);
-
+  useEffect(() => {
+    //set booking id to socket
+    if (bookingId) webSocketService.setBookingId(bookingId);
+  }, [bookingId]);
   useEffect(() => {
     if (
       quotationCreatedFor &&
@@ -177,11 +178,11 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     }
   };
   console.log(`Fetched: ${state.fetched}`);
-  if (fetching) {
+  if (!state.fetched || fetching) {
     return <QuotationsLoader />;
   }
   let lowestQuote = quotations[0];
-
+  let ratedSortedQuote = sortBy(quotations, q => Number(q.companyRatings));
   let bestRatedQuotsOrderedArray = orderBy(
     quotations,
     ['companyRatings'],
@@ -192,179 +193,181 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   let recommendedQuote = lowestQuote;
   // console.log(state.topCards);
   console.log(`Total Quotations: ${quotations.length}}`);
-  console.log('Recommendded Quote ' + recommendedQuote?.index);
-  console.log('topExecutiveQuote');
-  console.log(topExecutiveQuote);
-  console.log('recommended');
-  // console.log(recommendedQuote);
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <View style={{marginBottom: 100, flex: 1}}>
-          <>
-            <HStack style={{marginTop: 10, marginRight: 10}}>
-              <QuotationTopCard
-                processing={process}
-                onQuotationSelect={onQuotationSelect}
-                type="lowest"
-                quotation={lowestQuote}
-              />
-              <QuotationTopCard
-                rocessing={process}
-                onQuotationSelect={onQuotationSelect}
-                type="best-rated"
-                quotation={bestRatedQuote}
-              />
-            </HStack>
-            {/* <Text>Lower Stack Start</Text> */}
-            <HStack style={{marginRight: 10}}>
-              <QuotationTopCard
-                rocessing={process}
-                onQuotationSelect={onQuotationSelect}
-                type="top-executive"
-                quotation={topExecutiveQuote}
-              />
-              <QuotationTopCard
-                rocessing={process}
-                onQuotationSelect={onQuotationSelect}
-                type="recommended"
-                quotation={recommendedQuote}
-              />
-            </HStack>
-            <View style={{justifyContent: 'space-between'}}>
-              <HStack>
-                <Button.Group
-                  isAttached={true}
-                  rounded="md"
-                  p="3"
-                  _text={{fontSize: 14, fontWeight: 'bold'}}
-                  colorScheme={colors.PRIMARY}
-                  _disabled={{bg: colors.YELLOW, color: colors.YELLOW}}
-                  my="2">
-                  <Button
-                    isDisabled={quotation_type == 'all' || processing}
-                    onPress={() => {
-                      setQuotationType('all');
-                    }}>
-                    ALL
-                  </Button>
-                  <Button
-                    isDisabled={quotation_type == 'standard' || processing}
-                    onPress={() => {
-                      setQuotationType('standard');
-                    }}>
-                    Standard
-                  </Button>
-                  <Button
-                    isDisabled={quotation_type == 'prestige' || processing}
-                    onPress={() => {
-                      setQuotationType('prestige');
-                    }}>
-                    Prestige
-                  </Button>
-                </Button.Group>
-                <View
-                  style={{
-                    height: 35,
-                    width: 130,
-                    borderWidth: 0.5,
-                    borderColor: colors.YELLOW,
-                    backgroundColor: colors.PRIMARY,
-                    color: colors.WHITE,
-                    borderRadius: 12,
-                    marginTop: 20,
-                    left: '15%',
-                    justifyContent: 'center',
-                    // marginRight: 40,
-                  }}>
-                  <Picker
-                    selectedValue={vehicle_type}
-                    isDisabled={processing}
-                    mode="dropdown" // Android only
-                    dropdownIconColor={colors.WHITE}
-                    placeholder={'#323F4B'}
-                    onValueChange={itemValue => {
-                      console.log('itemValue', itemValue);
-                      setVehicleType(itemValue);
-                    }}
-                    style={{
-                      color: colors.WHITE,
-                      alignSelf: 'center',
-                      height: 35,
-                      width: 150,
-                      fontSize: 16,
-                      fontWeight: '400',
-                      paddingLeft: 20,
-                      transform: [{scaleX: 0.7}, {scaleY: 0.7}],
-                    }}>
-                    <Picker.Item label="All Fleet Types" value="all" />
-                    {fleetTypes.map(ft => (
-                      <Picker.Item
-                        label={ft?.name}
-                        value={ft?._id}
-                        key={ft?._id}
-                      />
-                    ))}
-                  </Picker>
-                </View>
-              </HStack>
-            </View>
-            <FlatList
-              data={quotations}
-              renderItem={({item}) => (
-                <HStack
-                  key={item.index}
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    backgroundColor: '#27323D',
-                    borderRadius: 12,
-                    marginVertical: 12,
-                  }}>
-                  {/* <QuotationLogo quotation={item} /> */}
-                  <View style={{marginLeft: 12, flexGrow: 1}}>
-                    <Text style={{color: 'white', fontSize: 12}}>
-                      {item.vehicle_type_name}
-                    </Text>
-                    <Text style={{color: 'white', fontSize: 18}}>
-                      {item.companyName}
-                    </Text>
-                  </View>
-                  <View>
-                    <View style={{color: 'white', fontSize: 12}}>
-                      <Text style={{color: 'white', fontSize: 12}}>
-                        {item.companyLocation}
-                      </Text>
-                    </View>
-                    <View>
-                      <StarRating
-                        rating={item.companyRatings}
-                        onChange={() => {}}
-                        starSize={18}
-                      />
-                    </View>
-                  </View>
-                  <View style={{}}>
-                    <Button
-                      // style={{paddin}}
-                      style={{margin: 15}}
-                      size="xs"
-                      colorScheme={colors.YELLOW}
-                      onPress={() => onQuotationSelect(item.index)}>
-                      <Text>
-                        £ {item.priceToCharge?.toFixed(2)} {'\n'} Book Now
-                      </Text>
-                    </Button>
-                  </View>
-                </HStack>
-              )}
-              keyExtractor={quotation => quotation.index}
+    // <ScrollView>
+    // <View style={{marginBottom: 100, flex: 1}}>
+
+    <FlatList
+      data={quotations}
+      onEndReachedThreshold={0.01}
+      contentContainerStyle={{paddingBottom: 140, margin: 10}}
+      onEndReached={() => {
+        console.log('End Reached');
+        handleMoreLoad();
+      }}
+      showsVerticalScrollIndicator={false}
+      ListHeaderComponent={
+        // <View style={{marginRight: 15}}>
+        <>
+          <HStack style={{marginTop: 10, marginRight: 10}}>
+            <QuotationTopCard
+              processing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="lowest"
+              quotation={state.topCards.lowestQuote}
             />
-            {/* <Text>Lower Stack end</Text> */}
-          </>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+            <QuotationTopCard
+              rocessing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="best-rated"
+              quotation={state.topCards.bestRatedQuote}
+            />
+          </HStack>
+          <HStack style={{marginRight: 10}}>
+            <QuotationTopCard
+              rocessing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="top-executive"
+              quotation={state.topCards.topExecutiveQuote}
+            />
+            <QuotationTopCard
+              rocessing={process}
+              onQuotationSelect={onQuotationSelect}
+              type="recommended"
+              quotation={state.topCards.recommendedQuote}
+            />
+          </HStack>
+          {fromToLocation && (
+            <>
+              <DirectionMaps
+                bookingId={bookingId}
+                fromToLocation={fromToLocation}
+              />
+            </>
+          )}
+          <View style={{justifyContent: 'space-between'}}>
+            <HStack>
+              <Button.Group
+                isAttached={true}
+                rounded="md"
+                p="3"
+                _text={{fontSize: 14, fontWeight: 'bold'}}
+                colorScheme={colors.PRIMARY}
+                _disabled={{bg: colors.YELLOW, color: colors.YELLOW}}
+                my="2">
+                <Button
+                  isDisabled={quotation_type == 'all' || processing}
+                  onPress={() => {
+                    setQuotationType('all');
+                  }}>
+                  ALL
+                </Button>
+                <Button
+                  isDisabled={quotation_type == 'standard' || processing}
+                  onPress={() => {
+                    setQuotationType('standard');
+                  }}>
+                  Standard
+                </Button>
+                <Button
+                  isDisabled={quotation_type == 'prestige' || processing}
+                  onPress={() => {
+                    setQuotationType('prestige');
+                  }}>
+                  Prestige
+                </Button>
+              </Button.Group>
+              <View
+                style={{
+                  height: 35,
+                  width: 130,
+                  borderWidth: 0.5,
+                  borderColor: colors.YELLOW,
+                  backgroundColor: colors.PRIMARY,
+                  color: colors.WHITE,
+                  borderRadius: 12,
+                  marginTop: 20,
+                  left: '15%',
+                  justifyContent: 'center',
+                  // marginRight: 40,
+                }}>
+                <Picker
+                  selectedValue={vehicle_type}
+                  isDisabled={processing}
+                  mode="dropdown" // Android only
+                  dropdownIconColor={colors.WHITE}
+                  placeholder={'#323F4B'}
+                  onValueChange={itemValue => {
+                    console.log('itemValue', itemValue);
+                    setVehicleType(itemValue);
+                  }}
+                  style={{
+                    color: colors.WHITE,
+                    alignSelf: 'center',
+                    height: 35,
+                    width: 150,
+                    fontSize: 16,
+                    fontWeight: '400',
+                    paddingLeft: 20,
+                    transform: [{scaleX: 0.7}, {scaleY: 0.7}],
+                  }}>
+                  <Picker.Item label="All Fleet Types" value="all" />
+                  {fleetTypes.map(ft => (
+                    <Picker.Item
+                      label={ft?.name}
+                      value={ft?._id}
+                      key={ft?._id}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            </HStack>
+          </View>
+        </>
+        // </View>
+      }
+      renderItem={({item}) => (
+        <HStack
+          key={item.index}
+          style={{
+            flex: 1,
+            alignItems: 'center',
+            backgroundColor: '#27323D',
+            borderRadius: 12,
+            marginVertical: 12,
+          }}>
+          {/* <QuotationLogo quotation={item} /> */}
+          <View style={{marginLeft: 12, flexGrow: 1}}>
+            <Text style={{color: 'white', fontSize: 12}}>
+              {item.vehicle_type_name}
+            </Text>
+            <Text style={{color: 'white', fontSize: 18}}>
+              {item.companyName}
+            </Text>
+          </View>
+          <View style={{}}>
+            <Button
+              // style={{paddin}}
+              style={{margin: 15}}
+              size="xs"
+              colorScheme={colors.YELLOW}
+              onPress={() => onQuotationSelect(item.index)}>
+              <Text>
+                £ {item.priceToCharge?.toFixed(2)} {'\n'} Book Now
+              </Text>
+            </Button>
+          </View>
+        </HStack>
+      )}
+      keyExtractor={item => item.index}
+      ListFooterComponent={<View style={{height: 20}} />}
+      scrollEnabled={true}
+      ListEmptyComponent={() => {
+        return <Text>No Quotation Found</Text>;
+      }}
+    />
+
+    //  </ScrollView>
   );
 };
 const QuotationsLoader = () => (
@@ -376,10 +379,6 @@ const QuotationsLoader = () => (
 );
 export default QuotationSelector;
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-    // marginTop: StatusBar.currentHeight || 0,
-  },
   typeView: {
     margin: 7,
     borderRadius: 14,

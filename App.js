@@ -51,9 +51,12 @@ export default function App() {
   useEffect(() => {
     if (isLoadingComplete) {
       console.log('Attaching function to web socket event');
-      webSocketService.on('quotes-added-to-booking', booking_id => {
-        dispatch(QUOTATION_CREATED(booking_id));
-      });
+      webSocketService.on(
+        'quotes-added-to-booking',
+        (booking_id, quotations) => {
+          dispatch(QUOTATION_CREATED({booking_id, quotations}));
+        },
+      );
     }
   }, [isLoadingComplete]);
   useEffect(() => {

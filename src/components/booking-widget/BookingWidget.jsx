@@ -139,20 +139,20 @@ const BookingWidget = ({booking_type}) => {
         break;
 
       default:
-        dispatch(SET_IS_PROCESSING('Calculating Quotations ...'));
+        dispatch(SET_IS_PROCESSING('Fetching Quotations ...'));
         break;
     }
   };
   const submitBooking = () => {
     showProgressMessage();
-    console.log('Submitting ...', form.oneWay);
+    // console.log('Submitting ...', form.oneWay);
     // dispatch(POST_NEW_BOOKING({booking: form, prestige}));
     bookingService
       .postNewBooking({booking: form, prestige}, booking_type)
       .then(data => {
         // dispatch(POST_NEW_BOOKING(data))
 
-        console.log(`New Booking: ${data}`);
+        // console.log(`New Booking: ${data}`);
         navigation.navigate('ProcessBooking', {
           bookingId: data,
         });

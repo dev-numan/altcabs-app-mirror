@@ -19,6 +19,7 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
     }
   };
   if (!quotation) return <QuotationLoaderSkeleton />;
+  console.log(getTitleFromType());
   return (
     <View style={[styles.typeView]}>
       <View style={[styles.typeTextView]}>
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     width: '50%',
     backgroundColor: colors.PRIMARY_40_DARK,
     borderColor: colors.YELLOW,
-    borderWidth: 0.5,
+    borderWidth: 1,
   },
   typeTextView: {
     alignSelf: 'center',

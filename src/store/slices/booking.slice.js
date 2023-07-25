@@ -3,6 +3,7 @@ import bookingService from '../../api/BookingService';
 import uuid from 'react-native-uuid';
 const initialState = {
   processBookings: {},
+  newQuotations: [],
   quotationCreated: '', //a uuid will be placed here it will inform the quotations component to update itself.
   quotationCreatedFor: '', //web socket will also inform about the booking Id for which the quotation has been created
 };
@@ -17,7 +18,7 @@ export const LOAD_PROCESS_BOOKING = createAsyncThunk(
   async (bookingId, {dispatch, rejectWithValue}) => {
     try {
       let booking = await bookingService.getById(bookingId);
-      console.log('Herrrrrreeee', booking);
+      // console.log('Herrrrrreeee', booking);
       return booking;
     } catch (err) {
       console.log(err);
@@ -42,7 +43,8 @@ export const bookingSlice = createSlice({
     QUOTATION_CREATED: (state, action) => {
       state.quotationCreated = uuid.v4();
       // state.quotationCreated = Math.random() * 50000;
-      state.quotationCreatedFor = action.payload;
+      state.quotationCreatedFor = action.payload.booking_id;
+      state.newQuotations = action.payload.quotations;
     },
   },
   extraReducers: builder => {

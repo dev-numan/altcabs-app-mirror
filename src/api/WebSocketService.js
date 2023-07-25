@@ -66,7 +66,11 @@ class WebSocketService extends EventEmitter {
         case 'chat-modified':
           this.emit('chat-modified');
         case 'quotes-added-to-booking':
-          this.emit('quotes-added-to-booking', jsonMessage.booking_id);
+          this.emit(
+            'quotes-added-to-booking',
+            jsonMessage.booking_id,
+            quotations,
+          );
         default:
           break;
       }
