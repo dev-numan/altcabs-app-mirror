@@ -17,11 +17,15 @@ import HistoryBookings from '../components/screens/customer/account/HistoryBooki
 import CustomerBookingChat from '../components/screens/customer/CustomerBookingChat';
 import CancelBookingConfirmation from '../components/screens/customer/account/CancelBookingConfirmation';
 import TestPayment from '../components/process-booking/TestPayment';
+import AdminHome from '../components/screens/admin/Home';
+import NewRequest from '../components/screens/admin/NewRequests';
 
 const Stack = createNativeStackNavigator();
 
 const CustomerStackNavigation = () => {
   const Intro = useSelector(state => state.Intro);
+  const User = useSelector(state => state.Auth.TOKEN);
+  const role = useSelector(state => state.Auth.role);
   const {IS_NEWLY_INSTALLED} = Intro;
   console.log(Intro);
   return (
@@ -31,7 +35,9 @@ const CustomerStackNavigation = () => {
       // initialRouteName="HistoryBookings"
       // initialRouteName="BookingChat"
       // initialRouteName="TestPayment"
-      initialRouteName="Customer Landing">
+      initialRouteName={User.role=="admin"?"AdminHome":"Customer Landing"}
+      // initialRouteName={"AdminHome"}
+      >
       <Stack.Screen
         name="Customer Landing"
         component={CustomerBottomTabNavigator}
@@ -42,6 +48,68 @@ const CustomerStackNavigation = () => {
         component={ProcessBooking}
         options={{title: 'Complete Booking'}}
       />
+      <Stack.Screen name="AdminHome" component={AdminHome}
+       options={{headerShown: false}}
+
+      />
+       
+      <Stack.Screen name="Urgent" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="Urgent" type="urgent"/>}
+      
+        </Stack.Screen>
+
+        <Stack.Screen name="NewRequest" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="New Request" type="new_requests"/>}
+      
+        </Stack.Screen>
+
+        
+        <Stack.Screen name="Upcoming" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="Upcoming" type="upcoming"/>}
+      
+        </Stack.Screen>
+
+        <Stack.Screen name="Completed" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="Completed" type="completed"/>}
+      
+        </Stack.Screen>
+
+        <Stack.Screen name="ActionRequired" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="Action Required" type="action_required"/>}
+      
+        </Stack.Screen>
+
+
+        <Stack.Screen name="DriverNoMarked" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="Driver no marked" type="driver_no_show"/>}
+      
+        </Stack.Screen>
+
+        <Stack.Screen name="CustomerNoMarked" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="Customer no marked" type="customer_no_show"/>}
+      
+        </Stack.Screen>
+        <Stack.Screen name="Cancelled" 
+       options={{headerShown: false}}
+      >
+        {props =>   <NewRequest title="Cancelled" type="canceled"/>}
+      
+        </Stack.Screen>
+
       <Stack.Screen name="MyBookings" component={ConfirmedBookings} />
       <Stack.Screen name="Bookings History" component={HistoryBookings} />
       <Stack.Screen name="Booking Details" component={BookingDetails} />

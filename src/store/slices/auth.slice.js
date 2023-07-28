@@ -5,13 +5,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ERROR, SUCCESS} from './message.slice';
 import {SET_IS_PROCESSING, SET_IS_PROCESSING_FINISHED} from './loading.slice';
 import webSocketService from '../../api/WebSocketService';
+import { valid } from 'joi';
+import moment from 'moment';
 const initialState = {
   IS_LOGGED: false,
   TOKEN: null,
+  JWT:"",
+  role:"",
+  COMPANYID:"",
+  TRIPS:null
 };
 
 const USER = createAsyncThunk('auth/user', async (data, {rejectWithValue}) => {
   try {
+    console.log("USERTOKEN",data)
     await AsyncStorage.setItem('Token', data);
     API.defaults.headers.common['x-auth-token'] = data;
     return jwtdecode(data);
@@ -49,8 +56,20 @@ export const LOGIN = createAsyncThunk(
     try {
       dispatch(SET_IS_PROCESSING('Authorizing'));
       let response = await API.post('/mobileApp/auth/login', data);
+      let responsess = await API.get('/mobileApp/auth/company');
+      console.log("login response",response.data);
+      console.log("company response",responsess.data.result[0]);
+      let temp =responsess.data.result.filter(val=>val.owner?._id.toString()==response.data?.id.toString()
+      )
+      console.log("filter company",temp[0]._id)
+
+    
       dispatch(SUCCESS(response.data.message));
-      console.log(response.data);
+      dispatch(CHANGE_ROLE(response.data.role));
+      dispatch(JWTTOKEN(response.data.token));
+      dispatch(COMPANY_ID(temp[0]._id));
+      
+
       await dispatch(USER(response.data.token));
       dispatch(SET_IS_PROCESSING_FINISHED());
     } catch (err) {
@@ -132,7 +151,23 @@ function ErrorType(err) {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+
+    CHANGE_ROLE: (state, {payload}) => {
+      state.role = payload;
+    },
+    COMPANY_ID: (state, {payload}) => {
+      state.COMPANYID = payload;
+    },
+    JWTTOKEN: (state, {payload}) => {
+      state.JWT = payload;
+    },
+    TRIPDATA: (state, {payload}) => {
+
+
+      state.TRIPS = selectSeperatedTrips(payload);
+    },
+  },
   extraReducers: builder => {
     builder.addCase(USER.fulfilled, (state, {payload}) => {
       state.TOKEN = payload;
@@ -151,7 +186,38 @@ export const authSlice = createSlice({
   },
 });
 
+export const selectSeperatedTrips = (state) => {
+  let trips = state;
+  let dataToReturn = {
+    all: trips,
+    new_requests: trips.filter((t) => t.status == "requested"),
+    urgent: trips.filter((t) => t.status == "urgent"),
+    completed: trips.filter((t) => t.status == "completed"),
+    action_required: trips.filter(
+      (t) =>
+        t.status == "booked" &&
+        moment(t.startTime).valueOf() < moment().valueOf()
+    ),
+    driver_no_show: trips.filter(
+      (t) => t.status == "driver-no-show-investigation"
+    ),
+    customer_no_show: trips.filter(
+      (t) => t.status == "customer-no-show-investigation"
+    ),
+    canceled: trips.filter(
+      (t) =>
+        t.status == "canceled" || t.status == "cancel-by-client-investigation"
+    ),
+    upcoming: trips.filter(
+      (t) =>
+        t.status == "booked" &&
+        moment(t.startTime).valueOf() > moment().valueOf()
+    ),
+  };
+  return dataToReturn;
+};
+
 // Action creators are generated for each case reducer function
-export const {} = authSlice.actions;
+export const {CHANGE_ROLE,COMPANY_ID,JWTTOKEN,TRIPDATA} = authSlice.actions;
 
 export default authSlice.reducer;
