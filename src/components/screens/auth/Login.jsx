@@ -17,18 +17,21 @@ import {LOGIN} from '../../../store/slices/auth.slice';
 import {useNavigation} from '@react-navigation/native';
 import ContactTextInput from '../general/ContactTextInput';
 import GoogleLogin from '../general/GoogleLogin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [displayPassword, setDisplayPassword] = useState(true);
   const [login, setLogin] = useState({
-    username: 'almasakram777@gmail.com',
-    password: 'usman',
+    username: 'uqbamehar312@gmail.com',
+    password: '123456789',
   });
   const handleLogin = async () => {
+    const fcmtoken = await AsyncStorage.getItem('fcmtoken');
     let data = {
       email: login.username.toLowerCase(),
       password: login.password,
+      fcmtoken,
     };
     try {
       await dispatch(LOGIN(data)).unwrap();

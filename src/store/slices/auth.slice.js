@@ -63,19 +63,19 @@ export const LOGIN = createAsyncThunk(
       console.log(data);
       let response = await API.post('/mobileApp/auth/login', data);
       dispatch(SET_USER(response.data));
-      // console.log(response);
-      // let responsess = await API.get('/mobileApp/auth/company');
-      // console.log('login response', response.data);
-      // console.log('company response', responsess.data.result[0]);
-      // let temp = responsess.data.result.filter(
-      //   val => val.owner?._id.toString() == response.data?.id.toString(),
-      // );
-      // console.log('filter company', temp[0]._id);
+      console.log(response.data);
+      let responsess = await API.get('/mobileApp/company');
+      console.log('login response', response.data);
+      console.log('company response', responsess.data.result[0]);
+      let temp = responsess.data.result.filter(
+        val => val.owner?._id.toString() == response.data?.id.toString(),
+      );
+      console.log('filter company', temp[0]._id);
 
       dispatch(SUCCESS(response.data.message));
-      // dispatch(CHANGE_ROLE(response.data.role));
-      // dispatch(JWTTOKEN(response.data.token));
-      // dispatch(COMPANY_ID(temp[0]._id));
+      dispatch(CHANGE_ROLE(response.data.role));
+      dispatch(JWTTOKEN(response.data.token));
+      dispatch(COMPANY_ID(temp[0]._id));
 
       await dispatch(
         USER({token: response.data.token, companyId: response.data.companyId}),

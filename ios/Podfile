@@ -12,6 +12,9 @@ target 'AltcabsApp' do
 
   config = use_native_modules!
 
+  # For Firebase project
+  use_frameworks! :linkage => :static 
+
   # Flags change depending on the env values.
   flags = get_default_flags()
 
