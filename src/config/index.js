@@ -1,5 +1,5 @@
 // let baseURL = '10.135.48.102:8080';
-let baseURL = '192.168.1.101:8080';
+let baseURL = '192.168.10.2:8080';
 // let baseURL = 'www.altcabs.com';
 //Live
 // export const URL = 'https://altcabs.com/api';

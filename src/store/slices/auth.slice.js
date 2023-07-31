@@ -5,24 +5,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {ERROR, SUCCESS} from './message.slice';
 import {SET_IS_PROCESSING, SET_IS_PROCESSING_FINISHED} from './loading.slice';
 import webSocketService from '../../api/WebSocketService';
-import { valid } from 'joi';
+import {valid} from 'joi';
 import moment from 'moment';
 const initialState = {
   IS_LOGGED: false,
   TOKEN: null,
-  JWT:"",
-  role:"",
-  COMPANYID:"",
-  TRIPS:null
+  JWT: '',
+  role: '',
+  COMPANYID: '',
+  TRIPS: null,
+  NAME: '',
+  EMAIL: '',
 };
 
 const USER = createAsyncThunk('auth/user', async (data, {rejectWithValue}) => {
   try {
-    console.log("USERTOKEN",data)
-    await AsyncStorage.setItem('Token', data);
-    API.defaults.headers.common['x-auth-token'] = data;
-    return jwtdecode(data);
+    // console.log('USERTOKEN', data);
+    await AsyncStorage.setItem('Token', data.token);
+    API.defaults.headers.common['x-auth-token'] = data.token;
+    API.defaults.headers.common['companyId'] = data.companyId;
+    return jwtdecode(data.token);
   } catch (err) {
+    console.log('Error in setting user');
     console.log(err);
     return rejectWithValue(err);
   }
@@ -55,22 +59,27 @@ export const LOGIN = createAsyncThunk(
   async (data, {dispatch, rejectWithValue}) => {
     try {
       dispatch(SET_IS_PROCESSING('Authorizing'));
+      console.clear();
+      console.log(data);
       let response = await API.post('/mobileApp/auth/login', data);
-      let responsess = await API.get('/mobileApp/auth/company');
-      console.log("login response",response.data);
-      console.log("company response",responsess.data.result[0]);
-      let temp =responsess.data.result.filter(val=>val.owner?._id.toString()==response.data?.id.toString()
-      )
-      console.log("filter company",temp[0]._id)
+      dispatch(SET_USER(response.data));
+      // console.log(response);
+      // let responsess = await API.get('/mobileApp/auth/company');
+      // console.log('login response', response.data);
+      // console.log('company response', responsess.data.result[0]);
+      // let temp = responsess.data.result.filter(
+      //   val => val.owner?._id.toString() == response.data?.id.toString(),
+      // );
+      // console.log('filter company', temp[0]._id);
 
-    
       dispatch(SUCCESS(response.data.message));
-      dispatch(CHANGE_ROLE(response.data.role));
-      dispatch(JWTTOKEN(response.data.token));
-      dispatch(COMPANY_ID(temp[0]._id));
-      
+      // dispatch(CHANGE_ROLE(response.data.role));
+      // dispatch(JWTTOKEN(response.data.token));
+      // dispatch(COMPANY_ID(temp[0]._id));
 
-      await dispatch(USER(response.data.token));
+      await dispatch(
+        USER({token: response.data.token, companyId: response.data.companyId}),
+      );
       dispatch(SET_IS_PROCESSING_FINISHED());
     } catch (err) {
       let error = ErrorType(err);
@@ -152,7 +161,13 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-
+    SET_USER: (state, {payload}) => {
+      state.role = payload.role;
+      state.TOKEN = payload.token;
+      state.COMPANYID = payload.companyId;
+      state.NAME = payload.name;
+      state.EMAIL = payload.email;
+    },
     CHANGE_ROLE: (state, {payload}) => {
       state.role = payload;
     },
@@ -163,8 +178,6 @@ export const authSlice = createSlice({
       state.JWT = payload;
     },
     TRIPDATA: (state, {payload}) => {
-
-
       state.TRIPS = selectSeperatedTrips(payload);
     },
   },
@@ -186,38 +199,39 @@ export const authSlice = createSlice({
   },
 });
 
-export const selectSeperatedTrips = (state) => {
+export const selectSeperatedTrips = state => {
   let trips = state;
   let dataToReturn = {
     all: trips,
-    new_requests: trips.filter((t) => t.status == "requested"),
-    urgent: trips.filter((t) => t.status == "urgent"),
-    completed: trips.filter((t) => t.status == "completed"),
+    new_requests: trips.filter(t => t.status == 'requested'),
+    urgent: trips.filter(t => t.status == 'urgent'),
+    completed: trips.filter(t => t.status == 'completed'),
     action_required: trips.filter(
-      (t) =>
-        t.status == "booked" &&
-        moment(t.startTime).valueOf() < moment().valueOf()
+      t =>
+        t.status == 'booked' &&
+        moment(t.startTime).valueOf() < moment().valueOf(),
     ),
     driver_no_show: trips.filter(
-      (t) => t.status == "driver-no-show-investigation"
+      t => t.status == 'driver-no-show-investigation',
     ),
     customer_no_show: trips.filter(
-      (t) => t.status == "customer-no-show-investigation"
+      t => t.status == 'customer-no-show-investigation',
     ),
     canceled: trips.filter(
-      (t) =>
-        t.status == "canceled" || t.status == "cancel-by-client-investigation"
+      t =>
+        t.status == 'canceled' || t.status == 'cancel-by-client-investigation',
     ),
     upcoming: trips.filter(
-      (t) =>
-        t.status == "booked" &&
-        moment(t.startTime).valueOf() > moment().valueOf()
+      t =>
+        t.status == 'booked' &&
+        moment(t.startTime).valueOf() > moment().valueOf(),
     ),
   };
   return dataToReturn;
 };
 
 // Action creators are generated for each case reducer function
-export const {CHANGE_ROLE,COMPANY_ID,JWTTOKEN,TRIPDATA} = authSlice.actions;
+export const {CHANGE_ROLE, COMPANY_ID, JWTTOKEN, TRIPDATA, SET_USER} =
+  authSlice.actions;
 
 export default authSlice.reducer;
