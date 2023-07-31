@@ -7,6 +7,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {USER_STATUS_LOG_OUT} from '../store/slices/auth.slice';
 import {useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import API from '../api';
 
 export default function CustomerAppDrawer(props) {
   const dispatch = useDispatch();
@@ -14,10 +17,23 @@ export default function CustomerAppDrawer(props) {
   const role = useSelector(state => state.Auth.role);
   const TRIPSDATA = useSelector(state => state.Auth.TRIPS);
 
+
+  const logout=async()=>{
+    let fcmToken= await AsyncStorage.getItem('fcmtoken')
+  
+    console.log("Logout info",fcmToken);
+
+    let response = await API.post('/mobileApp/auth/logout', {token:fcmToken,user:User});
+
+
+
+ 
+  }
+
   
 
-  console.log('role', role);
-  console.log('User', User);
+  console.log('role', TRIPSDATA?.urgent?.length);
+  // console.log('User', User);
 
   const [list, setList] = useState([]);
 
@@ -137,7 +153,7 @@ export default function CustomerAppDrawer(props) {
 
       setList(listmm);
     }
-  }, []);
+  }, [TRIPSDATA.all.length]);
 
   return (
     <DrawerContentScrollView
@@ -228,6 +244,8 @@ export default function CustomerAppDrawer(props) {
 
                                 props.navigation.closeDrawer();
                                 dispatch(USER_STATUS_LOG_OUT());
+                                logout()
+                                
                               } else props.navigation.navigate(item1.screen);
                             }}
                           
@@ -275,6 +293,7 @@ export default function CustomerAppDrawer(props) {
                     if (item?.name === 'Sign Out') {
                       props.navigation.closeDrawer();
                       dispatch(USER_STATUS_LOG_OUT());
+                      logout()
                     } else props.navigation.navigate(item.screen);
                   }}
                   key={i}

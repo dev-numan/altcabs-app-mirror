@@ -7,6 +7,7 @@ import {SET_IS_PROCESSING, SET_IS_PROCESSING_FINISHED} from './loading.slice';
 import webSocketService from '../../api/WebSocketService';
 import {valid} from 'joi';
 import moment from 'moment';
+import {useDispatch, useSelector} from 'react-redux';
 const initialState = {
   IS_LOGGED: false,
   TOKEN: null,
@@ -49,7 +50,11 @@ export const USER_LOGIN_STATUS = createAsyncThunk(
 export const USER_STATUS_LOG_OUT = createAsyncThunk(
   'auth/userLogoutStatus',
   async () => {
+    console.log("Logout info")
     await AsyncStorage.removeItem('Token');
+   
+    
+
     return true;
   },
 );
@@ -64,19 +69,12 @@ export const LOGIN = createAsyncThunk(
       let response = await API.post('/mobileApp/auth/login', data);
       console.log("user Info",response.data)
       dispatch(SET_USER(response.data));
-      // console.log(response);
-      // let responsess = await API.get('/mobileApp/auth/company');
-      // console.log('login response', response.data);
-      // console.log('company response', responsess.data.result[0]);
-      // let temp = responsess.data.result.filter(
-      //   val => val.owner?._id.toString() == response.data?.id.toString(),
-      // );
-      // console.log('filter company', temp[0]._id);
+      console.log(response.data);
+     
+      
 
       dispatch(SUCCESS(response.data.message));
-      // dispatch(CHANGE_ROLE(response.data.role));
-      // dispatch(JWTTOKEN(response.data.token));
-      // dispatch(COMPANY_ID(temp[0]._id));
+    
 
       await dispatch(
         USER({token: response.data.token, companyId: response.data.companyId}),
