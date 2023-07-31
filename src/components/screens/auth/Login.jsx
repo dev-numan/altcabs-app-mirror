@@ -23,8 +23,8 @@ const Login = () => {
   const navigation = useNavigation();
   const [displayPassword, setDisplayPassword] = useState(true);
   const [login, setLogin] = useState({
-    username: 'uqbamehar312@gmail.com',
-    password: '123456789',
+    username: 'almasakram777@gmail.com',
+    password: 'usman',
   });
   const handleLogin = async () => {
     const fcmtoken = await AsyncStorage.getItem('fcmtoken');
