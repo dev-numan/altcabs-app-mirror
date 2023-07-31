@@ -22,7 +22,7 @@ const Login = () => {
   const navigation = useNavigation();
   const [displayPassword, setDisplayPassword] = useState(true);
   const [login, setLogin] = useState({
-    username: 'almasakram777@gmail.com',
+    username: 'usman.akram@gmail.com',
     password: 'usman',
   });
   const handleLogin = async () => {

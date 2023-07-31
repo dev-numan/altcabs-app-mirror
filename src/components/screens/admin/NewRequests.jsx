@@ -93,6 +93,7 @@ const NewRequest = ({title,type}) => {
           <View style={styles.container}>
             
             {
+              Data.length>0?
               Data?.map(val=>{
                   return(
                     <TaxiCard
@@ -106,7 +107,7 @@ const NewRequest = ({title,type}) => {
                     onReject={handleReject}
                   />
                   )
-              })
+              }):<Text style={{color:'white'}}>No Record Found</Text>
              }
           </View>
         </ScrollView>

@@ -62,6 +62,7 @@ export const LOGIN = createAsyncThunk(
       console.clear();
       console.log(data);
       let response = await API.post('/mobileApp/auth/login', data);
+      console.log("user Info",response.data)
       dispatch(SET_USER(response.data));
       // console.log(response);
       // let responsess = await API.get('/mobileApp/auth/company');
@@ -163,7 +164,7 @@ export const authSlice = createSlice({
   reducers: {
     SET_USER: (state, {payload}) => {
       state.role = payload.role;
-      state.TOKEN = payload.token;
+      state.JWT = payload.token;
       state.COMPANYID = payload.companyId;
       state.NAME = payload.name;
       state.EMAIL = payload.email;
