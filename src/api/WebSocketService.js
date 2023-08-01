@@ -13,8 +13,8 @@ class WebSocketService extends EventEmitter {
     };
     client.onmessage = message => {
       let jsonMessage = JSON.parse(message.data);
-      console.log('jsonMessage');
-      console.log(jsonMessage);
+      // console.log('jsonMessage');
+      // console.log(jsonMessage);
       switch (jsonMessage.type) {
         case 'booking-payment-updated':
           this.emit('booking-payment-updated', {
@@ -69,7 +69,7 @@ class WebSocketService extends EventEmitter {
           this.emit(
             'quotes-added-to-booking',
             jsonMessage.booking_id,
-            quotations,
+            jsonMessage.quotations,
           );
         default:
           break;
