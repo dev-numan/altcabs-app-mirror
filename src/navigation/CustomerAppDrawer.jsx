@@ -82,30 +82,40 @@ export default function CustomerAppDrawer(props) {
               // icon: 'home',
               // type: Ionicons,
               screen: 'Completed',
+              value:TRIPSDATA?.completed?.length,
+              count:true
             },
             {
               name: 'Action Required',
               // icon: 'home',
               // type: Ionicons,
               screen: 'ActionRequired',
+              value:TRIPSDATA?.action_required?.length,
+              count:true
             },
             {
               name: 'Driver no marked',
               // icon: 'home',
               // type: Ionicons,
               screen: 'DriverNoMarked',
+              value:TRIPSDATA?.driver_no_show?.length,
+              count:true
             },
             {
               name: 'Customer no marked',
               // icon: 'home',
               // type: Ionicons,
               screen: 'CustomerNoMarked',
+              value:TRIPSDATA?.customer_no_show?.length,
+              count:true
             },
             {
               name: 'Cancelled',
               // icon: 'home',
               // type: Ionicons,
               screen: 'Cancelled',
+              value:TRIPSDATA?.canceled?.length,
+              count:true
             },
           ],
         },
@@ -120,7 +130,7 @@ export default function CustomerAppDrawer(props) {
               name: 'Take A Break',
               // icon: 'home',
               // type: Ionicons,
-              screen: 'NewRequest',
+              screen: 'Break',
             },
             
           ],
@@ -153,7 +163,7 @@ export default function CustomerAppDrawer(props) {
 
       setList(listmm);
     }
-  }, [TRIPSDATA.all.length]);
+  }, [TRIPSDATA?.all?.length]);
 
   return (
     <DrawerContentScrollView
