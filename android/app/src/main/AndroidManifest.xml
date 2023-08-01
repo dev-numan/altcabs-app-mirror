@@ -28,5 +28,6 @@
         <data android:host="www.example.com" />
     </intent-filter>
     </activity>
+      <service android:name="app.notifee.core.ForegroundService" android:foregroundServiceType="location" />
   </application>
 </manifest>

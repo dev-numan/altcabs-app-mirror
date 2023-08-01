@@ -19,6 +19,7 @@ import {GET_ALL_SETTINGS} from './src/store/slices/settings.slice';
 import webSocketService from './src/api/WebSocketService';
 import {QUOTATION_CREATED} from './src/store/slices/booking.slice';
 import {Linking} from 'react-native';
+import {requestUserPermission} from './src/utils/PushNotificationHelper';
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -36,6 +37,12 @@ export default function App() {
       dispatch(loadClientApp());
     }, 2000);
   };
+
+  useEffect(() => {
+    console.log('FCM PERMISSION IN USEEFFECt');
+    requestUserPermission();
+  }, []);
+
   useEffect(() => {
     loadApp();
     Linking.addEventListener('url', function () {
