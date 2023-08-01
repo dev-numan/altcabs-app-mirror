@@ -1,4 +1,19 @@
-import {Button, HStack, Text, View, CheckIcon, StatusBar} from 'native-base';
+import {
+  Button,
+  HStack,
+  Text,
+  View,
+  CheckIcon,
+  StatusBar,
+  VStack,
+  Input,
+  IconButton,
+  Icon,
+  Center,
+  Box,
+  Divider,
+  Heading,
+} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -8,6 +23,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import bookingService from '../../api/BookingService';
 import colors from '../../constants/colors';
@@ -32,6 +48,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     state => state.booking,
   );
   const fleetTypes = useSelector(selectFleetTypes);
+  const [searchTerm, setSearchTerm] = useState('');
   const [vehicle_type, setVehicleType] = useState('all');
   const [quotation_type, setQuotationType] = useState('all'); // all, standard, prestige
   const [page, setPage] = useState(1);
@@ -53,9 +70,9 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     let oldQuotations = [...state.quotations];
     for (let i = 0; i < newQuotations.length; i++) {
       let nquo = newQuotations[i];
-      let quo = oldQuotations.find(q => {
-        q.index.toString() == nquo.index.toString();
-      });
+      let quo = oldQuotations.find(
+        q => q.index.toString() == nquo.index.toString(),
+      );
       if (!quo) {
         oldQuotations.push(nquo);
       }
@@ -129,16 +146,6 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     });
   };
   useEffect(() => fetchQuotations(), []);
-  // useEffect(() => {
-  //   // setFetching(true);
-  //   fetchQuotations();
-  //   getBookingsDetail();
-  // }, [vehicle_type, quotation_type, bookingId]);
-
-  useEffect(() => {
-    // setFetching(true);
-    // nextPageQuotations();
-  }, [page, per_page]);
 
   useEffect(() => {
     if (
@@ -152,6 +159,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     }
   }, [quotationCreatedFor, quotationCreated]);
   let quotations = state.quotations;
+  quotations = orderBy(quotations, ['totalPrice'], ['asc']);
   const onQuotationSelect = index => {
     // nextStep();
     // return;
@@ -169,14 +177,6 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
       });
   };
 
-  const handleMoreLoad = () => {
-    if (total >= page * per_page) {
-      console.log('Getting');
-      setPage(page + 1);
-      // fetchQuotations({pageNo: page + 10, perPage: per_page});
-    }
-  };
-  console.log(`Fetched: ${state.fetched}`);
   if (fetching) {
     return <QuotationsLoader />;
   }
@@ -187,16 +187,12 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     ['companyRatings'],
     ['desc'],
   );
-  let bestRatedQuote = bestRatedQuotsOrderedArray[0];
+  let bestRatedQuote = quotations.reduce((max, curren) =>
+    max.companyRatings > curren.companyRatings ? max : curren,
+  );
   let topExecutiveQuote = quotations.find(q => q.executive);
   let recommendedQuote = lowestQuote;
-  // console.log(state.topCards);
-  console.log(`Total Quotations: ${quotations.length}}`);
-  console.log('Recommendded Quote ' + recommendedQuote?.index);
-  console.log('topExecutiveQuote');
-  console.log(topExecutiveQuote);
-  console.log('recommended');
-  // console.log(recommendedQuote);
+  console.log(`Fleet Types: ${fleetTypes.map(f => f.name)}`);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -308,6 +304,26 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                   </Picker>
                 </View>
               </HStack>
+            </View>
+            <View>
+              <Input
+                placeholder="Search By Company or Fleet Type"
+                variant="filled"
+                width="100%"
+                borderRadius="10"
+                py="1"
+                px="3"
+                value={searchTerm}
+                onChangeText={val => setSearchTerm(val)}
+                InputLeftElement={
+                  <Icon
+                    ml="2"
+                    size="4"
+                    color="gray.400"
+                    as={<Ionicons name="ios-search" />}
+                  />
+                }
+              />
             </View>
             <FlatList
               data={quotations}
