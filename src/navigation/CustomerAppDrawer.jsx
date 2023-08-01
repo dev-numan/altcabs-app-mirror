@@ -7,14 +7,33 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {USER_STATUS_LOG_OUT} from '../store/slices/auth.slice';
 import {useEffect} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import API from '../api';
 
 export default function CustomerAppDrawer(props) {
   const dispatch = useDispatch();
   const User = useSelector(state => state.Auth.TOKEN);
   const role = useSelector(state => state.Auth.role);
+  const TRIPSDATA = useSelector(state => state.Auth.TRIPS);
 
-  console.log('role', role);
-  console.log('User', User);
+
+  const logout=async()=>{
+    let fcmToken= await AsyncStorage.getItem('fcmtoken')
+  
+    console.log("Logout info",fcmToken);
+
+    let response = await API.post('/mobileApp/auth/logout', {token:fcmToken,user:User});
+
+
+
+ 
+  }
+
+  
+
+  console.log('role', TRIPSDATA?.urgent?.length);
+  // console.log('User', User);
 
   const [list, setList] = useState([]);
 
@@ -36,55 +55,76 @@ export default function CustomerAppDrawer(props) {
           child: [
             {
               name: 'New Requests',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'NewRequest',
+              value:TRIPSDATA?.new_requests?.length,
+              count:true
             },
             {
               name: 'Urgent',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'Urgent',
+              value:TRIPSDATA?.urgent?.length,
+              count:true
             },
             {
               name: 'Upcoming',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'Upcoming',
+              value:TRIPSDATA?.upcoming?.length,
+              count:true
             },
             {
               name: 'Completed',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'Completed',
             },
             {
               name: 'Action Required',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'ActionRequired',
             },
             {
               name: 'Driver no marked',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'DriverNoMarked',
             },
             {
               name: 'Customer no marked',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'CustomerNoMarked',
             },
             {
               name: 'Cancelled',
-              icon: 'home',
-              type: Ionicons,
+              // icon: 'home',
+              // type: Ionicons,
               screen: 'Cancelled',
             },
           ],
         },
-
+        {
+          name: 'Availability',
+          icon: 'home',
+          type: Ionicons,
+          screen: 'Availability',
+          visible: false,
+          child: [
+            {
+              name: 'Take A Break',
+              // icon: 'home',
+              // type: Ionicons,
+              screen: 'NewRequest',
+            },
+            
+          ],
+        },
         {
           name: 'Sign Out',
           icon: 'logout',
@@ -113,7 +153,7 @@ export default function CustomerAppDrawer(props) {
 
       setList(listmm);
     }
-  }, []);
+  }, [TRIPSDATA.all.length]);
 
   return (
     <DrawerContentScrollView
@@ -204,6 +244,8 @@ export default function CustomerAppDrawer(props) {
 
                                 props.navigation.closeDrawer();
                                 dispatch(USER_STATUS_LOG_OUT());
+                                logout()
+                                
                               } else props.navigation.navigate(item1.screen);
                             }}
                           
@@ -221,7 +263,7 @@ export default function CustomerAppDrawer(props) {
                             <HStack
                               space={3}
                               alignItems="center"
-                              style={{margin: 10}}>
+                              style={{margin: 10,marginLeft:30}}>
                               <Center>
                                 <Icon
                                   name={item1.icon}
@@ -233,6 +275,9 @@ export default function CustomerAppDrawer(props) {
                               <Center>
                                 <Text style={[styles.text]}>{item1?.name}</Text>
                               </Center>
+                              {item1?.count && <View style={{margin:0,padding:0,backgroundColor:'red',width:20,height:20,borderRadius:10,textAlign:'center',alignItems:'center'}}>
+                                <Text style={[styles.count]}>{item1?.value}</Text>
+                              </View>}
                             </HStack>
                           </Pressable>
                         );
@@ -248,6 +293,7 @@ export default function CustomerAppDrawer(props) {
                     if (item?.name === 'Sign Out') {
                       props.navigation.closeDrawer();
                       dispatch(USER_STATUS_LOG_OUT());
+                      logout()
                     } else props.navigation.navigate(item.screen);
                   }}
                   key={i}
@@ -388,4 +434,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1C2B39',
   },
+  count:{
+    flexGrow: 1,
+    textAlign: 'left',
+    fontSize: 16,
+    color: '#1C2B39',
+  }
 });
