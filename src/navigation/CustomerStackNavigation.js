@@ -19,6 +19,7 @@ import CancelBookingConfirmation from '../components/screens/customer/account/Ca
 import TestPayment from '../components/process-booking/TestPayment';
 import AdminHome from '../components/screens/admin/Home';
 import NewRequest from '../components/screens/admin/NewRequests';
+import Break from '../components/screens/admin/break';
 
 const Stack = createNativeStackNavigator();
 
@@ -111,6 +112,7 @@ const CustomerStackNavigation = () => {
         </Stack.Screen>
 
       <Stack.Screen name="MyBookings" component={ConfirmedBookings} />
+      <Stack.Screen name="Break" component={Break} />
       <Stack.Screen name="Bookings History" component={HistoryBookings} />
       <Stack.Screen name="Booking Details" component={BookingDetails} />
       <Stack.Screen name="MyDetails" component={MyDetails} />
