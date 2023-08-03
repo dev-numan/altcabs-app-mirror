@@ -1,0 +1,89 @@
+import React from 'react';
+import {
+  ImageBackground,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Switch,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Image,
+} from 'react-native';
+import colors from '../../../constants/colors';
+import BookingWidget from '../../booking-widget/BookingWidget';
+import Header from '../../common/Header';
+
+import {Center} from 'native-base';
+
+const CabBid = () => {
+  return (
+    <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+      <KeyboardAvoidingView>
+        <ScrollView
+          showsVerticalScrollIndicator={true}
+          keyboardShouldPersistTaps={'always'}>
+          <Header title="Compare" />
+          <Text style={styles.description}>
+            Invite bids from different cab operators
+          </Text>
+          <BookingWidget booking_type="client_bidding" />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </View>
+  );
+};
+const getTitleTextByBookingType = booking_type => {
+  switch (booking_type) {
+    case 'client_bidding':
+      return {
+        title: 'Request Bids For Your Journey',
+        header: 'Bid',
+        bgColor: colors.PURPLE,
+      };
+    case 'cabmatch':
+      return {
+        title: 'Find out and book the cabs heading your way',
+        header: 'Match',
+        bgColor: colors.BLUE,
+      };
+    default:
+      return {
+        title: 'Compare the cab fares online',
+        header: 'COMPARE',
+        bgColor: colors.YELLOW,
+      };
+  }
+};
+export default CabBid;
+const styles = StyleSheet.create({
+  description: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginHorizontal: 20,
+    fontWeight: 'bold',
+    color: colors.WHITE,
+    marginVertical: 7,
+  },
+  form: {
+    borderRadius: 12,
+    margin: 12,
+    padding: 18,
+    backgroundColor: colors.SECONDARY,
+  },
+  heading: {fontSize: 18, fontWeight: 'bold', color: 'white'},
+  chip: {
+    backgroundColor: colors.PRIMARY,
+    padding: 4,
+    borderRadius: 7,
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    margin: 7,
+  },
+  image: {
+    height: 50,
+    width: '88%',
+    resizeMode: 'contain',
+  },
+});

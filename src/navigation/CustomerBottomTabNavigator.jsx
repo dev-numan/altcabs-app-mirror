@@ -9,10 +9,11 @@ import {TabBarOptions} from '../constants/NavigationStyle';
 import CabCompare from '../components/screens/customer/CabCompare';
 import Profile from '../components/screens/customer/Profile';
 import FrontCustomerChat from '../components/screens/customer/FrontCustomerChat';
+import CabBid from '../components/screens/customer/CabBid';
 const CustomerBottomTabNavigator = () => {
   return (
     <BottomTab.Navigator
-      initialRouteName="Cab Compare"
+      initialRouteName="Cab Bid"
       screenOptions={TabBarOptions}>
       <BottomTab.Screen
         name="Cab Compare"
@@ -21,6 +22,20 @@ const CustomerBottomTabNavigator = () => {
           tabBarIcon: ({color}) => (
             <MaterialCommunityIcons
               name="car-multiple"
+              color={color}
+              size={20}
+              style={{marginBottom: -3}}
+            />
+          ),
+        }}
+      />
+      <BottomTab.Screen
+        name="Cab Bid"
+        component={CabBid}
+        options={{
+          tabBarIcon: ({color}) => (
+            <MaterialCommunityIcons
+              name="hammer-wrench"
               color={color}
               size={20}
               style={{marginBottom: -3}}

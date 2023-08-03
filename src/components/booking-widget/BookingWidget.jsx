@@ -5,6 +5,7 @@ import {
   Select,
   Switch,
   Text,
+  TextArea,
   View,
 } from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -52,6 +53,7 @@ const BookingWidget = ({booking_type}) => {
     to_place_id: 'ChIJ6W3FzTRydkgRZ0H2Q1VT548',
     startTime: moment().add(2, 'hours'),
     passangers: '1',
+    special_requirements: '',
     luggage: {},
     via: [
       // {place_id: 'test', desc: 'Via 1'}
@@ -572,6 +574,19 @@ const BookingWidget = ({booking_type}) => {
             </SafeAreaView>
           ))}
         </>
+      )}
+      {booking_type == 'client_bidding' && (
+        <View>
+          <TextArea
+            rowSpan={5}
+            bordered
+            placeholder="Any Special Requirements? "
+            value={form.special_requirements}
+            onChangeText={value =>
+              setForm({...form, special_requirements: value})
+            }
+          />
+        </View>
       )}
       <CustomButton onPress={submitBooking}>
         {booking_type == 'cabmatch'

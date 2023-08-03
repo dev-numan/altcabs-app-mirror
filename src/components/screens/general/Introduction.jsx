@@ -34,14 +34,14 @@ const Introduction = () => {
       image: require('../../../assets/images/cabCompare.png'),
       bgColor: colors.SECONDARY,
     },
-    {
-      key: 2,
-      title: 'CabMatch',
-      text: `If you are ready to travel, check out if any driver is heading your way. You can negotiate a discount directly with the operator in real-time chat via our platform.`,
-      text2: `More savings for you!`,
-      image: require('../../../assets/images/cabMatch.png'),
-      bgColor: colors.CAB_MATCH,
-    },
+    // {
+    //   key: 2,
+    //   title: 'CabMatch',
+    //   text: `If you are ready to travel, check out if any driver is heading your way. You can negotiate a discount directly with the operator in real-time chat via our platform.`,
+    //   text2: `More savings for you!`,
+    //   image: require('../../../assets/images/cabMatch.png'),
+    //   bgColor: colors.CAB_MATCH,
+    // },
     {
       key: 3,
       title: 'CabBid',

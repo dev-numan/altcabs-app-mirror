@@ -11,7 +11,7 @@ import {
 import {useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useDispatch} from 'react-redux';
 
 import {USER_STATUS_LOG_OUT} from '../../../store/slices/auth.slice';
@@ -25,17 +25,50 @@ const Profile = () => {
     {
       name: 'MyBookings',
       label: 'Confirmed Bookings',
-      icon: <AntDesign name="calendar" color="white" size={28} />,
+      icon: (
+        <MaterialCommunityIcons
+          name="car-multiple"
+          color={colors.SECONDARY}
+          size={28}
+          style={{marginBottom: -3}}
+        />
+      ),
+    },
+    {
+      name: 'BiddingBookings',
+      label: 'cabBid Bookings',
+      icon: (
+        <MaterialCommunityIcons
+          name="hammer-wrench"
+          color={colors.SECONDARY}
+          size={28}
+          style={{marginBottom: -3}}
+        />
+      ),
     },
     {
       name: 'Bookings History',
       label: 'History',
-      icon: <AntDesign name="calendar" color="white" size={28} />,
+      icon: (
+        <MaterialCommunityIcons
+          name="history"
+          color={colors.SECONDARY}
+          size={28}
+          style={{marginBottom: -3}}
+        />
+      ),
     },
     {
       name: 'MyDetails',
       label: 'My Details',
-      icon: <FontAwesome name="id-card" color="white" size={28} />,
+      icon: (
+        <MaterialCommunityIcons
+          name="account-circle"
+          color={colors.SECONDARY}
+          size={28}
+          style={{marginBottom: -3}}
+        />
+      ),
     },
   ];
   return (

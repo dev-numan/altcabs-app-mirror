@@ -3,6 +3,11 @@ import GenericService from './GenericService';
 class BookingService extends GenericService {
   getById = bookingId =>
     this.post(`/mobileapp/booking_process_mobile/${bookingId}/get`);
+  setBidQuotation = (bookingId, bidId) =>
+    this.post(
+      `/mobileapp/booking_process_mobile/${bookingId}/acceptOffer/client_bidding`,
+      {bidId},
+    );
   cancelBooking = bookingId =>
     this.post(`/mobileapp/booking_process_mobile/cancel-booking/${bookingId}`);
   getQuotationsById = bookingId => {
@@ -27,6 +32,7 @@ class BookingService extends GenericService {
   completedBookings = () => this.post(`/mobileapp/myaccount/history`);
   confirmedBookings = () =>
     this.post(`/mobileapp/myaccount/confirmed_bookings`);
+  biddingBookings = () => this.post(`/mobileapp/myaccount/bidding_bookings`);
 
   postNewBooking = (data, booking_type = 'normal1') =>
     this.post(

@@ -20,6 +20,7 @@ import TestPayment from '../components/process-booking/TestPayment';
 import AdminHome from '../components/screens/admin/Home';
 import NewRequest from '../components/screens/admin/NewRequests';
 import Break from '../components/screens/admin/Break';
+import InBiddingBookings from '../components/screens/customer/account/InBiddingBookings';
 
 const Stack = createNativeStackNavigator();
 
@@ -88,12 +89,37 @@ const CustomerStackNavigation = () => {
         {props => <NewRequest title="Cancelled" type="canceled" />}
       </Stack.Screen>
 
-      <Stack.Screen name="MyBookings" component={ConfirmedBookings} />
+      <Stack.Screen
+        name="MyBookings"
+        component={ConfirmedBookings}
+        title="Test"
+      />
+      <Stack.Screen
+        name="BiddingBookings"
+        component={InBiddingBookings}
+        options={{headerTitle: 'In Bidding Bookings'}}
+      />
       <Stack.Screen name="Break" component={Break} />
-      <Stack.Screen name="Bookings History" component={HistoryBookings} />
-      <Stack.Screen name="Booking Details" component={BookingDetails} />
-      <Stack.Screen name="MyDetails" component={MyDetails} />
-      <Stack.Screen name="BookingChat" component={CustomerBookingChat} />
+      <Stack.Screen
+        name="Bookings History"
+        component={HistoryBookings}
+        options={{headerTitle: 'Booking History'}}
+      />
+      <Stack.Screen
+        name="Booking Details"
+        component={BookingDetails}
+        options={{headerTitle: 'Booking Details'}}
+      />
+      <Stack.Screen
+        name="MyDetails"
+        component={MyDetails}
+        options={{headerTitle: 'My Account Details'}}
+      />
+      <Stack.Screen
+        name="BookingChat"
+        component={CustomerBookingChat}
+        options={{headerTitle: 'Booking Chat'}}
+      />
       <Stack.Screen name="TestPayment" component={TestPayment} />
 
       <Stack.Screen

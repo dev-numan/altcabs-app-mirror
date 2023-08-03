@@ -13,6 +13,7 @@ import QuotationSuccess from './QuotationSuccess';
 import QuotationLoaderSkeleton from '../common/skeletons/QuotationLoaderSkeleton';
 import CustomProgressSteps from '../common/ProgressSteps';
 import CustomProgressStep from '../common/ProgressStep';
+import BookingBidding from './BookingBidding';
 const ProcessBooking = () => {
   const {params} = useRoute();
   const dispatch = useDispatch();
@@ -32,6 +33,7 @@ const ProcessBooking = () => {
   const nextStep = () => setActiveStep(activeStep + 1);
   const previousStep = () => setActiveStep(activeStep - 1);
   console.log('booking.hasReturnBooking', booking?.hasReturnBooking);
+  console.log(`Booking Type: ${booking?.booking_type}`);
   const steps = [
     {
       label: 1,
@@ -61,11 +63,20 @@ const ProcessBooking = () => {
                       ? 'Outbound Quotations'
                       : 'Quotations'
                   }>
-                  <QuotationSelector
-                    nextStep={nextStep}
-                    hasReturnBooking={booking.hasReturnBooking}
-                    bookingId={booking?._id}
-                  />
+                  {booking?.booking_type == 'normal' && (
+                    <QuotationSelector
+                      nextStep={nextStep}
+                      hasReturnBooking={booking.hasReturnBooking}
+                      bookingId={booking?._id}
+                    />
+                  )}
+                  {booking?.booking_type == 'client_bidding' && (
+                    <BookingBidding
+                      nextStep={nextStep}
+                      hasReturnBooking={booking.hasReturnBooking}
+                      bookingId={booking?._id}
+                    />
+                  )}
                 </CustomProgressStep>
               )}
               {activeStep == 1 && (
@@ -101,15 +112,27 @@ const ProcessBooking = () => {
               {activeStep == 0 && (
                 <CustomProgressStep
                   label={
-                    booking.hasReturnBooking
+                    booking.booking_type == 'client_bidding'
+                      ? 'Select Best Bid'
+                      : booking.hasReturnBooking
                       ? 'Outbound Quotations'
                       : 'Quotations'
                   }>
-                  <QuotationSelector
-                    nextStep={nextStep}
-                    hasReturnBooking={booking.hasReturnBooking}
-                    bookingId={booking._id}
-                  />
+                  {booking?.booking_type == 'normal' && (
+                    <QuotationSelector
+                      nextStep={nextStep}
+                      hasReturnBooking={booking.hasReturnBooking}
+                      bookingId={booking?._id}
+                    />
+                  )}
+                  {booking?.booking_type == 'client_bidding' && (
+                    <BookingBidding
+                      nextStep={nextStep}
+                      hasReturnBooking={booking.hasReturnBooking}
+                      bookingId={booking?._id}
+                      booking={booking}
+                    />
+                  )}
                 </CustomProgressStep>
               )}
               {activeStep == 1 && (

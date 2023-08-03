@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import bookingService from '../../api/BookingService';
 import uuid from 'react-native-uuid';
+import {ERROR, SUCCESS} from './message.slice';
 const initialState = {
   processBookings: {},
   newQuotations: [],
@@ -18,11 +19,27 @@ export const LOAD_PROCESS_BOOKING = createAsyncThunk(
   async (bookingId, {dispatch, rejectWithValue}) => {
     try {
       let booking = await bookingService.getById(bookingId);
-      // console.log('Herrrrrreeee', booking);
+
       return booking;
     } catch (err) {
       console.log(err);
 
+      return rejectWithValue(err.message);
+    }
+  },
+);
+export const SET_BIDDING_QUOTATION = createAsyncThunk(
+  'booking/setBiddingQuotation',
+  async ({bidId, bookingId}, {dispatch, rejectWithValue}) => {
+    try {
+      console.log(`bidid: ${bidId}`);
+      let {booking} = await bookingService.setBidQuotation(bookingId, bidId);
+      console.log(`bookingId: ${booking._id}`);
+      dispatch(SUCCESS('Bid Selected Successfully'));
+      return booking;
+    } catch (err) {
+      console.log(err);
+      dispatch(ERROR('Unable to Select Bid'));
       return rejectWithValue(err.message);
     }
   },
@@ -49,6 +66,9 @@ export const bookingSlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(LOAD_PROCESS_BOOKING.fulfilled, (state, {payload}) => {
+      state.processBookings[payload?._id] = payload;
+    });
+    builder.addCase(SET_BIDDING_QUOTATION.fulfilled, (state, {payload}) => {
       state.processBookings[payload?._id] = payload;
     });
     builder.addCase(LOAD_PROCESS_BOOKING.rejected, (state, {payload}) => {

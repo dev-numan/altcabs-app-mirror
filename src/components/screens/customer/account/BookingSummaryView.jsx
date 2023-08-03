@@ -40,7 +40,7 @@ const BookingSummaryView = ({booking, showContactDriver}) => {
           </Text>
         </HStack>
         <Button.Group>
-          {showContactDriver && (
+          {showContactDriver && booking.isConfirmed && (
             <Button
               colorScheme={colors.YELLOW}
               size="xs"
@@ -62,6 +62,18 @@ const BookingSummaryView = ({booking, showContactDriver}) => {
                 });
               }}>
               Cancel
+            </Button>
+          )}
+          {!booking.isConfirmed && booking.booking_type == 'client_bidding' && (
+            <Button
+              size="xs"
+              colorScheme={colors.YELLOW}
+              onPress={() => {
+                navigation.navigate('ProcessBooking', {
+                  bookingId: booking._id,
+                });
+              }}>
+              View Bids
             </Button>
           )}
         </Button.Group>
