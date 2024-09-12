@@ -112,11 +112,17 @@ export const REGISTRATION = createAsyncThunk(
   async (data, {dispatch, rejectWithValue}) => {
     try {
       dispatch(SET_IS_PROCESSING('Registering'));
+      console.log('====================================');
+      console.log(data);
+      console.log('====================================');
       let response = await API.post('/mobileApp/auth/registration', data);
       dispatch(SUCCESS(response.data.message));
       if (data.is_google) await dispatch(USER(response.data.token));
       dispatch(SET_IS_PROCESSING_FINISHED());
     } catch (err) {
+      console.log('====================================');
+      console.log(err);
+      console.log('====================================');
       let error = ErrorType(err);
       dispatch(ERROR(error));
       dispatch(SET_IS_PROCESSING_FINISHED());

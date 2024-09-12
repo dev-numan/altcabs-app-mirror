@@ -95,18 +95,26 @@ const SignUp = () => {
     data.email = data.email.toLowerCase();
     delete data.cPassword;
 
-    if (form.cPassword === form.password) {
-      try {
-        await schema.validate(data);
-        await dispatch(REGISTRATION({...data, is_google: false})).unwrap();
-        navigation.navigate('Confirmation', {email: data.email});
-      } catch (err) {
-        console.log(err.message);
-        dispatch(ERROR(err.message));
+    if (form.name.length > 4) {
+      if (form.cPassword === form.password) {
+        try {
+          await schema.validate(data);
+          await dispatch(REGISTRATION({...data, is_google: false})).unwrap();
+          navigation.navigate('Confirmation', {email: data.email});
+        } catch (err) {
+          console.log(err.message);
+          dispatch(ERROR(err.message));
+        }
+      } else {
+        dispatch(ERROR('Password not Matched!'));
       }
-    } else {
-      dispatch(ERROR('Password not Matched!'));
     }
+    else{
+      dispatch(ERROR('Name should contain atleast 5 characters'));
+
+    }
+
+    
   };
   return (
     <KeyboardAvoidingView>
