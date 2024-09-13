@@ -346,47 +346,53 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
           </View>
           <FlatList
             data={quotations}
+            scrollEnabled={false} // Disable scrolling
+
             renderItem={({item}) => (
               <HStack
                 key={item.index}
                 style={{
                   flex: 1,
+                  flexDirection: 'row',
                   alignItems: 'center',
                   backgroundColor: '#27323D',
                   borderRadius: 12,
                   marginVertical: 12,
+                  paddingHorizontal: 12, // Adding some padding to give breathing room
+                  justifyContent: 'space-between',
                 }}>
-                {/* <QuotationLogo quotation={item} /> */}
-                <View style={{marginLeft: 12, flexGrow: 1}}>
-                  <Text style={{color: 'white', fontSize: 12}}>
-                    {item.vehicle_type_name}
-                  </Text>
-                  <Text style={{color: 'white', fontSize: 18}}>
-                    {item.companyName}
-                  </Text>
-                </View>
-                <View>
-                  <View style={{color: 'white', fontSize: 12}}>
+                {/* Left side content */}
+                <View style={{flex: 1, paddingVertical: 12}}>
+                  <View>
+                    <Text style={{color: 'white', fontSize: 12}}>
+                      {item.vehicle_type_name}
+                    </Text>
+                    <Text style={{color: 'white', fontSize: 18}}>
+                      {item.companyName}
+                    </Text>
+                  </View>
+                  <View style={{marginTop: 8}}>
                     <Text style={{color: 'white', fontSize: 12}}>
                       {item.companyLocation}
                     </Text>
-                  </View>
-                  <View>
-                    <StarRating
-                      rating={item.companyRatings}
-                      onChange={() => {}}
-                      starSize={18}
-                    />
+                    <View style={{flexDirection: 'row', marginTop: 4}}>
+                      <StarRating
+                        rating={item.companyRatings}
+                        onChange={() => {}}
+                        starSize={18}
+                      />
+                    </View>
                   </View>
                 </View>
-                <View style={{}}>
+
+                {/* Button container */}
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Button
-                    // style={{paddin}}
-                    style={{margin: 15}}
+                    style={{margin: 15, paddingVertical: 8}}
                     size="xs"
                     colorScheme={colors.YELLOW}
                     onPress={() => onQuotationSelect(item.index)}>
-                    <Text>
+                    <Text style={{textAlign: 'center'}}>
                       £ {item.priceToCharge?.toFixed(2)} {'\n'} Book Now
                     </Text>
                   </Button>

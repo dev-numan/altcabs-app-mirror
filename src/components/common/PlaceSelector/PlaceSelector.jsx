@@ -51,6 +51,7 @@ const PlaceSelector = ({value, onChange, label, onCancel}) => {
           <FormControl.Label>{label}</FormControl.Label>
           <Input
             w="100%"
+            backgroundColor={"white"}
             bg="white"
             value={value.description}
             onChangeText={text => {
@@ -60,9 +61,11 @@ const PlaceSelector = ({value, onChange, label, onCancel}) => {
               <CustomButton
                 size="xs"
                 rounded="none"
+                
                 _text={{fontSize: 10, fontWeight: 'bold'}}
                 p="0"
                 bg="white"
+                
                 w="1/6"
                 h="full"
                 variant="solid"
