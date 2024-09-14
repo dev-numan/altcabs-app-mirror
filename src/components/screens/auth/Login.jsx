@@ -27,21 +27,36 @@ const Login = () => {
     password: 'usman',
   });
   const handleLogin = async () => {
-    const fcmtoken = await AsyncStorage.getItem('fcmtoken');
-    let data = {
-      email: login.username.toLowerCase(),
-      password: login.password,
-      fcmtoken,
-    };
     try {
-      await dispatch(LOGIN(data)).unwrap();
-    } catch (err) {
-      if (err === 'Your Email is not verified!') {
-        navigation.navigate('Resend Confirmation', {email: data.email});
+      const fcmtoken = await AsyncStorage.getItem('fcmtoken');
+      let data = {
+        email: login.username.toLowerCase(),
+        password: login.password,
+        fcmtoken,
+      };
+  
+      const resultAction = await dispatch(LOGIN(data));
+  
+      if (LOGIN.fulfilled.match(resultAction)) {
+        // The login was successful
+        console.log('Login successful');
+        // You can navigate to the next screen or perform any other action here
+      } else {
+        // The login failed
+        const errorMessage = resultAction.payload || resultAction.error.message;
+        if (errorMessage === 'Your Email is not verified!') {
+          navigation.navigate('Resend Confirmation', { email: data.email });
+        } else {
+          console.log('Login error:', errorMessage);
+          // Handle other error messages or display them to the user
+        }
       }
-      console.log(err);
+    } catch (err) {
+      // Handle any unexpected errors
+      console.log('Unexpected error:', err);
     }
   };
+  
 
   const signIn = () => {};
   const handleGoogleLogin = async () => {

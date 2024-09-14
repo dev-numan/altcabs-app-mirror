@@ -81,6 +81,9 @@ export const LOGIN = createAsyncThunk(
       );
       dispatch(SET_IS_PROCESSING_FINISHED());
     } catch (err) {
+      console.log('====================================');
+      console.log(err);
+      console.log('====================================');
       let error = ErrorType(err);
       await dispatch(ERROR(error));
       await dispatch(SET_IS_PROCESSING_FINISHED());

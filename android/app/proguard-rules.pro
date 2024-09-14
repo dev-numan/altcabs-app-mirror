@@ -8,3 +8,10 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Add any project specific keep options here:
+
+-keep class com.google.** { *; }
+-keep class com.reactnativecommunity.asyncstorage.** { *; }
+
+-keep class * extends java.util.ListResourceBundle {
+    protected Object[][] getContents();
+}
