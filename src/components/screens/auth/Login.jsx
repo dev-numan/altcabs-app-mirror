@@ -18,6 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import ContactTextInput from '../general/ContactTextInput';
 import GoogleLogin from '../general/GoogleLogin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -34,10 +35,10 @@ const Login = () => {
         password: login.password,
         fcmtoken,
       };
-  
-      const resultAction = await dispatch(LOGIN(data));
-  
-      if (LOGIN.fulfilled.match(resultAction)) {
+
+      const resultAction = dispatch(LOGIN(data));
+
+      if (LOGIN?.fulfilled?.match(resultAction)) {
         // The login was successful
         console.log('Login successful');
         // You can navigate to the next screen or perform any other action here
@@ -45,7 +46,7 @@ const Login = () => {
         // The login failed
         const errorMessage = resultAction.payload || resultAction.error.message;
         if (errorMessage === 'Your Email is not verified!') {
-          navigation.navigate('Resend Confirmation', { email: data.email });
+          navigation.navigate('Resend Confirmation', {email: data.email});
         } else {
           console.log('Login error:', errorMessage);
           // Handle other error messages or display them to the user
@@ -56,7 +57,6 @@ const Login = () => {
       console.log('Unexpected error:', err);
     }
   };
-  
 
   const signIn = () => {};
   const handleGoogleLogin = async () => {

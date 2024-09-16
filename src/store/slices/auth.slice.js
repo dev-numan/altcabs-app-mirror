@@ -8,6 +8,7 @@ import webSocketService from '../../api/WebSocketService';
 import {valid} from 'joi';
 import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
+
 const initialState = {
   IS_LOGGED: false,
   TOKEN: null,
@@ -50,10 +51,8 @@ export const USER_LOGIN_STATUS = createAsyncThunk(
 export const USER_STATUS_LOG_OUT = createAsyncThunk(
   'auth/userLogoutStatus',
   async () => {
-    console.log("Logout info")
+    console.log('Logout info');
     await AsyncStorage.removeItem('Token');
-   
-    
 
     return true;
   },
@@ -64,19 +63,12 @@ export const LOGIN = createAsyncThunk(
   async (data, {dispatch, rejectWithValue}) => {
     try {
       dispatch(SET_IS_PROCESSING('Authorizing'));
-      console.clear();
-      console.log(data);
       let response = await API.post('/mobileApp/auth/login', data);
-      console.log("user Info",response.data)
+      console.log('user Info', response.data);
       dispatch(SET_USER(response.data));
       console.log(response.data);
-     
-      
-
       dispatch(SUCCESS(response.data.message));
-    
-
-      await dispatch(
+      dispatch(
         USER({token: response.data.token, companyId: response.data.companyId}),
       );
       dispatch(SET_IS_PROCESSING_FINISHED());
@@ -85,8 +77,8 @@ export const LOGIN = createAsyncThunk(
       console.log(err);
       console.log('====================================');
       let error = ErrorType(err);
-      await dispatch(ERROR(error));
-      await dispatch(SET_IS_PROCESSING_FINISHED());
+      dispatch(ERROR(error));
+      dispatch(SET_IS_PROCESSING_FINISHED());
       return rejectWithValue(error);
     }
   },
