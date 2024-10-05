@@ -19,7 +19,10 @@ import {GET_ALL_SETTINGS} from './src/store/slices/settings.slice';
 import webSocketService from './src/api/WebSocketService';
 import {QUOTATION_CREATED} from './src/store/slices/booking.slice';
 import {Linking} from 'react-native';
-import {requestUserPermission} from './src/utils/PushNotificationHelper';
+import {
+  requestUserPermission,
+  requestUserPermissionNotifee,
+} from './src/utils/PushNotificationHelper';
 
 const Drawer = createDrawerNavigator();
 export default function App() {
@@ -30,9 +33,9 @@ export default function App() {
   const IS_LOGGED = useSelector(state => state.Auth.IS_LOGGED);
 
   const loadApp = async () => {
-    await dispatch(GET_ALL_SETTINGS());
+    dispatch(GET_ALL_SETTINGS());
     // await dispatch(GET_ALL_LUGGAGE());
-    await dispatch(USER_LOGIN_STATUS());
+    dispatch(USER_LOGIN_STATUS());
     setTimeout(() => {
       dispatch(loadClientApp());
     }, 2000);
@@ -41,6 +44,7 @@ export default function App() {
   useEffect(() => {
     console.log('FCM PERMISSION IN USEEFFECt');
     requestUserPermission();
+    requestUserPermissionNotifee();
   }, []);
 
   useEffect(() => {

@@ -23,3 +23,15 @@ async function GetFCMToken() {
     console.warn('no token');
   }
 }
+
+export async function requestUserPermissionNotifee() {
+  const settings = await notifee.requestPermission();
+
+  if (settings.authorizationStatus === notifee.AuthorizationStatus.AUTHORIZED) {
+    console.log('Notification permissions granted.');
+  } else if (
+    settings.authorizationStatus === notifee.AuthorizationStatus.DENIED
+  ) {
+    console.log('Notification permissions denied.');
+  }
+}

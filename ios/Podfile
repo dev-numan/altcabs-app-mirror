@@ -14,6 +14,12 @@ target 'AltcabsApp' do
 
   # For Firebase project
   use_frameworks! :linkage => :static 
+  $RNFirebaseAsStaticFramework = true
+   permissions_path = '../node_modules/react-native-permissions/ios'
+
+  pod 'Permission-Notifications', :path => "#{permissions_path}/Notifications"
+  pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
+  pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
 
   # Flags change depending on the env values.
   flags = get_default_flags()
@@ -29,7 +35,7 @@ target 'AltcabsApp' do
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
     # you should disable the next line.
-    :flipper_configuration => FlipperConfiguration.enabled,
+    # :flipper_configuration => FlipperConfiguration.enabled,
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
