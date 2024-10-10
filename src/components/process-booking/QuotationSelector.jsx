@@ -45,7 +45,7 @@ import {sortBy, orderBy} from 'lodash';
 
 const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   const dispatch = useDispatch();
-  const {quotationCreated, quotationCreatedFor} = useSelector(
+  const {quotationCreated, quotationCreatedFor, newQuotations} = useSelector(
     state => state.booking,
   );
   const fleetTypes = useSelector(selectFleetTypes);
@@ -98,6 +98,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
         setFetching(false);
       })
       .catch(err => {
+        console.log('Error in Fetching Quotations');
         console.log(err);
       });
   };
@@ -154,9 +155,9 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
       quotationCreatedFor == bookingId
     ) {
       console.log('Quotations Created');
-      addQuotationsToScreen(quotationCreated);
+      if (quotationCreated) addQuotationsToScreen(newQuotations);
     }
-  }, [quotationCreatedFor, quotationCreated]);
+  }, [quotationCreatedFor, quotationCreated, newQuotations]);
   let quotations = state.quotations;
   quotations = orderBy(quotations, ['totalPrice'], ['asc']);
   const onQuotationSelect = index => {
@@ -186,8 +187,8 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     ['companyRatings'],
     ['desc'],
   );
-  console.log('quotations');
-  console.log(quotations.map(q => q.index));
+  // console.log('quotations');
+  // console.log(quotations.map(q => q.index));
   let bestRatedQuote =
     quotations.length == 0
       ? null
@@ -213,7 +214,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   if (vehicle_type !== 'all') {
     quotations = quotations.filter(q => q.vehicle_type == vehicle_type);
   }
-  console.log(`vehicle_type: ${vehicle_type}`);
+  // console.log(`vehicle_type: ${vehicle_type}`);
   return (
     <ScrollView
     // scrollEnabled={false} // Disable scrolling
@@ -301,7 +302,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                 dropdownIconColor={colors.WHITE}
                 placeholder={'#323F4B'}
                 onValueChange={itemValue => {
-                  console.log('itemValue', itemValue);
+                  // console.log('itemValue', itemValue);
                   setVehicleType(itemValue);
                 }}
                 style={{
@@ -387,7 +388,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                 colorScheme={colors.YELLOW}
                 onPress={() => onQuotationSelect(index)}>
                 <Text style={{textAlign: 'center'}}>
-                  £ {item.priceToCharge?.toFixed(2)} {'\n'} Book Now
+                  £ {item.totalPrice?.toFixed(2)} {'\n'} Book Now
                 </Text>
               </Button>
             </View>
@@ -409,7 +410,7 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     // marginTop: StatusBar.currentHeight || 0,
-    padding:3
+    padding: 3,
   },
   typeView: {
     margin: 7,

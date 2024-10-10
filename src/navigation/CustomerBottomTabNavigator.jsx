@@ -13,7 +13,7 @@ import CabBid from '../components/screens/customer/CabBid';
 const CustomerBottomTabNavigator = () => {
   return (
     <BottomTab.Navigator
-      initialRouteName="Cab Bid"
+      initialRouteName="Cab Compare"
       screenOptions={TabBarOptions}>
       <BottomTab.Screen
         name="Cab Compare"

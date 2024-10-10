@@ -1,15 +1,11 @@
-// let baseURL = '10.135.48.102:8080';
-// let baseURL = '192.168.10.15:8080';
 let baseURL = 'www.altcabs.com';
-//Live
-// export const URL = 'https://altcabs.com/api';
-// export const SOCKET_URL = 'wss://altcabs.com/api';
-// export const URL = 'http://192.168.18.90:8080/api';
-// export const SOCKET_URL = 'ws://192.168.18.90:8080/api';
+
 export const URL = `https://${baseURL}/api`;
 export const SOCKET_URL = `wss://${baseURL}`;
 
-import {Platform} from 'react-native';
+// let baseURL = '192.168.10.12:8080';
+// export const URL = `http://${baseURL}/api`;
+// export const SOCKET_URL = `ws://${baseURL}`;
 
 //Constant
 export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';

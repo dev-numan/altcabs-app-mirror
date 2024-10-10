@@ -65,6 +65,8 @@ export default function App() {
       webSocketService.on(
         'quotes-added-to-booking',
         (booking_id, quotations) => {
+          // console.log('Quotations Received for booking id ' + booking_id);
+          // console.log(quotations);
           dispatch(QUOTATION_CREATED({booking_id, quotations}));
         },
       );

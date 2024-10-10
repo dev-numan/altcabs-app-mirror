@@ -19,7 +19,7 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
     }
   };
   if (!quotation) return <QuotationLoaderSkeleton />;
-  console.log(getTitleFromType());
+  // console.log(getTitleFromType());
   return (
     <View style={[styles.typeView]}>
       <View style={[styles.typeTextView]}>
