@@ -32,10 +32,12 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
       <Button
         rounded="md"
         p="3"
-        _text={{fontSize: 16, fontWeight: 'bold'}}
+        _text={{fontSize: 20, fontWeight: 600}}
         bg={colors.YELLOW}
         onPress={() => onQuotationSelect(quotation.index)}>
-        <Text>£ {Number(quotation.totalPrice).toFixed(2)} </Text>
+        <Text _text={{fontSize: 20, fontWeight: 600}}>
+          £ {Number(quotation.totalPrice).toFixed(2)}{' '}
+        </Text>
       </Button>
     </View>
   );
@@ -82,5 +84,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  btnText: {
+    fontWeight: 600,
+    color: 'white',
   },
 });

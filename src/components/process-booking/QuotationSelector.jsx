@@ -77,29 +77,25 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
       }
     }
     oldQuotations = sortBy(oldQuotations, q => q.totalPrice);
-    setState({...state, quotations: oldQuotations});
+    setState({...state, quotations: oldQuotations, fetched: true});
   };
   const fetchQuotations = () => {
     bookingService
       .getQuotationsById(bookingId)
       .then(data => {
         // console.log('DATA QUOTATIONS: ', data.quotations);
-        setState({
-          ...state,
-          // quotations: [...state.quotations, data.quotations],
-          // quotations: data.quotations,
 
-          fetched: true,
-        });
         addQuotationsToScreen(data.quotations);
         // setPage(data.page);
         // setPerPage(data.per_page);
         // setTotal(data.total);
-        setFetching(false);
       })
       .catch(err => {
         console.log('Error in Fetching Quotations');
         console.log(err);
+      })
+      .finally(() => {
+        setFetching(false);
       });
   };
   const nextPageQuotations = () => {

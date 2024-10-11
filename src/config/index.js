@@ -1,14 +1,21 @@
-let baseURL = 'www.altcabs.com';
+export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';
 
+/**
+ * Use below Credientials for live server
+ * Usman And Nauman Qamar have the access to live server logs and deployments
+ */
+let baseURL = 'www.altcabs.com';
 export const URL = `https://${baseURL}/api`;
 export const SOCKET_URL = `wss://${baseURL}`;
 
+/**
+ * Use below credientials for development server
+ */
 // let baseURL = '192.168.10.12:8080';
 // export const URL = `http://${baseURL}/api`;
 // export const SOCKET_URL = `ws://${baseURL}`;
 
 //Constant
-export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';
 
 // Test;
 // export const URL =
