@@ -2,7 +2,7 @@ import React from 'react';
 import API from '../../../api';
 import {useDispatch, useSelector} from 'react-redux';
 
-import { TRIPDATA } from '../../../store/slices/auth.slice';
+import {TRIPDATA} from '../../../store/slices/auth.slice';
 
 import {
   ImageBackground,
@@ -22,12 +22,12 @@ import Header from '../../common/Header';
 import TaxiCard from './component/Card'; // Adjust the import path based on your project structure
 import {useEffect} from 'react';
 
-const NewRequest = ({title,type}) => {
+const NewRequest = ({title, type}) => {
   // Replace these sample data with actual data from your system
-  console.log(title)
-  const dispatch= useDispatch();
+  console.log(title);
+  const dispatch = useDispatch();
 
-  let Data=[]
+  let Data = [];
   const Token = useSelector(state => state.Auth.JWT);
   const COMPANYID = useSelector(state => state.Auth.COMPANYID);
   const TRIPSDATA = useSelector(state => state.Auth.TRIPS);
@@ -35,18 +35,16 @@ const NewRequest = ({title,type}) => {
   console.log('Token', Token);
   console.log('companyid', COMPANYID);
   // console.log('TRIPSDATA', TRIPSDATA[type]);
-  if(TRIPSDATA){
-    Data=TRIPSDATA[type]
-    console.log(Data[0])
+  if (TRIPSDATA) {
+    Data = TRIPSDATA[type];
+    console.log(Data[0]);
   }
 
   useEffect(() => {
-    if(TRIPSDATA){
-
-    }else{
+    if (TRIPSDATA) {
+    } else {
       getComapnies();
     }
-  
   }, []);
 
   const getComapnies = async () => {
@@ -54,14 +52,14 @@ const NewRequest = ({title,type}) => {
       API.defaults.headers.common['x-auth-token'] = Token;
       API.defaults.headers.common['companyId'] = COMPANYID;
       let company = await API.get('/company-bookings/trips');
-      dispatch(TRIPDATA(company.data))
-      Data= useSelector(state => state.Auth.TRIPS);
+      console.log('Getting TRIP Data', company.data);
+      dispatch(TRIPDATA(company.data));
+      // Data= useSelector(state => state.Auth.TRIPS);
 
-      console.log("company",company.data[0])
+      console.log('company', COMPANYID);
     } catch (e) {
       console.log('error in fetching', e);
     }
-
   };
 
   const taxiData = {
@@ -91,12 +89,10 @@ const NewRequest = ({title,type}) => {
           keyboardShouldPersistTaps={'always'}>
           <Header title={title} />
           <View style={styles.container}>
-            
-            {
-              Data.length>0?
-              Data?.map(val=>{
-                  return(
-                    <TaxiCard
+            {Data.length > 0 ? (
+              Data?.map(val => {
+                return (
+                  <TaxiCard
                     referenceNo={val?.reference}
                     journeyInfo={val?.to_desc}
                     passengerDetails={`${val?.passanger?.name} `}
@@ -106,9 +102,11 @@ const NewRequest = ({title,type}) => {
                     onAccept={handleAccept}
                     onReject={handleReject}
                   />
-                  )
-              }):<Text style={{color:'white'}}>No Record Found</Text>
-             }
+                );
+              })
+            ) : (
+              <Text style={{color: 'white'}}>No Record Found</Text>
+            )}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

@@ -10,6 +10,7 @@ import {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import API from '../api';
+import colors from '../constants/colors';
 
 export default function CustomerAppDrawer(props) {
   const dispatch = useDispatch();
@@ -17,22 +18,18 @@ export default function CustomerAppDrawer(props) {
   const role = useSelector(state => state.Auth.role);
   const TRIPSDATA = useSelector(state => state.Auth.TRIPS);
 
+  const logout = async () => {
+    let fcmToken = await AsyncStorage.getItem('fcmtoken');
 
-  const logout=async()=>{
-    let fcmToken= await AsyncStorage.getItem('fcmtoken')
-  
-    console.log("Logout info",fcmToken);
+    console.log('Logout info', fcmToken);
 
-    let response = await API.post('/mobileApp/auth/logout', {token:fcmToken,user:User});
+    let response = await API.post('/mobileApp/auth/logout', {
+      token: fcmToken,
+      user: User,
+    });
+  };
 
-
-
- 
-  }
-
-  
-
-  console.log('role', TRIPSDATA?.urgent?.length);
+  console.log('Trip data', TRIPSDATA);
   // console.log('User', User);
 
   const [list, setList] = useState([]);
@@ -48,7 +45,7 @@ export default function CustomerAppDrawer(props) {
         },
         {
           name: 'My Bookings',
-          icon: 'home',
+          icon: 'calendar',
           type: Ionicons,
           screen: 'MyBookings',
           visible: false,
@@ -58,70 +55,70 @@ export default function CustomerAppDrawer(props) {
               // icon: 'home',
               // type: Ionicons,
               screen: 'NewRequest',
-              value:TRIPSDATA?.new_requests?.length,
-              count:true
+              value: TRIPSDATA?.new_requests?.length || 0,
+              count: true,
             },
             {
               name: 'Urgent',
               // icon: 'home',
               // type: Ionicons,
               screen: 'Urgent',
-              value:TRIPSDATA?.urgent?.length,
-              count:true
+              value: TRIPSDATA?.urgent?.length || 0,
+              count: true,
             },
             {
               name: 'Upcoming',
               // icon: 'home',
               // type: Ionicons,
               screen: 'Upcoming',
-              value:TRIPSDATA?.upcoming?.length,
-              count:true
+              value: TRIPSDATA?.upcoming?.length || 0,
+              count: true,
             },
             {
               name: 'Completed',
               // icon: 'home',
               // type: Ionicons,
               screen: 'Completed',
-              value:TRIPSDATA?.completed?.length,
-              count:true
+              value: TRIPSDATA?.completed?.length || 0,
+              count: true,
             },
             {
               name: 'Action Required',
               // icon: 'home',
               // type: Ionicons,
               screen: 'ActionRequired',
-              value:TRIPSDATA?.action_required?.length,
-              count:true
+              value: TRIPSDATA?.action_required?.length || 0,
+              count: true,
             },
             {
               name: 'Driver no marked',
               // icon: 'home',
               // type: Ionicons,
               screen: 'DriverNoMarked',
-              value:TRIPSDATA?.driver_no_show?.length,
-              count:true
+              value: TRIPSDATA?.driver_no_show?.length || 0,
+              count: true,
             },
             {
               name: 'Customer no marked',
               // icon: 'home',
               // type: Ionicons,
               screen: 'CustomerNoMarked',
-              value:TRIPSDATA?.customer_no_show?.length,
-              count:true
+              value: TRIPSDATA?.customer_no_show?.length || 0,
+              count: true,
             },
             {
               name: 'Cancelled',
               // icon: 'home',
               // type: Ionicons,
               screen: 'Cancelled',
-              value:TRIPSDATA?.canceled?.length,
-              count:true
+              value: TRIPSDATA?.canceled?.length || 0,
+              count: true,
             },
           ],
         },
         {
           name: 'Availability',
-          icon: 'home',
+          icon: 'time',
           type: Ionicons,
           screen: 'Availability',
           visible: false,
@@ -132,7 +129,6 @@ export default function CustomerAppDrawer(props) {
               // type: Ionicons,
               screen: 'Break',
             },
-            
           ],
         },
         {
@@ -150,7 +146,7 @@ export default function CustomerAppDrawer(props) {
           name: 'Homes',
           icon: 'home',
           type: Ionicons,
-          screen: 'TabOneScreen',
+          screen: 'Customer Landing',
         },
 
         {
@@ -245,20 +241,17 @@ export default function CustomerAppDrawer(props) {
 
                   {item.visible && (
                     <View>
-                      {item.child.map((item1 ,j)=> {
+                      {item.child.map((item1, j) => {
                         return (
                           <Pressable
-                          key={j}
+                            key={j}
                             onPress={() => {
                               if (item1?.name === 'Sign Out') {
-
                                 props.navigation.closeDrawer();
                                 dispatch(USER_STATUS_LOG_OUT());
-                                logout()
-                                
+                                logout();
                               } else props.navigation.navigate(item1.screen);
                             }}
-                          
                             style={({pressed}) => [
                               {
                                 backgroundColor: pressed ? '#e0f2fe' : 'white',
@@ -273,7 +266,7 @@ export default function CustomerAppDrawer(props) {
                             <HStack
                               space={3}
                               alignItems="center"
-                              style={{margin: 10,marginLeft:30}}>
+                              style={{margin: 10, marginLeft: 30}}>
                               <Center>
                                 <Icon
                                   name={item1.icon}
@@ -285,9 +278,29 @@ export default function CustomerAppDrawer(props) {
                               <Center>
                                 <Text style={[styles.text]}>{item1?.name}</Text>
                               </Center>
-                              {item1?.count && <View style={{margin:0,padding:0,backgroundColor:'red',width:20,height:20,borderRadius:10,textAlign:'center',alignItems:'center'}}>
-                                <Text style={[styles.count]}>{item1?.value}</Text>
-                              </View>}
+                              {item1?.count && (
+                                <View
+                                  style={{
+                                    display: 'flex',
+                                    margin: 0,
+                                    padding: 0,
+                                    backgroundColor: colors.PRIMARY,
+                                    width: 24,
+                                    height: 24,
+                                    borderRadius: 12,
+                                    alignItems: 'center', // horizontally center
+                                    justifyContent: 'center', // vertically center
+                                  }}>
+                                  <Text
+                                    style={{
+                                      color: 'white',
+                                      fontSize: 14,
+                                      fontWeight: 'bold',
+                                    }}>
+                                    {item1?.value}
+                                  </Text>
+                                </View>
+                              )}
                             </HStack>
                           </Pressable>
                         );
@@ -303,7 +316,7 @@ export default function CustomerAppDrawer(props) {
                     if (item?.name === 'Sign Out') {
                       props.navigation.closeDrawer();
                       dispatch(USER_STATUS_LOG_OUT());
-                      logout()
+                      logout();
                     } else props.navigation.navigate(item.screen);
                   }}
                   key={i}
@@ -444,10 +457,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#1C2B39',
   },
-  count:{
+  count: {
     flexGrow: 1,
     textAlign: 'left',
     fontSize: 16,
     color: '#1C2B39',
-  }
+  },
 });

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import colors from '../../constants/colors';
 import CustomButton from '../common/CustomButton';
-
+import {VStack, Select, CheckIcon} from 'native-base';
 const BookingLuggageModal = ({
   open,
   setOpen,

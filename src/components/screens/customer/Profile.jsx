@@ -7,6 +7,7 @@ import {
   Text,
   View,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -72,7 +73,7 @@ const Profile = () => {
     },
   ];
   return (
-    <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.PRIMARY}}>
       <View>
         <VStack space={3} alignItems="center" style={{margin: 10}}>
           <Center shadow={3}>
@@ -118,7 +119,7 @@ const Profile = () => {
           </CustomButton>
         </ScrollView>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

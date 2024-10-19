@@ -13,20 +13,24 @@ const Stack = createNativeStackNavigator();
 
 const AuthStackNavigator = () => {
   const Intro = useSelector(state => state.Intro);
-  
+
   const {IS_NEWLY_INSTALLED} = Intro;
 
   return (
     <Stack.Navigator
       screenOptions={{headerBackTitle: '', headerShadowVisible: false}}
       initialRouteName={IS_NEWLY_INSTALLED ? 'Introduction' : 'Start'}>
-        <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
       <Stack.Screen
         name="Introduction"
         component={Introduction}
         options={{headerShown: false}}
       />
-      
+
       <Stack.Screen name="Sign Up" component={SignUp} />
       <Stack.Screen name="Forget Password" component={ForgetPassword} />
       <Stack.Screen name="Confirmation" component={Confirmation} />

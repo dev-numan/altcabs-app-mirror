@@ -40,7 +40,6 @@ import {
   SET_IS_PROCESSING_FINISHED,
 } from '../../store/slices/loading.slice';
 import {Picker} from '@react-native-picker/picker';
-import DirectionMaps from './DirectionMaps';
 import {sortBy, orderBy} from 'lodash';
 
 const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
@@ -58,7 +57,6 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   const [fetching, setFetching] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [fromToLocation, setFromToLocation] = useState(null);
-  const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     quotations: [],
     topCards: {},
@@ -130,9 +128,6 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   };
   const getBookingsDetail = () => {
     bookingService.getById(bookingId).then(res => {
-      console.log('RES: ', res.from);
-      console.log('To: ', res.to);
-      console.log('To: ', res.via);
       setFromToLocation({
         from: res?.from,
         to: res?.to,

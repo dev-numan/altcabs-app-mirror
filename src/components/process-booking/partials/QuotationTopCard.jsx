@@ -1,9 +1,7 @@
 import {Button, Text, View} from 'native-base';
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {ActivityIndicator, StyleSheet} from 'react-native';
 import colors from '../../../constants/colors';
-import CustomButton from '../../common/CustomButton';
-import QuotationLoaderSkeleton from '../../common/skeletons/QuotationLoaderSkeleton';
 
 const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
   const getTitleFromType = () => {
@@ -18,8 +16,16 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
         return 'Recommended';
     }
   };
-  if (!quotation) return <QuotationLoaderSkeleton />;
-  // console.log(getTitleFromType());
+
+  const QuotationLoaderSkeletonOnCard = () => {
+    return (
+      <View style={styles.typeView}>
+        <ActivityIndicator size="large" color={colors.YELLOW} />
+      </View>
+    );
+  };
+  if (!quotation) return <QuotationLoaderSkeletonOnCard />;
+
   return (
     <View style={[styles.typeView]}>
       <View style={[styles.typeTextView]}>

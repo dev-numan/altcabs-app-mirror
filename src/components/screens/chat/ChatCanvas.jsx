@@ -11,6 +11,7 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Platform,
+  Dimensions,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import webSocketService from '../../../api/WebSocketService';
@@ -22,9 +23,10 @@ import {color} from 'react-native-reanimated';
 import styles from './utils/chatStyles';
 import Colors from './utils/chatColors';
 import chatService from '../../../api/ChatService';
+const height = Dimensions.get('window').height;
 
 const ChatCanvas = ({chat, chatTitle}) => {
-  const [newMessage, setNewMessage] = useState('New Message');
+  const [newMessage, setNewMessage] = useState('');
   const [messageFromServer, setMEssageFromServer] = useState(null);
 
   const {_id, name, email} = useSelector(state => state.Auth.TOKEN);
@@ -57,6 +59,9 @@ const ChatCanvas = ({chat, chatTitle}) => {
     if (chatId == chat?._id) setMEssageFromServer(message);
   };
   const sendMessage = () => {
+    if (newMessage == '') {
+      return;
+    }
     let data = {
       message: newMessage,
       sentAt: Date.now(),
@@ -69,6 +74,7 @@ const ChatCanvas = ({chat, chatTitle}) => {
     chatService
       .sendMessage(chat?._id, data)
       .then(data => {
+        setNewMessage('');
         console.log('____________');
         console.log(data);
         console.log('____________');
@@ -79,7 +85,7 @@ const ChatCanvas = ({chat, chatTitle}) => {
   };
   console.log(`Messages Length: ${messages.length}`);
   return (
-    <View style={{height: 400}}>
+    <View style={{height: height}}>
       <SafeAreaView style={styles.container}>
         <StatusBar
           translucent={false}
@@ -95,12 +101,16 @@ const ChatCanvas = ({chat, chatTitle}) => {
             </View>
           </View>
         </View>
-        <SafeAreaView style={{marginTop: 20}}>
+        <SafeAreaView
+          style={{
+            marginTop: 20,
+            height: chatTitle ? height * 0.7 : height * 0.67,
+            backgroundColor: colors.PRIMARY,
+          }}>
           <FlatList
             data={messages}
             onContentSizeChange={() => {}}
             renderItem={({item}) => {
-              console.log(item.message);
               return (
                 <View>
                   {item.from.instrumentId.trim() != _id ? (
@@ -126,7 +136,7 @@ const ChatCanvas = ({chat, chatTitle}) => {
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
           <SafeAreaView style={[styles.inputContainer]}>
             <TextInput
-              placeholderTextColor={'rgba(255, 255, 255, 0.2)'}
+              placeholderTextColor={'black'}
               placeholder={'Send the message'}
               multiline={true}
               onChangeText={text => setNewMessage(text)}
@@ -137,8 +147,11 @@ const ChatCanvas = ({chat, chatTitle}) => {
             />
             <TouchableOpacity
               onPress={sendMessage}
-              style={{justifyContent: 'flex-end'}}>
-              <FontAwesome name="paper-plane" size={28} />
+              style={{
+                justifyContent: 'flex-end',
+                marginRight: 10,
+              }}>
+              <FontAwesome name="paper-plane" size={24} />
             </TouchableOpacity>
           </SafeAreaView>
         </KeyboardAvoidingView>

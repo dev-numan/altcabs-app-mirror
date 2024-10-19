@@ -9,7 +9,13 @@ import {
   Image,
 } from 'native-base';
 import {useDispatch} from 'react-redux';
-import {StyleSheet, View, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import CustomButton from '../../common/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../../constants/colors';
@@ -70,7 +76,7 @@ const Login = () => {
     }
   };
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: colors.WHITE,
@@ -201,7 +207,7 @@ const Login = () => {
           </View>
         </HStack>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
