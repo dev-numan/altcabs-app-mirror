@@ -48,7 +48,9 @@ const PlaceSelector = ({value, onChange, label, onCancel}) => {
     <View style={styles.container}>
       <VStack>
         <FormControl w="100%" maxW="400px" bg={'red'}>
-          <FormControl.Label>{label}</FormControl.Label>
+          <FormControl.Label _text={{color: colors.BLACK}}>
+            {label}
+          </FormControl.Label>
           <Input
             w="100%"
             backgroundColor={'white'}

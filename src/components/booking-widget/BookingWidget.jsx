@@ -39,10 +39,14 @@ import bookingService from '../../api/BookingService';
 import {Picker} from '@react-native-picker/picker';
 import PassengerModal from './PassengerModal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 const check = require('../../assets/images/check.png');
 const checked = require('../../assets/images/checked.png');
 
 const BookingWidget = ({booking_type}) => {
+  const Token = useSelector(state => state.Auth.JWT);
+  console.log('Token......', Token);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [service, setService] = React.useState('');
@@ -446,14 +450,15 @@ const BookingWidget = ({booking_type}) => {
           flexDirection: 'row',
           flex: 1,
           alignItems: 'center',
-          marginTop: 10,
         }}>
         <TouchableOpacity
           style={{
-            width: 25,
-            height: 25,
             alignItems: 'center',
             justifyContent: 'center',
+            backgroundColor: colors.PRIMARY,
+            width: 25,
+            height: 25,
+            borderRadius: 5,
           }}
           onPress={() => {
             setForm({
@@ -462,27 +467,17 @@ const BookingWidget = ({booking_type}) => {
             });
           }}>
           {!form.oneWay ? (
-            <Image
-              source={check}
-              style={{
-                width: 16,
-                height: 16,
-                borderWidth: 10,
-                tintColor: colors.PRIMARY,
-              }}
+            <Icon
+              name="check" // FontAwesome check icon
+              size={16}
+              color={colors.WHITE}
+              // Change the icon color
             />
           ) : (
-            <Image
-              source={checked}
-              style={[
-                {
-                  width: 16,
-                  height: 16,
-                  borderWidth: 10,
-                  tintColor: colors.PRIMARY,
-                },
-                {tintColor: colors.PRIMARY},
-              ]}
+            <Icon
+              name="check" // FontAwesome check icon (or any other you want)
+              size={16}
+              color={colors.PRIMARY} // White color when checked
             />
           )}
         </TouchableOpacity>
@@ -492,11 +487,11 @@ const BookingWidget = ({booking_type}) => {
               marginTop: 4,
               marginLeft: 4,
               fontSize: 14,
-              // fontFamily: 'Poppins',
+
               fontWeight: '400',
               color: colors.YELLOW,
             },
-            {marginTop: 0, color: colors.WHITE},
+            {marginTop: 0, color: colors.BLACK},
           ]}>
           One Way ?
         </Text>
@@ -576,7 +571,7 @@ const BookingWidget = ({booking_type}) => {
         </>
       )}
       {booking_type == 'client_bidding' && (
-        <View>
+        <View style={{marginVertical: 10}}>
           <TextArea
             rowSpan={5}
             bordered

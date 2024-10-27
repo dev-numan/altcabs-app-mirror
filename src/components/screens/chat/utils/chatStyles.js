@@ -1,7 +1,8 @@
 import {Platform, StyleSheet} from 'react-native';
 import chatColors from './chatColors';
 import chatFonts from './chatFonts';
-
+import {Dimensions} from 'react-native';
+const height = Dimensions.get('window').height;
 const chatStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -168,7 +169,7 @@ const chatStyles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 20,
     borderColor: '#002743',
-    marginBottom: 20,
+    // marginBottom: 20,
     paddingVertical: 8,
     marginTop: 10,
     borderWidth: 0.2,
