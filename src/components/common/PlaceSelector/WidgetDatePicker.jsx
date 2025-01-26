@@ -21,7 +21,9 @@ const WidgetDatePicker = ({label, value, onChange}) => {
   };
   return (
     <FormControl>
-      <FormControl.Label>{label}</FormControl.Label>
+      <FormControl.Label _text={{color: colors.BLACK}}>
+        {label}
+      </FormControl.Label>
       <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="datetime"

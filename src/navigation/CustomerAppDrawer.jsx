@@ -116,21 +116,21 @@ export default function CustomerAppDrawer(props) {
             },
           ],
         },
-        {
-          name: 'Availability',
-          icon: 'time',
-          type: Ionicons,
-          screen: 'Availability',
-          visible: false,
-          child: [
-            {
-              name: 'Take A Break',
-              // icon: 'home',
-              // type: Ionicons,
-              screen: 'Break',
-            },
-          ],
-        },
+        // {
+        //   name: 'Availability',
+        //   icon: 'time',
+        //   type: Ionicons,
+        //   screen: 'Availability',
+        //   visible: false,
+        //   child: [
+        //     {
+        //       name: 'Take A Break',
+        //       // icon: 'home',
+        //       // type: Ionicons,
+        //       screen: 'Break',
+        //     },
+        //   ],
+        // },
         {
           name: 'Sign Out',
           icon: 'logout',

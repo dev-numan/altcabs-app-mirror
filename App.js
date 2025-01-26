@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {View, Button} from 'native-base';
 import Toast from 'react-native-toast-message';
 import SplashScreen from './src/components/SplashScreen';
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {loadClientApp} from './src/store/slices/app.slice';
 
@@ -23,7 +23,9 @@ import {
   requestUserPermission,
   requestUserPermissionNotifee,
 } from './src/utils/PushNotificationHelper';
-
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import {store, persistor} from './src/store';
 const Drawer = createDrawerNavigator();
 export default function App() {
   const dispatch = useDispatch();
@@ -98,12 +100,14 @@ export default function App() {
   //   </Drawer.Navigator>
   // );
   return (
-    <>
-      {IS_LOGGED ? <CustomerAppDrawerNavigation /> : <AuthStackNavigator />}
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        {IS_LOGGED ? <CustomerAppDrawerNavigation /> : <AuthStackNavigator />}
 
-      <SavingModel />
-      <Toast />
-    </>
+        <SavingModel />
+        <Toast />
+      </PersistGate>
+    </Provider>
   );
 }
 

@@ -132,8 +132,12 @@ const ChatCanvas = ({chat, chatTitle}) => {
           />
         </SafeAreaView>
         <KeyboardAvoidingView
-          style={{flexDirection: 'row', alignItems: 'center'}}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
           <SafeAreaView style={[styles.inputContainer]}>
             <TextInput
               placeholderTextColor={'black'}

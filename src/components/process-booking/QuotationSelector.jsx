@@ -14,10 +14,12 @@ import {
   Divider,
   Heading,
 } from 'native-base';
-import React, {useEffect, useState} from 'react';
+import DropDownPicker from 'react-native-dropdown-picker';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   FlatList,
   Image,
+  Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -47,6 +49,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   const {quotationCreated, quotationCreatedFor, newQuotations} = useSelector(
     state => state.booking,
   );
+  const [open, setOpen] = useState(false);
   const fleetTypes = useSelector(selectFleetTypes);
   const [searchTerm, setSearchTerm] = useState('');
   const [vehicle_type, setVehicleType] = useState('all');
@@ -62,9 +65,18 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     topCards: {},
     fetched: false,
   });
+  let fleetOptions = [];
   useEffect(() => {
     webSocketService.setBookingId(bookingId);
   }, [bookingId]);
+  fleetOptions = useMemo(
+    () =>
+      fleetTypes.map(ft => ({
+        label: ft?.name || 'Unknown',
+        value: ft?._id || '',
+      })),
+    [],
+  );
   const addQuotationsToScreen = newQuotations => {
     let oldQuotations = [...state.quotations];
     for (let i = 0; i < newQuotations.length; i++) {
@@ -205,6 +217,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   if (vehicle_type !== 'all') {
     quotations = quotations.filter(q => q.vehicle_type == vehicle_type);
   }
+
   // console.log(`vehicle_type: ${vehicle_type}`);
   return (
     <ScrollView
@@ -240,7 +253,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
             quotation={recommendedQuote}
           />
         </HStack>
-        <View style={{justifyContent: 'space-between'}}>
+        <View style={{justifyContent: 'space-between', zIndex: 100}}>
           <HStack>
             <Button.Group
               isAttached={true}
@@ -272,46 +285,74 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                 Prestige
               </Button>
             </Button.Group>
-            <View
-              style={{
-                height: 35,
-                width: 130,
-                borderWidth: 0.5,
-                borderColor: colors.YELLOW,
-                backgroundColor: colors.PRIMARY,
-                color: colors.WHITE,
-                borderRadius: 12,
-                marginTop: 20,
-                left: '15%',
-                justifyContent: 'center',
-                // marginRight: 40,
-              }}>
-              <Picker
-                selectedValue={vehicle_type}
-                isDisabled={processing}
-                mode="dropdown" // Android only
-                dropdownIconColor={colors.WHITE}
-                placeholder={'#323F4B'}
-                onValueChange={itemValue => {
-                  // console.log('itemValue', itemValue);
-                  setVehicleType(itemValue);
-                }}
+            {Platform.OS == 'android' ? (
+              <View
                 style={{
-                  color: colors.WHITE,
-                  alignSelf: 'center',
                   height: 35,
-                  width: 150,
-                  fontSize: 16,
-                  fontWeight: '400',
-                  paddingLeft: 20,
-                  transform: [{scaleX: 0.7}, {scaleY: 0.7}],
+                  width: 130,
+                  borderWidth: 0.5,
+                  borderColor: colors.YELLOW,
+                  backgroundColor: colors.PRIMARY,
+                  color: colors.WHITE,
+                  borderRadius: 12,
+                  marginTop: 20,
+                  left: '15%',
+                  justifyContent: 'center',
+                  // marginRight: 40,
                 }}>
-                <Picker.Item label="All Fleet Types" value="all" />
-                {fleetTypes.map(ft => (
-                  <Picker.Item label={ft?.name} value={ft?._id} key={ft?._id} />
-                ))}
-              </Picker>
-            </View>
+                <Picker
+                  selectedValue={vehicle_type}
+                  isDisabled={processing}
+                  mode="dropdown" // Android only
+                  dropdownIconColor={colors.WHITE}
+                  placeholder={'#323F4B'}
+                  onValueChange={itemValue => {
+                    // console.log('itemValue', itemValue);
+                    setVehicleType(itemValue);
+                  }}
+                  style={{
+                    color: colors.WHITE,
+                    alignSelf: 'center',
+                    height: 35,
+                    width: 150,
+                    fontSize: 16,
+                    fontWeight: '400',
+                    paddingLeft: 20,
+                    transform: [{scaleX: 0.7}, {scaleY: 0.7}],
+                  }}>
+                  <Picker.Item label="All Fleet Types" value="all" />
+                  {fleetTypes.map(ft => (
+                    <Picker.Item
+                      label={ft?.name}
+                      value={ft?._id}
+                      key={ft?._id}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            ) : (
+              <View style={styles.dropdownContainer}>
+                <DropDownPicker
+                  open={open}
+                  setOpen={setOpen}
+                  value={vehicle_type}
+                  setValue={setVehicleType}
+                  items={[
+                    {label: 'All Fleet Types', value: 'all'},
+                    ...fleetOptions,
+                  ]}
+                  // setItems={setItems}
+                  disabled={processing}
+                  placeholder="Select Fleet Type"
+                  style={styles.pickerStyle}
+                  dropDownContainerStyle={styles.dropDownStyle}
+                  textStyle={styles.textStyle}
+                  placeholderStyle={styles.placeholderStyle}
+                  ArrowUpIconComponent={() => null} // Customize the arrow if needed
+                  ArrowDownIconComponent={() => null} // Customize the arrow if needed
+                />
+              </View>
+            )}
           </HStack>
         </View>
         <View>
@@ -438,5 +479,34 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  dropdownContainer: {
+    height: 35,
+    width: 150, // Adjusted width
+    borderWidth: 0.5,
+    borderColor: colors.YELLOW,
+    backgroundColor: colors.PRIMARY,
+    borderRadius: 12,
+    marginTop: 20,
+    // left: '15%',
+    justifyContent: 'center',
+    zIndex: 100,
+  },
+  pickerStyle: {
+    backgroundColor: colors.PRIMARY,
+    borderColor: colors.YELLOW,
+    height: 35,
+  },
+  dropDownStyle: {
+    backgroundColor: colors.PRIMARY,
+    borderColor: colors.YELLOW,
+  },
+  textStyle: {
+    color: colors.WHITE,
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  placeholderStyle: {
+    color: '#323F4B',
   },
 });

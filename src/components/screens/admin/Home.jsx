@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   ImageBackground,
   SafeAreaView,
@@ -16,9 +16,29 @@ import BookingWidget from '../../booking-widget/BookingWidget';
 import {Center} from 'native-base';
 import Header from '../../common/Header';
 import {useDispatch, useSelector} from 'react-redux';
+import API from '../../../api';
 
 const AdminHome = () => {
+  const [dashboard, setDashboard] = useState({});
   const User = useSelector(state => state.Auth.TOKEN);
+  const Token = useSelector(state => state.Auth.JWT);
+  const COMPANYID = useSelector(state => state.Auth.COMPANYID);
+  const TRIPSDATA = useSelector(state => state.Auth.TRIPS);
+  const getDashboard = async () => {
+    try {
+      API.defaults.headers.common['x-auth-token'] = Token;
+      API.defaults.headers.common['companyId'] = COMPANYID;
+      let company = await API.get('/company-dashboard/company');
+      setDashboard(company.data);
+      console.log('Getting Dashboard Data', company.data);
+    } catch (e) {
+      console.log('error in fetching', e);
+    }
+  };
+
+  useEffect(() => {
+    getDashboard();
+  }, []);
   return (
     <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
       <KeyboardAvoidingView>
@@ -47,7 +67,9 @@ const AdminHome = () => {
               <Text style={styles.textTitle}>New Requests</Text>
             </View>
             <View style={styles.cardView}>
-              <Text style={styles.textCount}>89</Text>
+              <Text style={styles.textCount}>
+                {TRIPSDATA?.new_requests?.length || 0}
+              </Text>
             </View>
           </View>
           <View style={styles.card}>
@@ -55,7 +77,9 @@ const AdminHome = () => {
               <Text style={styles.textTitle}>Up Coming Trips</Text>
             </View>
             <View style={styles.cardView}>
-              <Text style={styles.textCount}>9</Text>
+              <Text style={styles.textCount}>
+                {dashboard?.upComingCount || 0}
+              </Text>
             </View>
           </View>
           <View style={styles.card}>
@@ -63,7 +87,7 @@ const AdminHome = () => {
               <Text style={styles.textTitle}>Your Ratings</Text>
             </View>
             <View style={styles.cardView}>
-              <Text style={styles.textCount}>4.9</Text>
+              <Text style={styles.textCount}>{dashboard?.ratings || 0}</Text>
             </View>
           </View>
           <View style={styles.card}>
@@ -140,20 +164,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 10,
     borderRadius: 10,
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center',
-    
- 
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   textTitle: {
     color: colors.GRAY,
-    fontSize:20
+    fontSize: 20,
   },
   textCount: {
     color: colors.BLACK,
-    fontSize:20
-  },cardView:{
-    marginBottom:15
-  }
+    fontSize: 20,
+  },
+  cardView: {
+    marginBottom: 15,
+  },
 });

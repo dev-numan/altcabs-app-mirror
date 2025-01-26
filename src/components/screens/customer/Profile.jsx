@@ -59,18 +59,18 @@ const Profile = () => {
         />
       ),
     },
-    {
-      name: 'MyDetails',
-      label: 'My Details',
-      icon: (
-        <MaterialCommunityIcons
-          name="account-circle"
-          color={colors.SECONDARY}
-          size={28}
-          style={{marginBottom: -3}}
-        />
-      ),
-    },
+    // {
+    //   name: 'MyDetails',
+    //   label: 'My Details',
+    //   icon: (
+    //     <MaterialCommunityIcons
+    //       name="account-circle"
+    //       color={colors.SECONDARY}
+    //       size={28}
+    //       style={{marginBottom: -3}}
+    //     />
+    //   ),
+    // },
   ];
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: colors.PRIMARY}}>
