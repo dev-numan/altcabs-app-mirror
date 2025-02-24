@@ -192,7 +192,23 @@ const BookingWidget = ({booking_type}) => {
         form={form}
         setForm={setForm}
       />
-      <PlaceSelectorModal />
+      <PlaceSelectorModal
+        value={{
+          place_id: form.from_place_id,
+          description: form.from_desc,
+        }}
+        label="From"
+        onCancel={() => {
+          setForm({...form, from_desc: '', from_place_id: ''});
+        }}
+        onChange={place => {
+          setForm({
+            ...form,
+            from_desc: place.description,
+            from_place_id: place.place_id,
+          });
+        }}
+      />
       <SafeAreaView>
         <PlaceSelector
           value={{
