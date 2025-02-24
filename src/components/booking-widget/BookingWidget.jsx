@@ -40,6 +40,7 @@ import {Picker} from '@react-native-picker/picker';
 import PassengerModal from './PassengerModal';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PlaceSelectorModal from '../common/PlaceSelector/PlaceSelectorModal';
 const check = require('../../assets/images/check.png');
 const checked = require('../../assets/images/checked.png');
 
@@ -191,6 +192,7 @@ const BookingWidget = ({booking_type}) => {
         form={form}
         setForm={setForm}
       />
+      <PlaceSelectorModal />
       <SafeAreaView>
         <PlaceSelector
           value={{
