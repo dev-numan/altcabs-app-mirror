@@ -192,25 +192,30 @@ const BookingWidget = ({booking_type}) => {
         form={form}
         setForm={setForm}
       />
-      <PlaceSelectorModal
-        value={{
-          place_id: form.from_place_id,
-          description: form.from_desc,
-        }}
-        label="From"
-        onCancel={() => {
-          setForm({...form, from_desc: '', from_place_id: ''});
-        }}
-        onChange={place => {
-          setForm({
-            ...form,
-            from_desc: place.description,
-            from_place_id: place.place_id,
-          });
-        }}
-      />
+    
       <SafeAreaView>
-        <PlaceSelector
+      <PlaceSelectorModal
+  value={{
+    place_id: form.from_place_id,
+    description: form.from_desc,
+  }}
+  label="From"
+  onCancel={() => {
+    setForm({...form, from_desc: '', from_place_id: ''});
+  }}
+  onChange={place => {
+    setForm({
+      ...form,
+      from_desc: place.description,
+      from_place_id: place.place_id,
+    });
+  }}
+  style={{
+    text: { color: colors.BLACK },
+    // You can add more styles here if needed
+  }}
+/>
+        {/* <PlaceSelector
           value={{
             place_id: form.from_place_id,
             description: form.from_desc,
@@ -226,7 +231,7 @@ const BookingWidget = ({booking_type}) => {
               from_place_id: place.place_id,
             });
           }}
-        />
+        /> */}
       </SafeAreaView>
       <View
         style={{
@@ -298,23 +303,28 @@ const BookingWidget = ({booking_type}) => {
         </SafeAreaView>
       ))}
       <SafeAreaView>
-        <PlaceSelector
-          value={{
-            place_id: form.to_place_id,
-            description: form.to_desc,
-          }}
-          label="To"
-          onCancel={() => {
-            setForm({...form, to_desc: '', to_place_id: ''});
-          }}
-          onChange={place => {
-            setForm({
-              ...form,
-              to_desc: place.description,
-              to_place_id: place.place_id,
-            });
-          }}
-        />
+      <PlaceSelectorModal
+  value={{
+    place_id: form.to_place_id,
+    description: form.to_desc,
+  }}
+  label="To"
+  onCancel={() => {
+    setForm({...form, to_desc: '', to_place_id: ''});
+  }}
+  onChange={place => {
+    setForm({
+      ...form,
+      to_desc: place.description,
+      to_place_id: place.place_id,
+    });
+  }}
+  style={{
+    text: { color: colors.BLACK },
+    // Add more styles if needed
+  }}
+/>
+
       </SafeAreaView>
       <WidgetDatePicker
         label="Pick Up Time"
