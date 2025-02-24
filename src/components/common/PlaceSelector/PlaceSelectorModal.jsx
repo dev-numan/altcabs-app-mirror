@@ -45,18 +45,19 @@ const PlaceSelectorModal = ({label, value, onCancel, onChange}) => {
   const handlePlaceSelect = async place => {
     try {
       // Fetch place details from your service
-      const details = await googleService.getPlaceDetails(place.place_id);
-
-      if (details) {
-        const location = {
-          latitude: details.geometry.location.lat,
-          longitude: details.geometry.location.lng,
-          address: place.description,
-        };
-        setSelectedLocation(location);
-        onChange({place_id: place.place_id, description: place.description});
-        setModalVisible(false); // Close modal after selection
-      }
+      //   const details = await googleService.getPlaceDetails(place.place_id);
+      onChange(place);
+      setModalVisible(false);
+      //   if (details) {
+      //     const location = {
+      //       latitude: details.geometry.location.lat,
+      //       longitude: details.geometry.location.lng,
+      //       address: place.description,
+      //     };
+      //     setSelectedLocation(location);
+      //     onChange({place_id: place.place_id, description: place.description});
+      //     setModalVisible(false); // Close modal after selection
+      //   }
     } catch (error) {
       console.log(error);
       dispatch(ERROR(error));
