@@ -624,11 +624,11 @@ const BookingWidget = ({booking_type}) => {
 const getBgColorByType = booking_type => {
   switch (booking_type) {
     case 'client_bidding':
-      return colors.PURPLE;
+      return colors.WHITE;
     case 'cabmatch':
-      return colors.BLUE;
+      return colors.WHITE;
     default:
-      return colors.YELLOW;
+      return colors.WHITE;
   }
 };
 const SecondsToHoursMinutes = ({seconds}) => {
