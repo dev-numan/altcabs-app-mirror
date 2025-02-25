@@ -73,13 +73,13 @@ const Profile = () => {
     // },
   ];
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.BACKGROUND}}>
       <View>
         <VStack space={3} alignItems="center" style={{margin: 10}}>
           <Center shadow={3}>
             <Avatar
               size="2xl"
-              style={{alignSelf: 'center', backgroundColor: colors.SECONDARY}}
+              style={{alignSelf: 'center', backgroundColor: colors.PRIMARY}}
               source={require(`../../../assets/images/icon.png`)}>
               FA
             </Avatar>
@@ -100,18 +100,18 @@ const Profile = () => {
               onPress={() => navigation.navigate(item?.name)}>
               <HStack space={5} alignItems="center" my="2">
                 <View style={styles.IconView}>{item.icon}</View>
-                <Text style={{flexGrow: 1, color: colors.WHITE}}>
+                <Text style={{flexGrow: 1, color: colors.PRIMARY}}>
                   {item.label}
                 </Text>
-                <AntDesign name="right" color={colors.WHITE} size={28} />
+                <AntDesign name="right" color={colors.PRIMARY} size={28} />
               </HStack>
               <Divider />
             </TouchableOpacity>
           ))}
           <CustomButton
             rounded="full"
-            colorScheme={colors.SECONDARY}
-            _text={{color: colors.PRIMARY}}
+            colorScheme={colors.PRIMARY}
+            _text={{color: colors.SECONDARY}}
             _pressed={{bg: colors.SECONDARY}}
             my="8"
             onPress={() => dispatch(USER_STATUS_LOG_OUT())}>
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 7,
     fontWeight: 'bold',
-    color: colors.WHITE,
+    color: colors.PRIMARY,
   },
   IconView: {
     backgroundColor: '#1C2B39',
