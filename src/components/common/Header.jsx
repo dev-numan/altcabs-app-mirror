@@ -10,15 +10,15 @@ const Header = ({title}) => {
   return (
     <View style={{width: '100%', marginTop: '1%'}}>
       <HStack style={styles.header}>
-        <IconButton
+        {/* <IconButton
           icon={<Icon size="lg" as={Ionicons} name="menu" />}
           style={{borderRadius: 25}}
           _icon={{color: colors.PRIMARY}}
           // _pressed={{bg: colors.PRIMARY, _icon: {color: colors.WHITE}}}
           onPress={() => navigation.openDrawer()}
-        />
+        /> */}
         <HStack
-          style={[styles.header, {width: '78%', justifyContent: 'center'}]}>
+          style={[styles.header, {width: '100%', justifyContent: 'center'}]}>
           {/* <Text style={[styles.headerTitle]}>Cab</Text> */}
           <Text style={[styles.headerTitle, {fontWeight: 'bold'}]}>
             {/* {title} */}
