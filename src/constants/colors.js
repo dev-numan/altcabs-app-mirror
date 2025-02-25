@@ -15,5 +15,6 @@ const colors = {
   YELLOW: 'rgba(251, 191, 36, 1)',
   BLUE: 'rgba(0, 147, 233, 1)',
   PURPLE: 'rgba(118, 75, 162, 1)',
+  BACKGROUND: 'rgb(237,244,244)',
 };
 export default colors;

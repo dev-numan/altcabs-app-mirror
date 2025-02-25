@@ -8,7 +8,7 @@ import colors from '../../constants/colors';
 const Header = ({title}) => {
   const navigation = useNavigation();
   return (
-    <View style={{width: '88%', marginTop: '1%'}}>
+    <View style={{width: '100%', marginTop: '1%'}}>
       <HStack style={styles.header}>
         <IconButton
           icon={<Icon size="lg" as={Ionicons} name="menu" />}
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 5,
     color: colors.BLACK,
-    backgroundColor: colors.WHITE,
+    backgroundColor: colors.BACKGROUND,
   },
   headerTitle: {
     textAlign: 'center',
