@@ -8,20 +8,21 @@ import colors from '../../constants/colors';
 const Header = ({title}) => {
   const navigation = useNavigation();
   return (
-    <View style={{width: '88%', marginTop: '8%'}}>
+    <View style={{width: '88%', marginTop: '1%'}}>
       <HStack style={styles.header}>
         <IconButton
           icon={<Icon size="lg" as={Ionicons} name="menu" />}
           style={{borderRadius: 25}}
-          _icon={{color: colors.SECONDARY}}
-          _pressed={{bg: colors.SECONDARY, _icon: {color: colors.WHITE}}}
+          _icon={{color: colors.PRIMARY}}
+          // _pressed={{bg: colors.PRIMARY, _icon: {color: colors.WHITE}}}
           onPress={() => navigation.openDrawer()}
         />
         <HStack
           style={[styles.header, {width: '78%', justifyContent: 'center'}]}>
           {/* <Text style={[styles.headerTitle]}>Cab</Text> */}
           <Text style={[styles.headerTitle, {fontWeight: 'bold'}]}>
-            {title}
+            {/* {title} */}
+            altCABS
           </Text>
         </HStack>
       </HStack>
@@ -34,12 +35,13 @@ export default Header;
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    margin: 12,
-    color: colors.WHITE,
+    margin: 5,
+    color: colors.BLACK,
+    backgroundColor: colors.WHITE,
   },
   headerTitle: {
     textAlign: 'center',
     fontSize: 24,
-    color: colors.WHITE,
+    color: colors.PRIMARY,
   },
 });

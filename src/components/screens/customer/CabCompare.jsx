@@ -19,7 +19,7 @@ import {Center} from 'native-base';
 
 const CabCompare = () => {
   return (
-    <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+    <View style={{flex: 1, backgroundColor: colors.WHITE}}>
       <KeyboardAvoidingView>
         <ScrollView
           showsVerticalScrollIndicator={true}
@@ -50,7 +50,7 @@ const getTitleTextByBookingType = booking_type => {
       return {
         title: 'Compare the cab fares online',
         header: 'COMPARE',
-        bgColor: colors.YELLOW,
+        bgColor: colors.WHITE,
       };
   }
 };
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: 20,
     fontWeight: 'bold',
-    color: colors.WHITE,
-    marginVertical: 7,
+    color: colors.PRIMARY,
+    marginVertical: 2,
   },
   form: {
     borderRadius: 12,
