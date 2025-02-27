@@ -19,7 +19,7 @@ import {Center} from 'native-base';
 
 const CabCompare = () => {
   return (
-    <View style={{flex: 1, backgroundColor: colors.WHITE}}>
+    <View style={{flex: 1, backgroundColor: colors.LightBg}}>
       <KeyboardAvoidingView>
         <ScrollView
           showsVerticalScrollIndicator={true}

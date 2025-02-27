@@ -19,6 +19,7 @@ import {
   Platform,
 } from 'react-native';
 import colors from '../../constants/colors';
+import { X } from 'lucide-react-native'; // You can use any icon library
 import PlaceSelector from '../common/PlaceSelector/PlaceSelector';
 import moment from 'moment';
 import googleService from '../../api/GoogleService';
@@ -78,7 +79,9 @@ const BookingWidget = ({booking_type}) => {
   const [showLuggageModal, setShowLuggageModal] = useState(false);
   const [showPassengerModal, setShowPassengerModal] = useState(false);
   const [totalLuggage, setTotalLuggage] = useState([]);
+  const [luggageQuantity,setLuggageQuantity]=useState(0);
   const [prestige, setPrestige] = useState(false);
+  const [oneWay, setOneWay] = useState(true);
   const fetchDistance = () => {
     let data = {
       from_id: form.from_place_id,
@@ -173,10 +176,40 @@ const BookingWidget = ({booking_type}) => {
       });
   };
   const bgColor = getBgColorByType(booking_type);
+  console.log('dog bg color', bgColor);
   // console.log(state);
   // console.log(colors.YELLOW);
   return (
     <View style={{...styles.form, backgroundColor: bgColor}}>
+         <View style={{ flexDirection: "row", alignItems: "center" }}>
+         <TouchableOpacity
+  style={{
+    borderBottomWidth: form.oneWay ? 2 : 0,
+    borderBottomColor: form.oneWay ? colors.PRIMARY : "transparent",
+    paddingBottom: 5,
+    marginRight: 15,
+  }}
+  onPress={() => setForm({ ...form, oneWay: true })}
+>
+  <Text style={{ fontWeight: form.oneWay ? "bold" : "normal", color: "black",fontSize:18 }}>
+    One-way
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={{
+    borderBottomWidth: !form.oneWay ? 2 : 0,
+    borderBottomColor: !form.oneWay ? colors.PRIMARY : "transparent",
+    paddingBottom: 5,
+  }}
+  onPress={() => setForm({ ...form, oneWay: false })}
+>
+  <Text style={{ fontWeight: !form.oneWay ? "bold" : "normal", color: "black",fontSize:18 }}>
+    Return
+  </Text>
+</TouchableOpacity>
+
+    </View>
       <BookingLuggageModal
         open={showLuggageModal}
         setOpen={setShowLuggageModal}
@@ -185,6 +218,7 @@ const BookingWidget = ({booking_type}) => {
         setForm={setForm}
         totalLuggage={totalLuggage}
         setTotalLuggage={setTotalLuggage}
+        setLuggageQuantity={setLuggageQuantity}
       />
       <PassengerModal
         open={showPassengerModal}
@@ -275,32 +309,58 @@ const BookingWidget = ({booking_type}) => {
         </View>
       </View>
       {form.via.map((via, index) => (
-        <SafeAreaView key={index}>
-          <PlaceSelector
-            value={{
-              place_id: form.via[index].place_id,
-              description: form.via[index].desc,
-            }}
-            label="Via"
-            onCancel={() => {
-              console.log('removing via');
-              let vias = [...form.via];
-              vias.splice(index, 1);
-              setForm({...form, via: vias});
-            }}
-            onChange={place => {
-              console.log('Changing Via');
-              console.log(place);
-              let vias = [...form.via];
-              vias[index].place_id = place.place_id;
-              vias[index].desc = place.description;
-              setForm({
-                ...form,
-                vias: vias,
-              });
-            }}
-          />
-        </SafeAreaView>
+  <SafeAreaView key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
+  <PlaceSelectorModal
+    value={{
+      place_id: form.via[index].place_id,
+      description: form.via[index].desc,
+    }}
+    label="Via"
+    onCancel={() => {
+      console.log('Removing via');
+      let vias = [...form.via];
+      vias.splice(index, 1);
+      setForm({...form, via: vias});
+    }}
+    onChange={place => {
+      console.log('Changing Via');
+      let vias = [...form.via];
+      vias[index] = {
+        place_id: place.place_id,
+        desc: place.description,
+      };
+      setForm({
+        ...form,
+        via: vias,
+      });
+    }}
+    style={{
+      text: { color: colors.BLACK },
+      // Add more styles if needed
+    }}
+  />
+  <TouchableOpacity
+    onPress={() => {
+      let vias = [...form.via];
+      vias.splice(index, 1);
+      setForm({...form, via: vias});
+    }}
+    style={{
+      marginLeft: 10,
+      padding: 5,
+      backgroundColor: 'transparent',
+      borderRadius: 15,
+      justifyContent: 'center',
+      alignItems: 'center',
+      position:'absolute',
+      right: -5,
+      top:8
+    }}
+  >
+    <Icon name="times" size={16} color="black" />
+  </TouchableOpacity>
+</SafeAreaView>
+
       ))}
       <SafeAreaView>
       <PlaceSelectorModal
@@ -351,74 +411,59 @@ const BookingWidget = ({booking_type}) => {
           size="sm"
           p="2"
           onPress={() => setShowLuggageModal(true)}>
-          Luggage
+         <Text style={{ color: 'white' }}>{luggageQuantity} Luggage</Text>
+
         </CustomButton>
         {Platform.OS === 'android' ? (
-          <>
+          < 
+           >
             <Text
               style={{
                 flexGrow: 1,
                 fontSize: 14,
                 textAlign: 'right',
-                color: 'white',
+                color: colors.PRIMARY,
+                width:30,
                 marginRight: 7,
+                fontWeight: 'bold',
+               
               }}>
               Passengers
             </Text>
             <View
-              style={{
-                height: 35,
-                width: 102,
-                borderWidth: 0.5,
-                borderColor: colors.PRIMARY,
-                backgroundColor: colors.PRIMARY,
-                color: colors.WHITE,
-                borderRadius: 12,
-                marginTop: '1%',
-                left: '15%',
-                justifyContent: 'center',
-              }}>
-              <Picker
-                selectedValue={form.passangers}
-                mode="dropdown" // Android only
-                dropdownIconColor={colors.WHITE}
-                placeholder={'#323F4B'}
-                // onValueChange={(itemValue, itemIndex) => setService(itemValue)}
-                onValueChange={itemValue =>
-                  setForm({...form, passangers: itemValue})
-                }
-                style={{
-                  color: colors.WHITE,
-                  alignSelf: 'center',
-                  height: 35,
-                  width: 150,
-                  fontSize: 16,
-                  fontWeight: '400',
-                  paddingLeft: 20,
-                  transform: [{scaleX: 0.7}, {scaleY: 0.7}],
-                }}>
-                {[
-                  '1',
-                  '2',
-                  '3',
-                  '4',
-                  '5',
-                  '6',
-                  '7',
-                  '8',
-                  '9',
-                  '10',
-                  '11',
-                  '12',
-                  '13',
-                  '14',
-                  '15',
-                  '16',
-                ].map((item, i) => (
-                  <Picker.Item label={item} value={item} key={i} />
-                ))}
-              </Picker>
-            </View>
+  style={{
+    height: 35,
+    width: 20,
+    borderWidth: 0.5,
+    borderColor: colors.PRIMARY,
+    backgroundColor: colors.PRIMARY,
+    borderRadius: 12,
+
+    paddingLeft: 40,
+    justifyContent: 'center',
+    paddingRight: 40, // Added padding to create space
+  }}>
+  <Picker
+    selectedValue={form.passangers}
+    mode="dropdown"
+    dropdownIconColor={colors.WHITE}
+    placeholder={'#323F4B'}
+    onValueChange={itemValue => setForm({...form, passangers: itemValue})}
+    style={{
+      color: colors.WHITE,
+      alignSelf: 'center',
+      height: 35,
+      width: 90,
+      fontSize: 16,
+      fontWeight: '400',
+      paddingRight: 80,
+      
+    }}>
+    {Array.from({ length: 16 }, (_, i) => (
+      <Picker.Item label={`${i + 1}`} value={`${i + 1}`} key={i} />
+    ))}
+  </Picker>
+</View>
           </>
         ) : (
           <CustomButton
@@ -443,7 +488,7 @@ const BookingWidget = ({booking_type}) => {
         )}
       </HStack>
 
-      <HStack style={{alignItems: 'center', flexWrap: 'wrap'}}>
+      {/* <HStack style={{alignItems: 'center', flexWrap: 'wrap'}}>
         {totalLuggage.map((item, i) => (
           <Badge
             key={i}
@@ -470,10 +515,10 @@ const BookingWidget = ({booking_type}) => {
             />
           </Badge>
         ))}
-      </HStack>
+      </HStack> */}
 
       <HStack style={{alignItems: 'center', marginVertical: 4}}></HStack>
-      <View
+      {/* <View
         style={{
           flexDirection: 'row',
           flex: 1,
@@ -523,7 +568,7 @@ const BookingWidget = ({booking_type}) => {
           ]}>
           One Way ?
         </Text>
-      </View>
+      </View> */}
       {!form.oneWay && (
         <>
           <View
@@ -569,32 +614,58 @@ const BookingWidget = ({booking_type}) => {
           </View>
 
           {form.viareturn.map((via, index) => (
-            <SafeAreaView key={index}>
-              <PlaceSelector
-                value={{
-                  place_id: form.viareturn[index].place_id,
-                  description: form.viareturn[index].desc,
-                }}
-                label="Via"
-                onCancel={() => {
-                  console.log('removing via');
-                  let vias = [...form.viareturn];
-                  vias.splice(index, 1);
-                  setForm({...form, viareturn: vias});
-                }}
-                onChange={place => {
-                  console.log('Changing Via');
-                  console.log(place);
-                  let vias = [...form.viareturn];
-                  vias[index].place_id = place.place_id;
-                  vias[index].desc = place.description;
-                  setForm({
-                    ...form,
-                    viareturn: vias,
-                  });
-                }}
-              />
-            </SafeAreaView>
+           <SafeAreaView key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
+           <PlaceSelectorModal
+             value={{
+               place_id: form.viareturn[index].place_id,
+               description: form.viareturn[index].desc,
+             }}
+             label="Return Via"
+             onCancel={() => {
+               console.log('Removing via');
+               let vias = [...form.viareturn];
+               vias.splice(index, 1);
+               setForm({ ...form, viareturn: vias });
+             }}
+             onChange={place => {
+               console.log('Changing Via');
+               let vias = [...form.viareturn];
+               vias[index] = {
+                 place_id: place.place_id,
+                 desc: place.description,
+               };
+               setForm({
+                 ...form,
+                 viareturn: vias,
+               });
+             }}
+             style={{
+               text: { color: colors.BLACK },
+               // Add more styles if needed
+             }}
+           />
+           <TouchableOpacity
+             onPress={() => {
+               let vias = [...form.viareturn];
+               vias.splice(index, 1);
+               setForm({ ...form, viareturn: vias });
+             }}
+             style={{
+               marginLeft: 10,
+               padding: 5,
+               backgroundColor: 'transparent',
+               borderRadius: 15,
+               justifyContent: 'center',
+               alignItems: 'center',
+               position: 'absolute',
+               right: -5,
+               top: 8,
+             }}
+           >
+             <Icon name="times" size={16} color="black" />
+           </TouchableOpacity>
+         </SafeAreaView>
+         
           ))}
         </>
       )}
@@ -622,13 +693,14 @@ const BookingWidget = ({booking_type}) => {
   );
 };
 const getBgColorByType = booking_type => {
+  console.log('dog booking_type', booking_type);
   switch (booking_type) {
     case 'client_bidding':
       return colors.WHITE;
     case 'cabmatch':
       return colors.WHITE;
     default:
-      return colors.WHITE;
+      return colors.LightBg;
   }
 };
 const SecondsToHoursMinutes = ({seconds}) => {

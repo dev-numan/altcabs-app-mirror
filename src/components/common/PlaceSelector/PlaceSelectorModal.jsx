@@ -75,6 +75,7 @@ const PlaceSelectorModal = ({label, value, onCancel, onChange}) => {
       <TouchableOpacity 
   onPress={() => setModalVisible(true)} 
   style={[styles.inputField, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}> 
+  <MaterialCommunityIcons name="map-marker" size={20} color="gray" style={{ marginRight: 8 }} />
   <Text 
     style={{ color: 'black', flex: 1 }} 
     numberOfLines={1} 

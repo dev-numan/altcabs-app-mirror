@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
+  FlatList,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import colors from '../../constants/colors';
 
 const BookingLuggageModal = ({
@@ -18,92 +17,149 @@ const BookingLuggageModal = ({
   setForm,
   setTotalLuggage,
   totalLuggage,
+  setLuggageQuantity
 }) => {
-  const [luggage, setLuggage] = useState('');
-  const [quantity, setQuantity] = useState(null);
-  const [openDropdown, setOpenDropdown] = useState(false); // Control dropdown visibility
-  const [luggageItems, setLuggageItems] = useState(
-    luggageTypes.map((item, i) => ({
-      label: item.name,
-      value: item.name,
-      key: i,
-    })),
-  );
+  // Initialize selected luggage items with quantities
+  const [selectedItems, setSelectedItems] = useState({});
+
+  // Initialize selections when modal opens
+  useEffect(() => {
+    if (open) {
+      // Pre-fill with existing selections from form
+      const initialSelections = {};
+      luggageTypes.forEach(item => {
+        initialSelections[item._id] = form.luggage[item._id] ? parseInt(form.luggage[item._id]) : 0;
+      });
+      setSelectedItems(initialSelections);
+    }
+  }, [open, form.luggage, luggageTypes]);
+
+  // Handle quantity change
+  const handleQuantityChange = (id, increment) => {
+    setSelectedItems(prev => {
+      const currentValue = prev[id] || 0;
+      const newValue = increment ? currentValue + 1 : Math.max(0, currentValue - 1);
+      return { ...prev, [id]: newValue };
+    });
+  };
+
+  // Handle save
+  const handleSave = () => {
+    // Update form
+    const updatedForm = { ...form };
+    const updatedLuggage = [];
+    let totalQuantity = 0;
+
+    Object.entries(selectedItems).forEach(([id, quantity]) => {
+      // Only add items with quantity > 0
+      if (quantity > 0) {
+        // Update form.luggage
+        updatedForm.luggage[id] = quantity.toString();
+        
+        // Add to total quantity count
+        totalQuantity += quantity;
+        
+        // Find luggage details
+        const luggageItem = luggageTypes.find(item => item._id === id);
+        if (luggageItem) {
+          // Add to totalLuggage array
+          const existingIndex = totalLuggage.findIndex(item => item.id === id);
+          if (existingIndex >= 0) {
+            // Update existing
+            updatedLuggage.push({
+              ...totalLuggage[existingIndex],
+              quantity: quantity.toString()
+            });
+          } else {
+            // Add new
+            updatedLuggage.push({
+              name: luggageItem.name,
+              quantity: quantity.toString(),
+              id: id
+            });
+          }
+        }
+      } else {
+        // If quantity is 0, remove from form
+        delete updatedForm.luggage[id];
+      }
+    });
+
+    // Add items from totalLuggage that weren't modified
+    totalLuggage.forEach(item => {
+      if (!selectedItems.hasOwnProperty(item.id)) {
+        updatedLuggage.push(item);
+        // Add their quantities to the total
+        totalQuantity += parseInt(item.quantity || 0);
+      }
+    });
+
+    // Update all state
+    setForm(updatedForm);
+    setTotalLuggage(updatedLuggage);
+    setLuggageQuantity(totalQuantity); // Set the total luggage quantity
+    setOpen(false);
+  };
+
+  // Calculate total selected items for the header
+  const getTotalSelectedItems = () => {
+    return Object.values(selectedItems).reduce((sum, quantity) => sum + quantity, 0);
+  };
+
+  // Render luggage item
+  const renderLuggageItem = ({ item }) => {
+    const quantity = selectedItems[item._id] || 0;
+    
+    return (
+      <View style={styles.luggageItem}>
+        <Text style={styles.luggageName}>{item.name}</Text>
+        <View style={styles.quantityContainer}>
+          <TouchableOpacity
+            style={styles.quantityButton}
+            onPress={() => handleQuantityChange(item._id, false)}>
+            <Text style={styles.quantityButtonText}>-</Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.quantityText}>{quantity}</Text>
+          
+          <TouchableOpacity
+            style={styles.quantityButton}
+            onPress={() => handleQuantityChange(item._id, true)}>
+            <Text style={styles.quantityButtonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <Modal animationType="fade" transparent={true} visible={open}>
       <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
-          <Text style={styles.heading}>Enter Your Luggage</Text>
-          <View style={styles.pickerWrapper}>
-            <Text style={styles.label}>Select Luggage :</Text>
-          </View>
-          <DropDownPicker
-            open={openDropdown}
-            listItemLabelStyle={{
-              color: 'black',
-            }}
-            setOpen={setOpenDropdown}
-            value={luggage}
-            setValue={setLuggage}
-            items={luggageItems}
-            setItems={setLuggageItems}
-            placeholder="Select Luggage"
-            style={styles.pickerStyle}
-            textStyle={styles.pickerTextStyle}
-            dropDownContainerStyle={styles.dropDownStyle}
-            onChangeValue={itemValue => {
-              let luggage = luggageTypes.filter(
-                item => item?.name === itemValue,
-              )[0];
-              setQuantity(form.luggage[luggage?._id]);
-              setLuggage(itemValue);
-            }}
+          <Text style={styles.heading}>Select Luggage</Text>
+          
+          {/* Show current total selection */}
+          <Text style={styles.totalSelected}>
+            Selected: {getTotalSelectedItems()} items
+          </Text>
+          
+          <FlatList
+            data={luggageTypes}
+            renderItem={renderLuggageItem}
+            keyExtractor={item => item._id}
+            style={styles.luggageList}
           />
-
-          <TextInput
-            keyboardType="number-pad"
-            value={quantity}
-            onChangeText={text => setQuantity(text)}
-            style={styles.input}
-            placeholder="Luggage Quantity"
-          />
+          
           <View style={styles.buttonsContainer}>
             <TouchableOpacity
               style={styles.cancelButton}
               onPress={() => setOpen(false)}>
               <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
+            
             <TouchableOpacity
               style={styles.saveButton}
-              onPress={() => {
-                let lug = luggageTypes.filter(
-                  item => item?.name === luggage,
-                )[0];
-                let a = {...form};
-                a.luggage[`${lug?._id}`] = quantity;
-                setForm(a);
-                a = totalLuggage;
-                let flag = true;
-                for (var i in a) {
-                  if (a[i].id === lug?._id) {
-                    a[i].quantity = quantity;
-                    flag = false;
-                    break;
-                  }
-                }
-                if (flag) {
-                  a.push({
-                    name: lug?.name,
-                    quantity,
-                    id: lug?._id,
-                  });
-                }
-                setTotalLuggage(a);
-                setQuantity(null);
-                setLuggage('');
-                setOpen(false);
-              }}>
+              onPress={handleSave}>
               <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
           </View>
@@ -125,50 +181,65 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     width: '80%',
+    maxHeight: '80%',
   },
   heading: {
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    textAlign: 'center',
+    color: 'black'
   },
-  pickerWrapper: {
+  totalSelected: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 10,
+    color: 'black'
+  },
+  luggageList: {
+    maxHeight: 300,
+  },
+  luggageItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
-    zIndex: 100,
+    alignItems: 'center',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
-  label: {
-    marginTop: 10,
+  luggageName: {
+    fontSize: 16,
+    flex: 1,
+    color: 'black'
   },
-  pickerStyle: {
+  quantityContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  quantityButton: {
     backgroundColor: colors.PRIMARY,
-    borderColor: colors.PRIMARY,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     justifyContent: 'center',
-    borderRadius: 7,
-    marginBottom: 10,
+    alignItems: 'center',
   },
-  pickerTextStyle: {
-    color: colors.WHITE,
-    fontSize: 14,
-    numberOfLines: 1,
-    ellipsizeMode: 'tail', // Ellipsis for long text
+  quantityButtonText: {
+    color: 'white',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
-  dropDownStyle: {
-    backgroundColor: colors.SECONDARY,
-    borderColor: colors.PRIMARY,
-    color: 'red',
-  },
-  input: {
-    width: '100%',
-    borderWidth: 1,
-    borderColor: 'gray',
-    padding: 5,
-    marginBottom: 10,
-    borderRadius: 5,
+  quantityText: {
+    fontSize: 16,
+    marginHorizontal: 15,
+    minWidth: 20,
+    textAlign: 'center',
+    color: 'black'
   },
   buttonsContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
+    marginTop: 15,
   },
   cancelButton: {
     backgroundColor: 'gray',

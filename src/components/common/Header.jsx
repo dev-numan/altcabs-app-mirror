@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 5,
     color: colors.BLACK,
-    backgroundColor: colors.WHITE,
+    backgroundColor: colors.LightBg,
   },
   headerTitle: {
     textAlign: 'center',
