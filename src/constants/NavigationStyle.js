@@ -61,11 +61,11 @@ export const StackHeaderOption = ({navigation}) => {
 };
 
 export const TabBarOptions = {
-  tabBarActiveTintColor: colors.SECONDARY,
+  tabBarActiveTintColor: colors.PRIMARY,
   headerShown: false,
 
   tabBarStyle: {
-    backgroundColor: colors.PRIMARY,
+    backgroundColor: colors.WHITE,
   },
   tabBarInActiveTintColor: colors.IN_ACTIVE_TAB_BAR,
 };
