@@ -198,6 +198,7 @@ const styles = StyleSheet.create({
   },
   luggageList: {
     maxHeight: 300,
+    fontSize: 12
   },
   luggageItem: {
     flexDirection: 'row',
@@ -208,7 +209,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#eee',
   },
   luggageName: {
-    fontSize: 16,
+    fontSize: 14,
     flex: 1,
     color: 'black'
   },

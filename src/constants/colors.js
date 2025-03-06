@@ -17,5 +17,9 @@ const colors = {
   PURPLE: 'rgba(118, 75, 162, 1)',
   LightBg: 'rgba(237,244,244,1)',
   BACKGROUND: 'rgb(237,244,244)',
+  PRIMARY_COLOR_2:"#E3F2FD",
+  WARM_YELLO:"#FBBF24",
+  DARK_COLOR:"#1C2B39",
+  SECONDRY_2:"#64B5F6"
 };
 export default colors;

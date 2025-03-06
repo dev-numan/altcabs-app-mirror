@@ -49,7 +49,7 @@ const ProcessBooking = () => {
     },
   ];
   return (
-    <View style={{flex: 1, backgroundColor: '#1C2B39'}}>
+    <View style={{flex: 1, backgroundColor: colors.BACKGROUND}}>
       {!booking ? (
         <QuotationLoaderSkeleton />
       ) : (
@@ -154,117 +154,6 @@ const ProcessBooking = () => {
               {/* <Text>Text here</Text> */}
             </CustomProgressSteps>
           )}
-
-          {/* <ProgressSteps
-            activeStepIconBorderColor={colors.YELLOW}
-            activeStepIconColor={colors.YELLOW}
-            activeStepNumColor={colors.PRIMARY}
-            completedStepIconColor={colors.YELLOW}
-            completedProgressBarColor={colors.YELLOW}
-            progressBarColor={colors.YELLOW}
-            // progressBarColor="#405263"
-            disabledStepIconColor="#405263"
-            disabledStepIconBorderColor={colors.YELLOW}
-            activeLabelColor={colors.YELLOW}
-            activeStep={activeStep}>
-            <ProgressStep
-              // onSubmit={onSubmit}
-              nextBtnTextStyle={styles.btnText}
-              nextBtnStyle={styles.nextBtnStyle}
-              previousBtnTextStyle={styles.btnText}
-              previousBtnStyle={styles.btn}
-              scrollable={true}
-              scrollViewProps={{
-                showsVerticalScrollIndicator: false,
-                pagingEnabled: false,
-              }}
-              removeBtnRow={true}
-              label={
-                booking.hasReturnBooking ? 'Outbound Quotations' : 'Quotations'
-              }>
-              <QuotationSelector
-                nextStep={nextStep}
-                hasReturnBooking={booking.hasReturnBooking}
-                bookingId={booking._id}
-              />
-            </ProgressStep>
-            {booking.hasReturnBooking && (
-              <ProgressStep
-                onPrevious={previousStep}
-                nextBtnTextStyle={styles.btnText}
-                nextBtnStyle={styles.nextBtnStyle}
-                previousBtnTextStyle={styles.btnText}
-                previousBtnStyle={styles.btn}
-                scrollable={true}
-                previousBtnText="<- Outbound Quotations"
-                scrollViewProps={{
-                  showsVerticalScrollIndicator: false,
-                  pagingEnabled: true,
-                }}
-                removeBtnRow={false}
-                label="Inbound Quotations">
-                <QuotationSelector
-                  nextStep={nextStep}
-                  hasReturnBooking={booking.hasReturnBooking}
-                  bookingId={booking.returnBooking._id}
-                />
-              </ProgressStep>
-            )}
-
-            <ProgressStep
-              // onSubmit={onSubmit}
-              onPrevious={previousStep}
-              nextBtnTextStyle={styles.btnText}
-              nextBtnStyle={styles.nextBtnStyle}
-              previousBtnTextStyle={styles.btnText}
-              previousBtnStyle={styles.btn}
-              scrollable={true}
-              scrollViewProps={{
-                showsVerticalScrollIndicator: false,
-                pagingEnabled: false,
-              }}
-              previousBtnText={
-                booking.hasReturnBooking
-                  ? '<- Inbound Quotations'
-                  : 'Quotations'
-              }
-              removeBtnRow={false}
-              label="Passanger Details">
-              <QuotationDetails nextStep={nextStep} booking={booking} />
-            </ProgressStep>
-            <ProgressStep
-              onPrevious={previousStep}
-              // onSubmit={onSubmit}
-              nextBtnTextStyle={styles.btnText}
-              nextBtnStyle={styles.nextBtnStyle}
-              previousBtnTextStyle={styles.btnText}
-              previousBtnStyle={styles.btn}
-              scrollable={true}
-              scrollViewProps={{
-                showsVerticalScrollIndicator: false,
-                // pagingEnabled: true,
-              }}
-              removeBtnRow={false}
-              previousBtnText="<- Passanger Details"
-              label="Payment">
-              <QuotationCheckout nextStep={nextStep} booking={booking} />
-            </ProgressStep>
-            <ProgressStep
-              onPrevious={previousStep}
-              nextBtnTextStyle={styles.btnText}
-              nextBtnStyle={styles.nextBtnStyle}
-              previousBtnTextStyle={styles.btnText}
-              previousBtnStyle={styles.btn}
-              scrollable={true}
-              scrollViewProps={{
-                showsVerticalScrollIndicator: false,
-                // pagingEnabled: true,
-              }}
-              removeBtnRow={true}
-              label="Confirmation">
-              <QuotationSuccess booking={booking} />
-            </ProgressStep>
-          </ProgressSteps> */}
         </>
       )}
     </View>

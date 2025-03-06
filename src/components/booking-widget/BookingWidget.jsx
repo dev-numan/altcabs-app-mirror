@@ -696,7 +696,7 @@ const getBgColorByType = booking_type => {
   console.log('dog booking_type', booking_type);
   switch (booking_type) {
     case 'client_bidding':
-      return colors.WHITE;
+      return colors.BACKGROUND;
     case 'cabmatch':
       return colors.WHITE;
     default:

@@ -19,7 +19,7 @@ import {Center} from 'native-base';
 
 const CabBid = () => {
   return (
-    <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+    <View style={{flex: 1, backgroundColor: colors.BACKGROUND}}>
       <KeyboardAvoidingView>
         <ScrollView
           showsVerticalScrollIndicator={true}
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: 20,
     fontWeight: 'bold',
-    color: colors.WHITE,
+    color: colors.PRIMARY_40_DARK,
     marginVertical: 7,
   },
   form: {

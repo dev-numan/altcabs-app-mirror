@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   //   left: 25,
   // },
   heading: {
-    color: colors.YELLOW,
+    color: colors.DARK_COLOR,
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   activeStep: {
-    backgroundColor: colors.YELLOW,
+    backgroundColor: colors.SECONDRY_2,
   },
   // line: {
   //   width: 50,

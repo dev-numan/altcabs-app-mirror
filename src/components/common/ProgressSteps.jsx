@@ -50,7 +50,13 @@ const CustomProgressSteps = ({steps, activeStep, label, children}) => {
             // </View>
             <View key={step.label} style={styles.stepContainer}>
               <View style={stepStyle}>
-                <Text style={{fontSize: 18}}>{step.label}</Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: isActive ? colors.WHITE : colors.BLACK,
+                  }}>
+                  {step.label}
+                </Text>
               </View>
               {/* {index < steps.length - 1 && (
                 <View style={[styles.line, {left: (index + 1) * 60}]} />
@@ -119,7 +125,8 @@ const styles = StyleSheet.create({
     fontSize: 42,
   },
   activeStep: {
-    backgroundColor: colors.YELLOW,
+    backgroundColor: colors.DARK_COLOR,
+    color: colors.WHITE,
   },
   // line: {
   //   width: 50,

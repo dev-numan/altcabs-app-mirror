@@ -19,30 +19,28 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
 
   const QuotationLoaderSkeletonOnCard = () => {
     return (
-      <View style={styles.typeView}>
-        <ActivityIndicator size="large" color={colors.YELLOW} />
+      <View style={styles.cardContainer}>
+        <ActivityIndicator size="large" color={colors.PRIMARY} />
       </View>
     );
   };
+
   if (!quotation) return <QuotationLoaderSkeletonOnCard />;
 
   return (
-    <View style={[styles.typeView]}>
-      <View style={[styles.typeTextView]}>
-        <Text style={styles.typeText}>{getTitleFromType()}</Text>
+    <View style={styles.cardContainer}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>{getTitleFromType()}</Text>
       </View>
-      <Text style={styles.companyText}>{quotation.companyName}</Text>
-      <Text style={styles.companyVehicleText}>
-        {quotation.vehicle_type_name}
-      </Text>
+      <Text style={styles.companyName}>{quotation.companyName}</Text>
+      <Text style={styles.vehicleType}>{quotation.vehicle_type_name}</Text>
       <Button
         rounded="md"
         p="3"
-        _text={{fontSize: 20, fontWeight: 600}}
-        bg={colors.YELLOW}
+        style={styles.buttonStyle}
         onPress={() => onQuotationSelect(quotation.index)}>
-        <Text _text={{fontSize: 20, fontWeight: 600}}>
-          £ {Number(quotation.totalPrice).toFixed(2)}{' '}
+        <Text style={styles.buttonText}>
+          £ {Number(quotation.totalPrice).toFixed(2)}
         </Text>
       </Button>
     </View>
@@ -52,47 +50,52 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
 export default QuotationTopCard;
 
 const styles = StyleSheet.create({
-  typeView: {
-    margin: 3,
-    borderRadius: 10,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignContent: 'center',
-    padding: 10,
-    width: '50%',
-    backgroundColor: colors.PRIMARY_40_DARK,
-    borderColor: colors.YELLOW,
+  cardContainer: {
+    margin: 5,
+    borderRadius: 12,
+    backgroundColor: '#FFF',
     borderWidth: 1,
+    borderColor: '#E0E0E0',
+    padding: 15,
+    width: '48%',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
-  typeTextView: {
-    alignSelf: 'center',
-    textAlign: 'center',
-    fontWeight: 'bold',
+  titleContainer: {
+    marginBottom: 10,
   },
-  typeText: {
-    color: colors.YELLOW,
-    fontSize: 15,
-  },
-  companyText: {
-    color: 'white',
-    marginTop: 14,
-    textAlign: 'center',
-  },
-  companyVehicleText: {
-    color: 'white',
-    marginBottom: 14,
-    fontSize: 11,
-    textAlign: 'center',
-  },
-  priceText: {
-    color: 'white',
-    fontSize: 14,
+  titleText: {
+    color: colors.PRIMARY,
+    fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  btnText: {
-    fontWeight: 600,
-    color: 'white',
+  companyName: {
+    color: '#333',
+    fontSize: 18,
+    fontWeight: '600',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  vehicleType: {
+    color: '#666',
+    fontSize: 13,
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  buttonStyle: {
+    width: '100%',
+    justifyContent: 'center',
+    backgroundColor: colors.PRIMARY,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFF',
+    textAlign: 'center',
   },
 });
