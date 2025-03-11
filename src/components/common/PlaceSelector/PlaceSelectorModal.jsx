@@ -7,7 +7,13 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
-import {Input, FormControl, WarningOutlineIcon, Spinner, IconButton} from 'native-base';
+import {
+  Input,
+  FormControl,
+  WarningOutlineIcon,
+  Spinner,
+  IconButton,
+} from 'native-base';
 import MapView, {Marker} from 'react-native-maps';
 import CustomButton from '../CustomButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -70,26 +76,51 @@ const PlaceSelectorModal = ({label, value, onCancel, onChange}) => {
 
   return (
     <View style={styles.container}>
-      <Text  style={{ color: 'black', flex: 1,fontWeight:'600' }}>{label}</Text>
+      {/* <Text style={{color: 'black', flex: 1, fontWeight: '600'}}>{label}</Text> */}
       {/* Input Field to Open Modal */}
-      <TouchableOpacity 
-  onPress={() => setModalVisible(true)} 
-  style={[styles.inputField, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }]}> 
-  <MaterialCommunityIcons name="map-marker" size={20} color="gray" style={{ marginRight: 8 }} />
-  <Text 
-    style={{ color: 'black', flex: 1 }} 
-    numberOfLines={1} 
-    ellipsizeMode="tail">
-    {value.description || 'Select a location'}
-  </Text>
-  {value.description ? (
-    <TouchableOpacity 
-      onPress={() => onChange({ place_id: '', description: '' })} 
-      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-      <MaterialCommunityIcons name="close-circle" size={20} color="gray" />
-    </TouchableOpacity>
-  ) : null}
-</TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={[
+          styles.inputField,
+          {
+            flexDirection: 'row',
+            borderRadius: 5,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          },
+        ]}>
+        <MaterialCommunityIcons
+          name="map-marker"
+          size={20}
+          color="gray"
+          style={{marginRight: 1}}
+        />
+        <Text
+          style={{
+            color: colors.PRIMARY,
+            fontWeight: '600',
+            // backgroundColor: colors.YELLOW,
+          }}>
+          {label}:{' '}
+        </Text>
+        <Text
+          style={{color: colors.PRIMARY, flex: 1, fontWeight: '400'}}
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {value.description || 'Select a location'}
+        </Text>
+        {value.description ? (
+          <TouchableOpacity
+            onPress={() => onChange({place_id: '', description: ''})}
+            hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}>
+            <MaterialCommunityIcons
+              name="close-circle"
+              size={20}
+              color="gray"
+            />
+          </TouchableOpacity>
+        ) : null}
+      </TouchableOpacity>
 
       {/* Modal for Place Selection */}
       <Modal visible={modalVisible} animationType="slide">
@@ -98,12 +129,16 @@ const PlaceSelectorModal = ({label, value, onCancel, onChange}) => {
           <View style={styles.header}>
             <Text style={styles.headerTitle}>{label}</Text>
             <TouchableOpacity
-  onPress={() => {
-    setModalVisible(false);
-    // Removed the onCancel call
-  }}
+              onPress={() => {
+                setModalVisible(false);
+                // Removed the onCancel call
+              }}
               style={styles.backButton}>
-              <MaterialCommunityIcons name="arrow-left" size={25} color={colors.BLACK} />
+              <MaterialCommunityIcons
+                name="arrow-left"
+                size={25}
+                color={colors.BLACK}
+              />
             </TouchableOpacity>
           </View>
 
@@ -118,14 +153,22 @@ const PlaceSelectorModal = ({label, value, onCancel, onChange}) => {
                 w="100%"
                 backgroundColor={'white'}
                 value={value.description}
-                onChangeText={text => onChange({place_id: '', description: text})}
+                onChangeText={text =>
+                  onChange({place_id: '', description: text})
+                }
                 placeholder="Search for a place"
                 autoCapitalize="none"
                 autoCorrect={false}
                 InputRightElement={
                   value.description ? (
                     <IconButton
-                      icon={<MaterialCommunityIcons name="close" size={20} color={colors.BLACK} />}
+                      icon={
+                        <MaterialCommunityIcons
+                          name="close"
+                          size={20}
+                          color={colors.BLACK}
+                        />
+                      }
                       onPress={handleClearText}
                       style={styles.clearButton}
                     />

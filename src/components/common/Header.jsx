@@ -35,13 +35,14 @@ export default Header;
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    margin: 5,
-    color: colors.BLACK,
-    backgroundColor: colors.LightBg,
+    margin: 2,
+    color: colors.PRIMARY,
+    // backgroundColor: colors.LightBg,
   },
   headerTitle: {
     textAlign: 'center',
     fontSize: 24,
+    fontWeight: 600,
     color: colors.PRIMARY,
   },
 });

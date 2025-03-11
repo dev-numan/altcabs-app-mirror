@@ -67,7 +67,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   });
   let fleetOptions = [];
   useEffect(() => {
-    webSocketService.setBookingId(bookingId);
+    // webSocketService.setBookingId(bookingId); // do not connect socket to receive quotations
   }, [bookingId]);
   fleetOptions = useMemo(
     () =>
@@ -325,7 +325,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
               py="1"
               px="3"
               value={searchTerm}
-              style={{backgroundColor:colors.WHITE, color:colors.DARK_COLOR}}
+              style={{backgroundColor: colors.WHITE, color: colors.DARK_COLOR}}
               onChangeText={val => setSearchTerm(val)}
               InputLeftElement={
                 <Icon
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
   },
   searchContainer: {
     marginTop: 15,
-    backgroundColor:colors.WHITE
+    backgroundColor: colors.WHITE,
   },
   quotationCard: {
     flex: 1,

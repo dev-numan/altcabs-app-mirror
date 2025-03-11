@@ -57,12 +57,12 @@ const getTitleTextByBookingType = booking_type => {
 export default CabCompare;
 const styles = StyleSheet.create({
   description: {
-    fontSize: 18,
+    fontSize: 16,
     textAlign: 'center',
-    marginHorizontal: 20,
+    marginHorizontal: 10,
     fontWeight: 'bold',
     color: colors.PRIMARY,
-    marginVertical: 2,
+    marginVertical: 1,
   },
   form: {
     borderRadius: 12,
