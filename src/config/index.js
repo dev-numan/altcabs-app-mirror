@@ -11,7 +11,8 @@ export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';
 /**
  * Use below credientials for development server
  */
-let baseURL = '192.168.10.3:8080';
+let baseURL = '192.168.1.3:8080';
+// let baseURL = '10.135.54.108:8080';
 export const URL = `http://${baseURL}/api`;
 export const SOCKET_URL = `ws://${baseURL}`;
 

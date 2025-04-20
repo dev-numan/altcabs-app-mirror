@@ -39,6 +39,8 @@ class BookingService extends GenericService {
       '/mobileapp/booking_process_mobile/get-quotations/' + booking_type,
       data,
     );
+  getPriceByBookingId = bookingId =>
+    this.post(`/mobileapp/booking_process_mobile/${bookingId}/get-price`);
 }
 const bookingService = new BookingService();
 export default bookingService;

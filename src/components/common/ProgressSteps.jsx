@@ -1,147 +1,145 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import colors from '../../constants/colors';
 
-const CustomProgressSteps = ({steps, activeStep, label, children}) => {
-  //   const [activeStep, setActiveStep] = useState(0);
-  // const [stepShow,setStepShow] = React.useState()
+const CustomProgressSteps = ({
+  steps,
+  activeStep,
+  children,
+  nextStep,
+  previousStep,
+}) => {
   const steps5 = [
-    {
-      label: 1,
-    },
-    {
-      label: 2,
-    },
-    {
-      label: 3,
-    },
-    {
-      label: 4,
-    },
-    {
-      label: 5,
-    },
+    {label: 1, secondaryLabel: 'Fwd Quotes'},
+    {label: 2, secondaryLabel: 'Return Quotes'},
+    {label: 3, secondaryLabel: 'Passenger'},
+    {label: 4, secondaryLabel: 'Checkout'},
+    {label: 5, secondaryLabel: 'Success'},
   ];
+
   const steps4 = [
-    {
-      label: 1,
-    },
-    {
-      label: 2,
-    },
-    {
-      label: 3,
-    },
-    {
-      label: 4,
-    },
+    {label: 1, secondaryLabel: 'Quotes'},
+    {label: 2, secondaryLabel: 'Passenger'},
+    {label: 3, secondaryLabel: 'Checkout'},
+    {label: 4, secondaryLabel: 'Success'},
   ];
-  const stepsShow = steps == 4 ? steps4 : steps5;
+
+  const stepsShow = steps === 4 ? steps4 : steps5;
 
   return (
-    <View>
-      <View style={styles.container}>
+    <View style={styles.container}>
+      <View style={styles.stepContainer}>
         {stepsShow.map((step, index) => {
           const isActive = index === activeStep;
-          const stepStyle = [styles.step, isActive && styles.activeStep];
-          return (
-            // <View style={stepStyle}>
-            //   <Text>{step.label}</Text>
-            // </View>
-            <View key={step.label} style={styles.stepContainer}>
-              <View style={stepStyle}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: isActive ? colors.WHITE : colors.BLACK,
-                  }}>
-                  {step.label}
-                </Text>
-              </View>
-              {/* {index < steps.length - 1 && (
-                <View style={[styles.line, {left: (index + 1) * 60}]} />
-              )} */}
+          const isCompleted = index < activeStep;
+
+          const StepCircle = () => (
+            <View
+              style={[
+                styles.circle,
+                isCompleted
+                  ? styles.completedCircle
+                  : isActive
+                  ? styles.activeCircle
+                  : styles.inactiveCircle,
+              ]}>
+              <Icon
+                name={
+                  isCompleted
+                    ? 'check'
+                    : isActive
+                    ? 'radio-button-checked'
+                    : 'radio-button-unchecked'
+                }
+                size={20}
+                color="#fff"
+              />
             </View>
+          );
+
+          return (
+            <React.Fragment key={index}>
+              <View style={styles.step}>
+                {isCompleted ? (
+                  <TouchableOpacity onPress={() => previousStep(index)}>
+                    <StepCircle />
+                  </TouchableOpacity>
+                ) : (
+                  <StepCircle />
+                )}
+                <Text style={styles.label}>{step.secondaryLabel}</Text>
+              </View>
+
+              {/* Line between steps (not after last) */}
+              {index !== stepsShow.length - 1 && (
+                <View
+                  style={[
+                    styles.line,
+                    {
+                      backgroundColor:
+                        index < activeStep ? colors.black : '#ccc',
+                    },
+                  ]}
+                />
+              )}
+            </React.Fragment>
           );
         })}
       </View>
 
-      {/* <Text style={styles.heading}>{label}</Text> */}
-      {children}
+      {/* Content */}
+      <View style={styles.contentContainer}>{children}</View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   justifyContent: 'space-between',
-  // },
-  // stepContainer: {
-  //   alignItems: 'center',
-  // },
-  // step: {
-  //   width: 50,
-  //   height: 50,
-  //   borderRadius: 25,
-  //   backgroundColor: '#ccc',
-  //   alignItems: 'center',
-  //   justifyContent: 'center',
-  // },
-  // activeStep: {
-  //   backgroundColor: colors.YELLOW,
-  // },
-  // line: {
-  //   width: 1,
-  //   height: 25,
-  //   backgroundColor: '#ccc',
-  //   position: 'absolute',
-  //   bottom: 0,
-  //   left: 25,
-  // },
-  heading: {
-    color: colors.YELLOW,
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 25,
+    paddingVertical: 16,
   },
   stepContainer: {
-    alignItems: 'center',
-  },
-  step: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: colors.WHITE,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 42,
+    paddingHorizontal: 8,
+    flexWrap: 'nowrap',
   },
-  activeStep: {
-    backgroundColor: colors.DARK_COLOR,
-    color: colors.WHITE,
+  step: {
+    alignItems: 'center',
+    width: 70,
   },
-  // line: {
-  //   width: 50,
-  //   height: 1,
-  //   backgroundColor: '#ccc',
-  //   marginLeft: 10,
-  //   marginRight: 10,
-  // },
+  circle: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  completedCircle: {
+    backgroundColor: 'green',
+  },
+  activeCircle: {
+    backgroundColor: colors.PRIMARY,
+  },
+  inactiveCircle: {
+    backgroundColor: colors.GRAY,
+  },
+  label: {
+    fontSize: 10,
+    textAlign: 'center',
+    color: colors.PRIMARY,
+  },
   line: {
-    width: 50,
-    height: 1,
-    backgroundColor: '#ccc',
-    position: 'absolute',
-    top: 25,
-    left: 0,
+    height: 2,
+    flex: 1,
+    marginHorizontal: 4,
+    marginTop: -16,
+  },
+  contentContainer: {
+    marginTop: 20,
+    paddingHorizontal: 16,
   },
 });
 

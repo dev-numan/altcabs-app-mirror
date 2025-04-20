@@ -9,7 +9,12 @@ import VechicleInfoPopUp from './VechicleInfoPopUp';
 import {useSelector} from 'react-redux';
 import {selectFleetTypes} from '../../../store/selectors';
 import {useMemo} from 'react';
-const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
+const SingleQuotationSummary = ({
+  quotation,
+  type,
+  onQuotationSelect,
+  isTopCard,
+}) => {
   // console.log(quotation.vehicle_type);
   let fleetTypes = useSelector(selectFleetTypes);
   const fleetType = useMemo(() => {
@@ -74,20 +79,22 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
             alignItems: 'center',
             alignSelf: 'flex-start',
           }}>
-          <Text
-            style={{
-              fontSize: 16,
-              fontWeight: 'bold',
-              textAlign: 'center',
-              gap: 5,
-            }}>
-            <MaterialCommunityIcons
-              name={getIconByType()}
-              size={16}
-              color="black"
-            />
-            {getTitleFromType()}
-          </Text>
+          {isTopCard && (
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: 'bold',
+                textAlign: 'center',
+                gap: 5,
+              }}>
+              <MaterialCommunityIcons
+                name={getIconByType()}
+                size={16}
+                color="black"
+              />
+              {getTitleFromType()}
+            </Text>
+          )}
 
           <Text
             style={{
@@ -170,7 +177,7 @@ const QuotationTopCard = ({quotation, type, onQuotationSelect}) => {
   );
 };
 
-export default QuotationTopCard;
+export default SingleQuotationSummary;
 
 const styles = StyleSheet.create({
   cardContainer: {

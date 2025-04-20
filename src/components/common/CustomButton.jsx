@@ -7,7 +7,7 @@ const CustomButton = props => {
   return (
     <Button
       rounded="md"
-      p="3"
+      p="4"
       _text={{fontSize: 14, fontWeight: 'bold'}}
       colorScheme={colors.PRIMARY}
       _pressed={{bg: colors.PRIMARY_40_DARK}}

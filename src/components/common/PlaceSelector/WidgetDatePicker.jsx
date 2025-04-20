@@ -5,7 +5,16 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import {TouchableOpacity} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
+import {MD3DarkTheme, Provider as PaperProvider} from 'react-native-paper';
+const theme = {
+  ...MD3DarkTheme,
+  colors: {
+    ...MD3DarkTheme.colors,
+    primary: colors.PRIMARY, // Change primary color
+    background: colors.PRIMARY, // Dark background
+    text: '#ffffff', // Change text color
+  },
+};
 const WidgetDatePicker = ({label, value, onChange}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -35,6 +44,8 @@ const WidgetDatePicker = ({label, value, onChange}) => {
         onConfirm={handleConfirm}
         onCancel={hideDatePicker}
         minimumDate={new Date()}
+        // themeVariant="dark"
+        // textColor={colors.PRIMARY}
       />
 
       <TouchableOpacity
@@ -49,7 +60,12 @@ const WidgetDatePicker = ({label, value, onChange}) => {
           borderWidth: 1,
           borderColor: colors.PRIMARY,
         }}>
-        <FontAwesome5 name="calendar-alt" size={20} color={colors.PRIMARY} style={{marginRight: 10}} />
+        <FontAwesome5
+          name="calendar-alt"
+          size={20}
+          color={colors.PRIMARY}
+          style={{marginRight: 10}}
+        />
         <Text style={{color: colors.PRIMARY, fontSize: 16}}>
           {value ? moment(value).format('LLL') : moment().format('LLL')}
         </Text>

@@ -2,12 +2,12 @@ import React from 'react';
 import {View} from 'react-native';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import colors from '../../../constants/colors';
-const QuotationLoaderSkeleton = () => {
+const FleetInfoLoaderSkeleton = () => {
   return (
     <SkeletonPlaceholder
       borderRadius={10}
       backgroundColor={colors.GRAY_LIGHT}
-      highlightColor={colors.PRIMARY}>
+      highlightColor={colors.BACKGROUND}>
       <SkeletonPlaceholder.Item
         flexDirection="row"
         marginTop={10}
@@ -23,4 +23,4 @@ const QuotationLoaderSkeleton = () => {
   );
 };
 
-export default QuotationLoaderSkeleton;
+export default FleetInfoLoaderSkeleton;

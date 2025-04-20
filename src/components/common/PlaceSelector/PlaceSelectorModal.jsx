@@ -84,7 +84,7 @@ const PlaceSelectorModal = ({label, value, onCancel, onChange}) => {
           styles.inputField,
           {
             flexDirection: 'row',
-            borderRadius: 5,
+            borderRadius: 7,
             alignItems: 'center',
             justifyContent: 'space-between',
           },
@@ -99,6 +99,7 @@ const PlaceSelectorModal = ({label, value, onCancel, onChange}) => {
           style={{
             color: colors.PRIMARY,
             fontWeight: '600',
+            fontSize: 16,
             // backgroundColor: colors.YELLOW,
           }}>
           {label}:{' '}

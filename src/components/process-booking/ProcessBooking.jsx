@@ -32,22 +32,9 @@ const ProcessBooking = () => {
   }, [bookingId]);
   const nextStep = () => setActiveStep(activeStep + 1);
   const previousStep = () => setActiveStep(activeStep - 1);
-  console.log('booking.hasReturnBooking', booking?.hasReturnBooking);
-  console.log(`Booking Type: ${booking?.booking_type}`);
-  const steps = [
-    {
-      label: 1,
-    },
-    {
-      label: 2,
-    },
-    {
-      label: 3,
-    },
-    {
-      label: 4,
-    },
-  ];
+  // console.log('booking.hasReturnBooking', booking?.hasReturnBooking);
+  // console.log(`Booking Type: ${booking?.booking_type}`);
+
   return (
     <View style={{flex: 1, backgroundColor: colors.BACKGROUND}}>
       {!booking ? (
@@ -108,7 +95,11 @@ const ProcessBooking = () => {
               {/* <Text>Text here</Text> */}
             </CustomProgressSteps>
           ) : (
-            <CustomProgressSteps steps={4} activeStep={activeStep}>
+            <CustomProgressSteps
+              steps={4}
+              activeStep={activeStep}
+              nextStep={nextStep}
+              previousStep={previousStep}>
               {activeStep == 0 && (
                 <CustomProgressStep
                   label={

@@ -7,7 +7,7 @@ const CustomProgressStep = ({label, children}) => {
 
   return (
     <>
-      <Text style={styles.heading}>{label}</Text>
+      {/* <Text style={styles.heading}>{label}</Text> */}
       {children}
     </>
   );
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   // },
   heading: {
     color: colors.DARK_COLOR,
-    fontSize: 32,
+    fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },

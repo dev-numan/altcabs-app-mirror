@@ -1,22 +1,21 @@
-import {Input} from 'native-base';
 import React from 'react';
-import {View, TextInput, Image, TouchableOpacity, Text} from 'react-native';
-import styles from './styles';
+import {View, TextInput, Text, StyleSheet} from 'react-native';
 
 const DetailsScreenInput = props => {
   return (
     <View style={[styles.container, props.container]}>
-      {props.headingName ? (
-        <Text style={[styles.headingTxt, props.headingTxt]}>
+      {props.headingName && (
+        <Text style={[styles.label, props.headingTxt]}>
           {props.headingName}
         </Text>
-      ) : null}
-      <View style={[styles.innerContainer, props.innerContainer]}>
+      )}
+
+      <View style={[styles.inputWrapper, props.innerContainer]}>
         <TextInput
           {...props}
-          style={styles.inputContainer}
+          style={[styles.input, props.inputStyle]}
           placeholder={props.placeHolder}
-          placeholderTextColor={props.placeHolderColor}
+          placeholderTextColor={props.placeHolderColor || '#999'}
           multiline={props.multiline}
           value={props.value}
           editable={props.editable}
@@ -24,9 +23,9 @@ const DetailsScreenInput = props => {
           onChangeText={props.onChangeText}
           keyboardType={props.keyboardType}
           textAlignVertical={props.textAlignVertical}
-          color={props.textColor}
+          color={props.textColor || '#000'}
           maxLength={props.maxLength}
-          autoCapitalize={props.autoCapitalize}
+          autoCapitalize={props.autoCapitalize || 'none'}
           returnKeyType={props.returnKeyType}
           onSubmitEditing={props.onSubmitEditing}
           blurOnSubmit={props.blurOnSubmit}
@@ -36,5 +35,35 @@ const DetailsScreenInput = props => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
+  label: {
+    marginBottom: 6,
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '600',
+  },
+  inputWrapper: {
+    backgroundColor: '#fff',
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    paddingHorizontal: 6,
+    paddingVertical: 6,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  input: {
+    fontSize: 16,
+    color: '#000',
+    padding: 0, // removes iOS default padding
+  },
+});
 
 export default DetailsScreenInput;

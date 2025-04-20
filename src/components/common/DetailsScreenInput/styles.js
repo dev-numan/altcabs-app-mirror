@@ -4,9 +4,9 @@ import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.GRAY_LIGHT,
+    backgroundColor: colors.WHITE,
     borderWidth: 1,
-    borderColor: colors.YELLOW,
+    borderColor: colors.PRIMARY,
     paddingStart: 10,
     marginTop: 10,
     borderRadius: 5,
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headingTxt: {
-    color: colors.YELLOW,
+    color: colors.PRIMARY,
     fontSize: 11,
     letterSpacing: 0.75,
     fontWeight: '400',

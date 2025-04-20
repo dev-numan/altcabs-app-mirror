@@ -21,6 +21,7 @@ import AdminHome from '../components/screens/admin/Home';
 import NewRequest from '../components/screens/admin/NewRequests';
 import Break from '../components/screens/admin/Break';
 import InBiddingBookings from '../components/screens/customer/account/InBiddingBookings';
+import colors from '../constants/colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +30,20 @@ const CustomerStackNavigation = () => {
   const User = useSelector(state => state.Auth.TOKEN);
   const role = useSelector(state => state.Auth.role);
   const {IS_NEWLY_INSTALLED} = Intro;
-  console.log(Intro);
+  // console.log(Intro);
+  const headerOptions = {
+    headerStyle: {
+      backgroundColor: colors.PRIMARY, // Background color of the header
+      height: 40,
+    },
+    headerTitleStyle: {
+      fontWeight: 'bold',
+      fontSize: 18,
+      color: '#fff', // Title text color
+    },
+    headerTintColor: '#fff', // Back button & icon color
+    headerTitleAlign: 'center', // Align title to center
+  };
   return (
     <Stack.Navigator
       screenOptions={{headerBackTitle: '', headerShadowVisible: false}}
@@ -48,7 +62,7 @@ const CustomerStackNavigation = () => {
       <Stack.Screen
         name="ProcessBooking"
         component={ProcessBooking}
-        options={{title: 'Complete Booking'}}
+        options={{...headerOptions, title: 'Book Again'}}
       />
       <Stack.Screen
         name="AdminHome"

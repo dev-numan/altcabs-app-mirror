@@ -34,12 +34,13 @@ const QuotationDetails = ({booking, nextStep}) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [interested, setInterested] = useState(true);
   const [fetching, setFetching] = useState(false);
+  const [showMoreDetails, setShowMoreDetails] = useState(false);
   const [termsAndConditionsAccepted, setTermsAndConditionsAccepted] =
     useState(true);
   const [form, setForm] = useState({
     name,
     email,
-    phone: '',
+    phone,
     dropOffFullAddress: '',
     pickUpFullAddress: '',
     flightNum: '',
@@ -231,15 +232,7 @@ const QuotationDetails = ({booking, nextStep}) => {
           onConfirm={handleConfirm}
           onCancel={hideDatePicker}
         />
-        <Text
-          style={{
-            fontSize: 24,
-            color: 'white',
-            marginVertical: 16,
-            paddingTop: 5,
-          }}>
-          Booking Information
-        </Text>
+
         <VStack>
           <DetailsScreenInput
             // refInner={emailRef}
@@ -256,14 +249,14 @@ const QuotationDetails = ({booking, nextStep}) => {
             returnKeyType={'next'}
             blurOnSubmit={false}
             editable={false}
-            textColor={colors.WHITE}
+            textColor={colors.PRIMARY}
             // onSubmitEditing={() => {
             //     passwordRef.current.focus();
             // }}
           />
           <DetailsScreenInput
             // refInner={emailRef}
-            placeHolderColor={colors.YELLOW}
+            placeHolderColor={colors.PRIMARY}
             // placeHolder={'Email'}
             headingName={'Email'}
             multiline={false}
@@ -276,7 +269,7 @@ const QuotationDetails = ({booking, nextStep}) => {
             returnKeyType={'next'}
             blurOnSubmit={false}
             editable={false}
-            textColor={colors.WHITE}
+            textColor={colors.PRIMARY}
             // onSubmitEditing={() => {
             //     passwordRef.current.focus();
             // }}
@@ -296,7 +289,7 @@ const QuotationDetails = ({booking, nextStep}) => {
             returnKeyType={'next'}
             blurOnSubmit={false}
             style={{color: 'red'}}
-            textColor={colors.WHITE}
+            textColor={colors.PRIMARY}
             // editable={false}
 
             // onSubmitEditing={() => {
@@ -344,7 +337,7 @@ const QuotationDetails = ({booking, nextStep}) => {
                 style={{
                   width: 16,
                   height: 16,
-                  tintColor: colors.YELLOW,
+                  tintColor: colors.PRIMARY,
                 }}
               />
             ) : (
@@ -354,9 +347,9 @@ const QuotationDetails = ({booking, nextStep}) => {
                   {
                     width: 16,
                     height: 16,
-                    tintColor: colors.YELLOW,
+                    tintColor: colors.PRIMARY,
                   },
-                  {tintColor: colors.YELLOW},
+                  {tintColor: colors.PRIMARY},
                 ]}
               />
             )}
@@ -368,29 +361,14 @@ const QuotationDetails = ({booking, nextStep}) => {
                 fontSize: 14,
                 // fontFamily: 'Poppins',
                 fontWeight: '400',
-                color: colors.YELLOW,
+                color: colors.PRIMARY,
               },
               // {marginTop: 0, color: colors.WHITE},
             ]}>
             Booking Ride For Some Else.
           </Text>
         </View>
-        {/* <HStack
-          style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
-          <Checkbox
-            value={form.forElse}
-            onChange={e => {
-              setForm({
-                ...form,
-                forElse: e,
-              });
-            }}
-          />
 
-          <Text style={{color: '#FFF', marginLeft: 7}}>
-            Booking Ride For Some Else.
-          </Text>
-        </HStack> */}
         {form.forElse && (
           <VStack>
             <DetailsScreenInput
@@ -408,7 +386,7 @@ const QuotationDetails = ({booking, nextStep}) => {
               returnKeyType={'next'}
               blurOnSubmit={false}
               style={{color: 'red'}}
-              textColor={colors.WHITE}
+              textColor={colors.PRIMARY}
               // editable={false}
 
               // onSubmitEditing={() => {
@@ -430,7 +408,7 @@ const QuotationDetails = ({booking, nextStep}) => {
               returnKeyType={'next'}
               blurOnSubmit={false}
               style={{color: 'red'}}
-              textColor={colors.WHITE}
+              textColor={colors.PRIMARY}
               // editable={false}
 
               // onSubmitEditing={() => {
@@ -452,7 +430,7 @@ const QuotationDetails = ({booking, nextStep}) => {
               returnKeyType={'next'}
               blurOnSubmit={false}
               style={{color: 'red'}}
-              textColor={colors.WHITE}
+              textColor={colors.PRIMARY}
               // editable={false}
 
               // onSubmitEditing={() => {
@@ -479,160 +457,182 @@ const QuotationDetails = ({booking, nextStep}) => {
             /> */}
           </VStack>
         )}
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            alignItems: 'center',
+            marginTop: 10,
+          }}>
+          <TouchableOpacity
+            style={{
+              width: 25,
+              height: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => {
+              setShowMoreDetails(!showMoreDetails);
+            }}>
+            {!showMoreDetails.forElse ? (
+              <Image
+                source={check}
+                style={{
+                  width: 16,
+                  height: 16,
+                  tintColor: colors.PRIMARY,
+                }}
+              />
+            ) : (
+              <Image
+                source={checked}
+                style={[
+                  {
+                    width: 16,
+                    height: 16,
+                    tintColor: colors.PRIMARY,
+                  },
+                  {tintColor: colors.PRIMARY},
+                ]}
+              />
+            )}
+          </TouchableOpacity>
+          <Text
+            style={[
+              {
+                marginTop: 4,
+                fontSize: 14,
+                // fontFamily: 'Poppins',
+                fontWeight: '400',
+                color: colors.PRIMARY,
+              },
+              // {marginTop: 0, color: colors.WHITE},
+            ]}>
+            Specify More Details ...
+          </Text>
+        </View>
+        {showMoreDetails && (
+          <>
+            <DetailsScreenInput
+              // refInner={emailRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Phone'}
+              headingName={'PickUp Full Address'}
+              multiline={false}
+              value={form.pickUpFullAddress}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={pickUpFullAddress =>
+                setForm({...form, pickUpFullAddress})
+              }
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.PRIMARY}
+              // editable={false}
 
-        <DetailsScreenInput
-          // refInner={emailRef}
-          placeHolderColor={colors.WHITE}
-          // placeHolder={'Phone'}
-          headingName={'PickUp Full Address'}
-          multiline={false}
-          value={form.pickUpFullAddress}
-          maxLength={50}
-          // onChangeText={txt => setLogin({...login, password: txt})}
-          onChangeText={pickUpFullAddress =>
-            setForm({...form, pickUpFullAddress})
-          }
-          keyboardType={'default'}
-          autoCapitalize="none"
-          returnKeyType={'next'}
-          blurOnSubmit={false}
-          style={{color: 'red'}}
-          textColor={colors.WHITE}
-          // editable={false}
+              // onSubmitEditing={() => {
+              //     passwordRef.current.focus();
+              // }}
+            />
+            <DetailsScreenInput
+              // refInner={emailRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Phone'}
+              headingName={'Drop Off Full Address'}
+              multiline={false}
+              value={form.dropOffFullAddress}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={dropOffFullAddress =>
+                setForm({...form, dropOffFullAddress})
+              }
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.PRIMARY}
+              // editable={false}
 
-          // onSubmitEditing={() => {
-          //     passwordRef.current.focus();
-          // }}
-        />
-        <DetailsScreenInput
-          // refInner={emailRef}
-          placeHolderColor={colors.WHITE}
-          // placeHolder={'Phone'}
-          headingName={'Drop Off Full Address'}
-          multiline={false}
-          value={form.dropOffFullAddress}
-          maxLength={50}
-          // onChangeText={txt => setLogin({...login, password: txt})}
-          onChangeText={dropOffFullAddress =>
-            setForm({...form, dropOffFullAddress})
-          }
-          keyboardType={'default'}
-          autoCapitalize="none"
-          returnKeyType={'next'}
-          blurOnSubmit={false}
-          style={{color: 'red'}}
-          textColor={colors.WHITE}
-          // editable={false}
+              // onSubmitEditing={() => {
+              //     passwordRef.current.focus();
+              // }}
+            />
+            <DetailsScreenInput
+              // refInner={emailRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Phone'}
+              headingName={'Flight Number'}
+              multiline={false}
+              value={form.flightNum}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={flightNum => setForm({...form, flightNum})}
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.PRIMARY}
+              // editable={false}
 
-          // onSubmitEditing={() => {
-          //     passwordRef.current.focus();
-          // }}
-        />
-        <DetailsScreenInput
-          // refInner={emailRef}
-          placeHolderColor={colors.WHITE}
-          // placeHolder={'Phone'}
-          headingName={'Flight Number'}
-          multiline={false}
-          value={form.flightNum}
-          maxLength={50}
-          // onChangeText={txt => setLogin({...login, password: txt})}
-          onChangeText={flightNum => setForm({...form, flightNum})}
-          keyboardType={'default'}
-          autoCapitalize="none"
-          returnKeyType={'next'}
-          blurOnSubmit={false}
-          style={{color: 'red'}}
-          textColor={colors.WHITE}
-          // editable={false}
+              // onSubmitEditing={() => {
+              //     passwordRef.current.focus();
+              // }}
+            />
+            <DetailsScreenInput
+              refInner={minutesAfterLandingRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Phone'}
+              headingName={'How Many Minutes After Landing'}
+              multiline={false}
+              value={form.minutesAfterLanding}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={minutesAfterLanding =>
+                setForm({...form, minutesAfterLanding})
+              }
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.PRIMARY}
+              // editable={false}
 
-          // onSubmitEditing={() => {
-          //     passwordRef.current.focus();
-          // }}
-        />
-        <DetailsScreenInput
-          refInner={minutesAfterLandingRef}
-          placeHolderColor={colors.WHITE}
-          // placeHolder={'Phone'}
-          headingName={'How Many Minutes After Landing'}
-          multiline={false}
-          value={form.minutesAfterLanding}
-          maxLength={50}
-          // onChangeText={txt => setLogin({...login, password: txt})}
-          onChangeText={minutesAfterLanding =>
-            setForm({...form, minutesAfterLanding})
-          }
-          keyboardType={'default'}
-          autoCapitalize="none"
-          returnKeyType={'next'}
-          blurOnSubmit={false}
-          style={{color: 'red'}}
-          textColor={colors.WHITE}
-          // editable={false}
+              onSubmitEditing={() => {
+                additionalInfoRef.current.focus();
+              }}
+            />
+            <DetailsScreenInput
+              refInner={additionalInfoRef}
+              placeHolderColor={colors.WHITE}
+              // placeHolder={'Phone'}
+              headingName={'Additional Info'}
+              multiline={false}
+              value={form.additionalInformation}
+              maxLength={50}
+              // onChangeText={txt => setLogin({...login, password: txt})}
+              onChangeText={additionalInformation =>
+                setForm({...form, additionalInformation})
+              }
+              keyboardType={'default'}
+              autoCapitalize="none"
+              returnKeyType={'next'}
+              blurOnSubmit={false}
+              style={{color: 'red'}}
+              textColor={colors.PRIMARY}
+              // editable={false}
 
-          onSubmitEditing={() => {
-            additionalInfoRef.current.focus();
-          }}
-        />
-        <DetailsScreenInput
-          refInner={additionalInfoRef}
-          placeHolderColor={colors.WHITE}
-          // placeHolder={'Phone'}
-          headingName={'Additional Info'}
-          multiline={false}
-          value={form.additionalInformation}
-          maxLength={50}
-          // onChangeText={txt => setLogin({...login, password: txt})}
-          onChangeText={additionalInformation =>
-            setForm({...form, additionalInformation})
-          }
-          keyboardType={'default'}
-          autoCapitalize="none"
-          returnKeyType={'next'}
-          blurOnSubmit={false}
-          style={{color: 'red'}}
-          textColor={colors.WHITE}
-          // editable={false}
-
-          // onSubmitEditing={() => {
-          //     passwordRef.current.focus();
-          // }}
-        />
-        {/* <DetailsViewInput
-          placeholder="PickUp Full Address"
-          value={form.pickUpFullAddress}
-          onChange={pickUpFullAddress => {
-            setForm({...form, pickUpFullAddress});
-          }}
-        />
-        <DetailsViewInput
-          placeholder="Drop Off Full Address"
-          value={form.dropOffFullAddress}
-          onChange={dropOffFullAddress => {
-            setForm({...form, dropOffFullAddress});
-          }}
-        />
-        <DetailsViewInput
-          placeholder="Flight Number"
-          value={form.flightNum}
-          onChange={flightNum => {
-            setForm({...form, flightNum});
-          }}
-        />
-        <DetailsViewInput
-          placeholder="How Many Minutes After Landing"
-          value={form.minutesAfterLanding}
-          onChange={minutesAfterLanding => {
-            setForm({...form, minutesAfterLanding});
-          }}
-        />
-        <DetailsViewInput
-          placeholder="Additional Info"
-          value={form.additionalInformation}
-          onChange={additionalInformation => {
-            setForm({...form, additionalInformation});
-          }}
-        /> */}
+              // onSubmitEditing={() => {
+              //     passwordRef.current.focus();
+              // }}
+            />
+          </>
+        )}
 
         <View style={{height: 300}}>
           <View
@@ -653,7 +653,7 @@ const QuotationDetails = ({booking, nextStep}) => {
                   style={{
                     width: 16,
                     height: 16,
-                    tintColor: colors.YELLOW,
+                    tintColor: colors.PRIMARY,
                   }}
                 />
               ) : (
@@ -663,9 +663,9 @@ const QuotationDetails = ({booking, nextStep}) => {
                     {
                       width: 16,
                       height: 16,
-                      tintColor: colors.YELLOW,
+                      tintColor: colors.PRIMARY,
                     },
-                    {tintColor: colors.YELLOW},
+                    {tintColor: colors.PRIMARY},
                   ]}
                 />
               )}
@@ -677,9 +677,9 @@ const QuotationDetails = ({booking, nextStep}) => {
                   fontSize: 14,
                   fontFamily: 'Poppins',
                   fontWeight: '400',
-                  color: colors.YELLOW,
+                  color: colors.PRIMARY,
                 },
-                {marginTop: 0, color: colors.WHITE},
+                {marginTop: 0, color: colors.PRIMARY},
               ]}>
               I am interested in altCABS marketing and offers sent via email
             </Text>
@@ -704,7 +704,7 @@ const QuotationDetails = ({booking, nextStep}) => {
                   style={{
                     width: 16,
                     height: 16,
-                    tintColor: colors.YELLOW,
+                    tintColor: colors.PRIMARY,
                   }}
                 />
               ) : (
@@ -714,9 +714,9 @@ const QuotationDetails = ({booking, nextStep}) => {
                     {
                       width: 16,
                       height: 16,
-                      tintColor: colors.YELLOW,
+                      tintColor: colors.PRIMARY,
                     },
-                    {tintColor: colors.YELLOW},
+                    {tintColor: colors.PRIMARY},
                   ]}
                 />
               )}
@@ -728,12 +728,12 @@ const QuotationDetails = ({booking, nextStep}) => {
                   fontSize: 14,
                   fontFamily: 'Poppins',
                   fontWeight: '400',
-                  color: colors.YELLOW,
+                  color: colors.PRIMARY,
                 },
-                {marginTop: 0, color: colors.WHITE},
+                {marginTop: 0, color: colors.PURPLE},
               ]}>
               I accept your{' '}
-              <Text style={{color: colors.YELLOW, fontWeight: 'bold'}}>
+              <Text style={{color: colors.PRIMARY, fontWeight: 'bold'}}>
                 Terms and Condition
               </Text>
             </Text>
@@ -763,17 +763,17 @@ const QuotationDetails = ({booking, nextStep}) => {
 
             <Text style={{color: '#FFF', marginLeft: 7}}>
               I accept your{' '}
-              <Text style={{color: colors.YELLOW, fontWeight: 'bold'}}>
+              <Text style={{color: colors.PRIMARY, fontWeight: 'bold'}}>
                 Terms and Condition
               </Text>
             </Text>
           </HStack> */}
           <CustomButton
             isDisabled={!termsAndConditionsAccepted || fetching}
-            colorScheme={colors.YELLOW}
+            colorScheme={colors.PRIMARY}
             onPress={addDetails}
             _pressed={{bg: darkShadeColor}}
-            _text={{color: colors.PRIMARY}}>
+            _text={{color: colors.WHITE}}>
             Confirm Booking
           </CustomButton>
         </View>

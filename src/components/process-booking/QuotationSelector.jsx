@@ -35,7 +35,7 @@ import CustomButton from '../common/CustomButton';
 import QuotationLoaderSkeleton from '../common/skeletons/QuotationLoaderSkeleton';
 import StarRating from 'react-native-star-rating-widget';
 import QuotationLogo from './partials/QuotationLogo';
-import QuotationTopCard from './partials/QuotationTopCard';
+import SingleQuotationSummary from './partials/SingleQuotationSummary';
 import webSocketService from '../../api/WebSocketService';
 import {
   SET_IS_PROCESSING,
@@ -90,10 +90,15 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     setState({...state, quotations: oldQuotations, fetched: true});
   };
   const fetchQuotations = () => {
+    dispatch(
+      SET_IS_PROCESSING('Searching Quotes from hundreds of cab operators ...'),
+    );
     bookingService
       .getQuotationsById(bookingId)
       .then(data => {
         addQuotationsToScreen(data.quotations);
+        // console.log('data.quotations.length');
+        // console.log(data.quotations.length);
       })
       .catch(err => {
         console.log('Error in Fetching Quotations');
@@ -101,8 +106,10 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
       })
       .finally(() => {
         setFetching(false);
+        dispatch(SET_IS_PROCESSING_FINISHED());
       });
   };
+
   const nextPageQuotations = () => {
     bookingService
       .getQuotationsById(bookingId, {
@@ -168,6 +175,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
         dispatch(ERROR('Unable to Select Quotation'));
       })
       .finally(() => {
+        setFetching(false);
         dispatch(SET_IS_PROCESSING_FINISHED());
       });
   };
@@ -212,31 +220,38 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.mainContainer}>
         <HStack style={styles.topCardsContainer}>
-          <QuotationTopCard
-            processing={processing}
-            onQuotationSelect={onQuotationSelect}
-            type="lowest"
-            quotation={lowestQuote}
-          />
-          <QuotationTopCard
+          {lowestQuote && (
+            <SingleQuotationSummary
+              processing={processing}
+              onQuotationSelect={onQuotationSelect}
+              type="lowest"
+              quotation={lowestQuote}
+              isTopCard={true}
+            />
+          )}
+
+          <SingleQuotationSummary
             processing={processing}
             onQuotationSelect={onQuotationSelect}
             type="best-rated"
             quotation={bestRatedQuote}
+            isTopCard={true}
           />
         </HStack>
         <HStack style={styles.topCardsContainer}>
-          <QuotationTopCard
+          <SingleQuotationSummary
             processing={processing}
             onQuotationSelect={onQuotationSelect}
             type="top-executive"
             quotation={topExecutiveQuote}
+            isTopCard={true}
           />
-          <QuotationTopCard
+          <SingleQuotationSummary
             processing={processing}
             onQuotationSelect={onQuotationSelect}
             type="recommended"
             quotation={recommendedQuote}
+            isTopCard={true}
           />
         </HStack>
         <View style={styles.filterContainer}>
@@ -244,11 +259,11 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
             <Button.Group
               isAttached={true}
               rounded="md"
-              p="2"
+              p="1"
               _text={{fontSize: 14, fontWeight: 'bold'}}
-              colorScheme={colors.DARK_COLOR}
-              _disabled={{bg: colors.muted, color: colors.muted}}
-              my="2">
+              colorScheme={colors.PRIMARY}
+              _disabled={{bg: colors.muted, color: colors.WHITE}}
+              my="1">
               <Button
                 isDisabled={quotation_type === 'all' || processing}
                 onPress={() => {
@@ -325,7 +340,11 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
               py="1"
               px="3"
               value={searchTerm}
-              style={{backgroundColor: colors.WHITE, color: colors.DARK_COLOR}}
+              style={{
+                backgroundColor: colors.WHITE,
+                color: colors.DARK_COLOR,
+                borderBlockColor: colors.PRIMARY,
+              }}
               onChangeText={val => setSearchTerm(val)}
               InputLeftElement={
                 <Icon
@@ -339,40 +358,13 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
           </View>
         </View>
         {quotations.map((item, index) => (
-          <HStack key={index} style={styles.quotationCard}>
-            <View style={styles.cardContent}>
-              <View>
-                <Text style={styles.vehicleTypeText}>
-                  {item.vehicle_type_name}
-                </Text>
-                <Text style={styles.companyNameText}>{item.companyName}</Text>
-              </View>
-              <View style={styles.companyInfoContainer}>
-                <Text style={styles.companyLocationText}>
-                  {item.companyLocation}
-                </Text>
-                <View style={styles.starRatingContainer}>
-                  <StarRating
-                    rating={item.companyRatings}
-                    onChange={() => {}}
-                    starSize={18}
-                  />
-                </View>
-              </View>
-            </View>
-            <View style={styles.buttonContainer}>
-              <Button
-                style={styles.bookButton}
-                size="sm"
-                colorScheme="primary"
-                onPress={() => onQuotationSelect(index)}>
-                <Text style={styles.bookButtonText}>
-                  £ {item.totalPrice?.toFixed(2)}
-                  {'\n'} Book Now
-                </Text>
-              </Button>
-            </View>
-          </HStack>
+          <SingleQuotationSummary
+            key={index}
+            processing={processing}
+            onQuotationSelect={onQuotationSelect}
+            quotation={item}
+            isTopCard={false}
+          />
         ))}
       </View>
     </ScrollView>
@@ -396,7 +388,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     marginBottom: 100,
     flex: 1,
-    padding: 10,
+    padding: 5,
   },
   topCardsContainer: {
     marginTop: 10,
@@ -409,20 +401,22 @@ const styles = StyleSheet.create({
   buttonGroupContainer: {
     justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: 'red',
   },
   pickerContainerAndroid: {
     height: 40,
     width: 150,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.PRIMARY,
     backgroundColor: '#fff',
-    borderRadius: 8,
-    marginTop: 10,
+    borderRadius: 4,
+    marginTop: 2,
     justifyContent: 'center',
     marginLeft: 20,
   },
   pickerStyleAndroid: {
-    color: '#333',
+    color: colors.PRIMARY,
     height: 40,
     width: 150,
   },
@@ -456,8 +450,9 @@ const styles = StyleSheet.create({
     color: '#999',
   },
   searchContainer: {
-    marginTop: 15,
-    backgroundColor: colors.WHITE,
+    marginTop: 5,
+    // backgroundColor: colors.WHITE,
+    paddingHorizontal: 15,
   },
   quotationCard: {
     flex: 1,
@@ -515,5 +510,7 @@ const styles = StyleSheet.create({
   },
   loaderContainer: {
     padding: 10,
+    display: 'flex',
+    flexDirection: 'column',
   },
 });

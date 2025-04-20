@@ -61,7 +61,7 @@ const BookingWidget = ({booking_type}) => {
     passangers: '1',
     special_requirements: '',
     luggage: {},
-    via: [{place_id: 'test', desc: 'Via 1'}],
+    via: [{place_id: 'ChIJvVRe4NMEdkgRw3WgQO_J9KM', desc: 'Piccadly Circus'}],
     oneWay: true,
     viareturn: [],
     booking_type,
@@ -266,8 +266,8 @@ const BookingWidget = ({booking_type}) => {
         <View>
           <CustomButton
             alignSelf="flex-start"
-            _text={{fontSize: 10, fontWeight: 'bold'}}
-            size="sm"
+            _text={{fontSize: 12, fontWeight: 'bold'}}
+            size="md"
             p="2"
             onPress={() => {
               let a = {...form};
@@ -334,7 +334,7 @@ const BookingWidget = ({booking_type}) => {
               // Add more styles if needed
             }}
           />
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => {
               let vias = [...form.via];
               vias.splice(index, 1);
@@ -352,7 +352,7 @@ const BookingWidget = ({booking_type}) => {
               top: -10,
             }}>
             <Icon name="times" size={16} color="black" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </SafeAreaView>
       ))}
       <SafeAreaView>
