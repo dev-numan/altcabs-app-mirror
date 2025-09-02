@@ -51,10 +51,10 @@ const BookingWidget = ({booking_type}) => {
   const dispatch = useDispatch();
   const [service, setService] = React.useState('');
   const [form, setForm] = useState({
-    from_desc: 'Slough Station, Slough, UK',
-    from_place_id: 'ChIJq1arfcp6dkgRYVocPLV6oDo',
-    to_desc: 'Heathrow Airport (LHR), Longford, UK',
-    to_place_id: 'ChIJ6W3FzTRydkgRZ0H2Q1VT548',
+    from_desc: '',
+    from_place_id: '',
+    to_desc: '',
+    to_place_id: '',
     startTime: moment().add(2, 'hours'),
     passangers: '1',
     special_requirements: '',
@@ -191,25 +191,72 @@ const BookingWidget = ({booking_type}) => {
         form={form}
         setForm={setForm}
       />
-      <SafeAreaView>
-        <PlaceSelector
-          value={{
-            place_id: form.from_place_id,
-            description: form.from_desc,
-          }}
-          label="From"
-          onCancel={() => {
-            setForm({...form, from_desc: '', from_place_id: ''});
-          }}
-          onChange={place => {
+      {/* Route card: From + To with right swap */}
+      <View style={styles.routeCard}>
+        {/* Blue dots and connecting line */}
+        <View style={styles.routeRail} />
+        <View style={styles.routeDotTop} />
+        <View style={styles.routeDotBottom} />
+        
+        <TouchableOpacity
+          onPress={() => {
             setForm({
               ...form,
-              from_desc: place.description,
-              from_place_id: place.place_id,
+              from_desc: form.to_desc,
+              from_place_id: form.to_place_id,
+              to_desc: form.from_desc,
+              to_place_id: form.from_place_id,
             });
           }}
-        />
-      </SafeAreaView>
+          style={styles.swapRightButton}>
+          <View style={styles.swapArrowsContainer}>
+            <MaterialCommunityIcons name="arrow-up" size={16} color={colors.BLUE} />
+            <MaterialCommunityIcons name="arrow-down" size={16} color={colors.BLUE} />
+          </View>
+        </TouchableOpacity>
+        
+        <View style={styles.fromSection}>
+          <PlaceSelector
+            value={{
+              place_id: form.from_place_id,
+              description: form.from_desc,
+            }}
+            label="From"
+            placeholder={'Place, venue or postcode...'}
+            onCancel={() => {
+              setForm({...form, from_desc: '', from_place_id: ''});
+            }}
+            onChange={place => {
+              setForm({
+                ...form,
+                from_desc: place.description,
+                from_place_id: place.place_id,
+              });
+            }}
+          />
+        </View>
+        <View style={styles.dividerLine} />
+        <View style={styles.toSection}>
+          <PlaceSelector
+            value={{
+              place_id: form.to_place_id,
+              description: form.to_desc,
+            }}
+            label="To"
+            placeholder={'Place, venue or postcode...'}
+            onCancel={() => {
+              setForm({...form, to_desc: '', to_place_id: ''});
+            }}
+            onChange={place => {
+              setForm({
+                ...form,
+                to_desc: place.description,
+                to_place_id: place.place_id,
+              });
+            }}
+          />
+        </View>
+      </View>
       <View
         style={{
           display: 'flex',
@@ -218,25 +265,25 @@ const BookingWidget = ({booking_type}) => {
           alignItems: 'center',
         }}>
         <View>
-          <CustomButton
-            alignSelf="flex-start"
-            _text={{fontSize: 10, fontWeight: 'bold'}}
-            size="sm"
-            p="2"
-            onPress={() => {
-              let a = {...form};
-              a.via.push({desc: '', place_id: ''});
-              setForm(a);
-            }}>
-            Add Stop
-          </CustomButton>
+                     <CustomButton
+             alignSelf="flex-start"
+             _text={{fontSize: 14, fontWeight: 'bold'}}
+             size="sm"
+             p="2"
+             onPress={() => {
+               let a = {...form};
+               a.via.push({desc: '', place_id: ''});
+               setForm(a);
+             }}>
+             Add Stop
+           </CustomButton>
         </View>
         <View>
           <Text
             style={{
               color: colors.PRIMARY,
               paddingRight: 7,
-              fontSize: 10,
+              fontSize: 14,
               fontWeight: 'bold',
             }}>
             {distance.fetching ? (
@@ -279,25 +326,7 @@ const BookingWidget = ({booking_type}) => {
           />
         </SafeAreaView>
       ))}
-      <SafeAreaView>
-        <PlaceSelector
-          value={{
-            place_id: form.to_place_id,
-            description: form.to_desc,
-          }}
-          label="To"
-          onCancel={() => {
-            setForm({...form, to_desc: '', to_place_id: ''});
-          }}
-          onChange={place => {
-            setForm({
-              ...form,
-              to_desc: place.description,
-              to_place_id: place.place_id,
-            });
-          }}
-        />
-      </SafeAreaView>
+      
       <WidgetDatePicker
         label="Pick Up Time"
         value={form.startTime}
@@ -311,138 +340,83 @@ const BookingWidget = ({booking_type}) => {
           onChange={startTimeReturn => setForm({...form, startTimeReturn})}
         />
       )}
-      <HStack
-        style={{
-          alignItems: 'center',
-          marginVertical: 9,
-          justifyContent: 'space-between',
-        }}>
-        <CustomButton
-          alignSelf="flex-start"
-          _text={{fontSize: 10, fontWeight: 'bold'}}
-          size="sm"
-          p="2"
-          onPress={() => setShowLuggageModal(true)}>
-          Luggage
-        </CustomButton>
-        {Platform.OS === 'android' ? (
-          <>
-            <Text
-              style={{
-                flexGrow: 1,
-                fontSize: 14,
-                textAlign: 'right',
-                color: 'white',
-                marginRight: 7,
-              }}>
-              Passengers
-            </Text>
-            <View
-              style={{
-                height: 35,
-                width: 102,
-                borderWidth: 0.5,
-                borderColor: colors.PRIMARY,
-                backgroundColor: colors.PRIMARY,
-                color: colors.WHITE,
-                borderRadius: 12,
-                marginTop: '1%',
-                left: '15%',
-                justifyContent: 'center',
-              }}>
-              <Picker
-                selectedValue={form.passangers}
-                mode="dropdown" // Android only
-                dropdownIconColor={colors.WHITE}
-                placeholder={'#323F4B'}
-                // onValueChange={(itemValue, itemIndex) => setService(itemValue)}
-                onValueChange={itemValue =>
-                  setForm({...form, passangers: itemValue})
-                }
-                style={{
-                  color: colors.WHITE,
-                  alignSelf: 'center',
-                  height: 35,
-                  width: 150,
-                  fontSize: 16,
-                  fontWeight: '400',
-                  paddingLeft: 20,
-                  transform: [{scaleX: 0.7}, {scaleY: 0.7}],
-                }}>
-                {[
-                  '1',
-                  '2',
-                  '3',
-                  '4',
-                  '5',
-                  '6',
-                  '7',
-                  '8',
-                  '9',
-                  '10',
-                  '11',
-                  '12',
-                  '13',
-                  '14',
-                  '15',
-                  '16',
-                ].map((item, i) => (
-                  <Picker.Item label={item} value={item} key={i} />
-                ))}
-              </Picker>
-            </View>
-          </>
-        ) : (
-          <CustomButton
-            alignSelf="flex-start"
-            _text={{fontSize: 10, fontWeight: 'bold'}}
-            size="sm"
-            p="2"
-            onPress={() => setShowPassengerModal(true)}>
-            <HStack>
-              <Text
-                style={{
-                  color: colors.WHITE,
-                }}>{`Passengers: ${form.passangers}`}</Text>
-              <MaterialCommunityIcons
-                name="menu-down"
-                color={colors.YELLOW}
-                size={20}
-                style={{marginBottom: -3}}
-              />
-            </HStack>
-          </CustomButton>
-        )}
-      </HStack>
+      {/* Passengers row */}
+      <View style={styles.optionRow}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <MaterialCommunityIcons name="account-outline" size={28} color={colors.BLUE} />
+          <Text style={styles.optionLabel}>Passengers</Text>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                     <TouchableOpacity
+             onPress={() => {
+               const next = Math.max(1, parseInt(form.passangers || '1', 10) - 1);
+               setForm({...form, passangers: String(next)});
+             }}
+             style={[
+               styles.counterMinus,
+               {
+                 backgroundColor: colors.BLUE,
+               },
+             ]}>
+             <AntDesign name="minus" size={14} color="white" />
+           </TouchableOpacity>
+           <Text style={styles.counterValue}>{form.passangers}</Text>
+           <TouchableOpacity
+             onPress={() => {
+               const next = Math.min(16, parseInt(form.passangers || '1', 10) + 1);
+               setForm({...form, passangers: String(next)});
+             }}
+             style={[
+               styles.counterPlus,
+               {
+                 backgroundColor: colors.BLUE,
+               },
+             ]}>
+             <AntDesign name="plus" size={16} color="white" />
+           </TouchableOpacity>
+        </View>
+      </View>
 
-      <HStack style={{alignItems: 'center', flexWrap: 'wrap'}}>
-        {totalLuggage.map((item, i) => (
-          <Badge
-            key={i}
-            m="2"
-            bg="#1C2B39"
-            flexDirection="row"
-            p={2}
-            borderRadius="full">
-            <Text style={{color: 'white'}}>
-              {item?.name}({item?.quantity})
-            </Text>
-            <AntDesign
-              name="close"
-              color="white"
-              size={18}
-              onPress={() => {
-                let a = totalLuggage;
-                a = a.filter(luggage => luggage?.id != item?.id);
-                setTotalLuggage(a);
-                a = {...form};
-                delete a.luggage[`${item?.id}`];
-                setForm(a);
-              }}
-            />
-          </Badge>
-        ))}
-      </HStack>
+      {/* Luggage row */}
+      <TouchableOpacity style={styles.optionRow} onPress={() => setShowLuggageModal(true)}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <MaterialCommunityIcons name="briefcase-outline" size={28} color={colors.BLUE} />
+          <Text style={styles.optionLabel}>Luggage</Text>
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={styles.optionValue}>
+            {totalLuggage.length ? `${totalLuggage.length} item(s)` : 'No Luggage'}
+          </Text>
+          <MaterialCommunityIcons name="chevron-right" size={25} color={colors.BLUE} />
+        </View>
+      </TouchableOpacity>
+
+      {totalLuggage && totalLuggage.length > 0 && (
+        <View style={styles.luggageContainer}>
+          {totalLuggage.map((item, i) => (
+            <View key={i} style={styles.luggageItem}>
+              <Text style={styles.luggageText}>
+                {item?.name}({item?.quantity})
+              </Text>
+              <TouchableOpacity
+                style={styles.luggageRemoveButton}
+                onPress={() => {
+                  let a = totalLuggage.filter(luggage => luggage?.id !== item?.id);
+                  setTotalLuggage(a);
+                  let updatedForm = {...form};
+                  delete updatedForm.luggage[`${item?.id}`];
+                  setForm(updatedForm);
+                }}>
+                <AntDesign
+                  name="close"
+                  color={colors.PRIMARY}
+                  size={16}
+                />
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      )}
 
       <HStack style={{alignItems: 'center', marginVertical: 4}}></HStack>
       <View
@@ -455,7 +429,7 @@ const BookingWidget = ({booking_type}) => {
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: colors.PRIMARY,
+            backgroundColor: '#24AAE0',
             width: 25,
             height: 25,
             borderRadius: 5,
@@ -508,7 +482,7 @@ const BookingWidget = ({booking_type}) => {
             <View>
               <CustomButton
                 alignSelf="flex-start"
-                _text={{fontSize: 10, fontWeight: 'bold'}}
+                _text={{fontSize: 12, fontWeight: 'bold'}}
                 size="sm"
                 p="2"
                 onPress={() => {
@@ -573,13 +547,25 @@ const BookingWidget = ({booking_type}) => {
       {booking_type == 'client_bidding' && (
         <View style={{marginVertical: 10}}>
           <TextArea
-            rowSpan={5}
+            totalLines={3}
+            h={16}
             bordered
-            placeholder="Any Special Requirements? "
+            borderColor="#333333"
+            fontSize={14}
+            placeholder="Any Special Requirements?"
+            placeholderTextColor={colors.BLUE}
             value={form.special_requirements}
             onChangeText={value =>
               setForm({...form, special_requirements: value})
             }
+            color={colors.WHITE}
+            py={2}
+            textAlignVertical="center"
+            multiline={true}
+            style={{
+              textAlignVertical: 'center',
+              justifyContent: 'center',
+            }}
           />
         </View>
       )}
@@ -596,7 +582,7 @@ const BookingWidget = ({booking_type}) => {
 const getBgColorByType = booking_type => {
   switch (booking_type) {
     case 'client_bidding':
-      return colors.PURPLE;
+      return colors.YELLOW;
     case 'cabmatch':
       return colors.BLUE;
     default:
@@ -662,5 +648,151 @@ const styles = StyleSheet.create({
     marginTop: '1%',
     left: '15%',
     justifyContent: 'center',
+  },
+  routeCard: {
+    backgroundColor: colors.WHITE,
+    borderRadius: 10,
+    padding: 16,
+    paddingTop: 13,
+    marginVertical: 8,
+    position: 'relative',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    shadowOffset: {width: 0, height: 2},
+  },
+  routeRail: {
+    position: 'absolute',
+    left: 20,
+    top: 24,
+    height: 65,
+    width: 2.5,
+    borderStyle: 'dashed',
+    borderWidth: 1,
+    borderColor: '#24AAE0',
+    borderRadius: 1,
+    zIndex: 1,
+  },
+  routeDotTop: {
+    position: 'absolute',
+    left: 17,
+    top: 23,
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: '#24AAE0',
+    zIndex: 2,
+  },
+  routeDotBottom: {
+    position: 'absolute',
+    left: 17,
+    top: 82,
+    height: 8,
+    width: 8,
+    borderRadius: 4,
+    backgroundColor: '#24AAE0',
+    zIndex: 2,
+  },
+  swapRightButton: {
+    position: 'absolute',
+    right: 0,
+    top: '50%',
+    transform: [{translateY: -16}],
+    height: 48,
+    width: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderWidth: 0,
+  },
+    swapArrowsContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  dividerLine: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  optionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.2)',
+  },
+  optionLabel: {
+    marginLeft: 8,
+    color: colors.WHITE,
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  optionValue: {
+    color: colors.WHITE,
+    fontSize: 14,
+    marginRight: 4,
+  },
+  counterMinus: {
+    height: 28,
+    width: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  counterPlus: {
+    height: 28,
+    width: 28,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  counterValue: {
+    color: colors.WHITE,
+    fontSize: 14,
+    marginHorizontal: 10,
+    minWidth: 12,
+    textAlign: 'center',
+  },
+  luggageContainer: {
+    backgroundColor: '#FEFCE8',
+    padding: 12,
+    borderRadius: 8,
+    marginVertical: 8,
+    marginHorizontal: 0,
+    overflow: 'hidden',
+    maxWidth: '100%',
+  },
+  luggageItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    shadowOffset: {width: 0, height: 1},
+    elevation: 2,
+  },
+  luggageText: {
+    color: colors.PRIMARY,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  luggageRemoveButton: {
+    padding: 4,
+  },
+  fromSection: {
+    paddingLeft: 40,
+  },
+  toSection: {
+    paddingLeft: 40,
   },
 });

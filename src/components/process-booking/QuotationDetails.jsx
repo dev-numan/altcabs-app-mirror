@@ -344,7 +344,7 @@ const QuotationDetails = ({booking, nextStep}) => {
                 style={{
                   width: 16,
                   height: 16,
-                  tintColor: colors.YELLOW,
+                  tintColor: colors.BLUE,
                 }}
               />
             ) : (
@@ -354,26 +354,26 @@ const QuotationDetails = ({booking, nextStep}) => {
                   {
                     width: 16,
                     height: 16,
-                    tintColor: colors.YELLOW,
+                    tintColor: colors.BLUE,
                   },
-                  {tintColor: colors.YELLOW},
+                  {tintColor: colors.BLUE},
                 ]}
               />
             )}
           </TouchableOpacity>
-          <Text
-            style={[
-              {
-                marginTop: 4,
-                fontSize: 14,
-                // fontFamily: 'Poppins',
-                fontWeight: '400',
-                color: colors.YELLOW,
-              },
-              // {marginTop: 0, color: colors.WHITE},
-            ]}>
-            Booking Ride For Some Else.
-          </Text>
+                                             <Text
+             style={[
+               {
+                 marginTop: 4,
+                 fontSize: 14,
+                 // fontFamily: 'Poppins',
+                 fontWeight: '400',
+                 color: colors.YELLOW,
+               },
+               // {marginTop: 0, color: colors.WHITE},
+             ]}>
+             Booking Ride For Some Else.
+           </Text>
         </View>
         {/* <HStack
           style={{alignItems: 'center', marginLeft: 14, marginVertical: 12}}>
@@ -647,28 +647,28 @@ const QuotationDetails = ({booking, nextStep}) => {
               onPress={() => {
                 setInterested(interested => !interested);
               }}>
-              {!interested ? (
-                <Image
-                  source={check}
-                  style={{
-                    width: 16,
-                    height: 16,
-                    tintColor: colors.YELLOW,
-                  }}
-                />
-              ) : (
-                <Image
-                  source={checked}
-                  style={[
-                    {
-                      width: 16,
-                      height: 16,
-                      tintColor: colors.YELLOW,
-                    },
-                    {tintColor: colors.YELLOW},
-                  ]}
-                />
-              )}
+                             {!interested ? (
+                 <Image
+                   source={check}
+                   style={{
+                     width: 16,
+                     height: 16,
+                     tintColor: colors.BLUE,
+                   }}
+                 />
+               ) : (
+                 <Image
+                   source={checked}
+                   style={[
+                     {
+                       width: 16,
+                       height: 16,
+                       tintColor: colors.BLUE,
+                     },
+                     {tintColor: colors.BLUE},
+                   ]}
+                 />
+               )}
             </TouchableOpacity>
             <Text
               style={[
@@ -698,28 +698,28 @@ const QuotationDetails = ({booking, nextStep}) => {
                   termsAndConditionsAccepted => !termsAndConditionsAccepted,
                 );
               }}>
-              {!termsAndConditionsAccepted ? (
-                <Image
-                  source={check}
-                  style={{
-                    width: 16,
-                    height: 16,
-                    tintColor: colors.YELLOW,
-                  }}
-                />
-              ) : (
-                <Image
-                  source={checked}
-                  style={[
-                    {
-                      width: 16,
-                      height: 16,
-                      tintColor: colors.YELLOW,
-                    },
-                    {tintColor: colors.YELLOW},
-                  ]}
-                />
-              )}
+                             {!termsAndConditionsAccepted ? (
+                 <Image
+                   source={check}
+                   style={{
+                     width: 16,
+                     height: 16,
+                     tintColor: colors.BLUE,
+                   }}
+                 />
+               ) : (
+                 <Image
+                   source={checked}
+                   style={[
+                     {
+                       width: 16,
+                       height: 16,
+                       tintColor: colors.BLUE,
+                     },
+                     {tintColor: colors.BLUE},
+                   ]}
+                 />
+               )}
             </TouchableOpacity>
             <Text
               style={[

@@ -66,7 +66,7 @@ const BookingBidding = ({nextStep, hasReturnBooking, bookingId, booking}) => {
                         dispatch(ERROR('Unable to Select Bid'));
                       });
                   }}>
-                  <Text>Select</Text>
+                  <Text style={{color: 'white'}}>Select</Text>
                 </Button>
               </View>
             </HStack>

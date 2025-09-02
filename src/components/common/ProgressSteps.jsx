@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 42,
   },
   activeStep: {
-    backgroundColor: colors.YELLOW,
+    backgroundColor: colors.BLUE,
   },
   // line: {
   //   width: 50,

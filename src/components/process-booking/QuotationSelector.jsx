@@ -419,7 +419,7 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                 size="xs"
                 colorScheme={colors.YELLOW}
                 onPress={() => onQuotationSelect(index)}>
-                <Text style={{textAlign: 'center'}}>
+                <Text style={{textAlign: 'center', color: 'white', fontSize: 12}}>
                   £ {item.totalPrice?.toFixed(2)} {'\n'} Book Now
                 </Text>
               </Button>

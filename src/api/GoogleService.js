@@ -9,6 +9,11 @@ class GoogleService extends GenericService {
   autocompletePostCodes = query =>
     this.post('/google/autocomplete/postcodes', {query});
   directions = data => this.post('/google/directions', data);
+  
+  reverseGeocode = (latitude, longitude) => this.post('/google/reverse-geocode', {
+    latitude,
+    longitude
+  });
 }
 const googleService = new GoogleService();
 export default googleService;

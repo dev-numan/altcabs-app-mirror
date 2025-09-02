@@ -18,14 +18,16 @@ import CustomButton from '../CustomButton';
 import {useDispatch} from 'react-redux';
 import {ERROR} from '../../../store/slices/message.slice';
 import googleService from '../../../api/GoogleService';
+import LocationPickerModal from '../../booking-widget/LocationPickerModal';
 
-const PlaceSelector = ({value, onChange, label, onCancel}) => {
+const PlaceSelector = ({value, onChange, label, onCancel, placeholder}) => {
   const dispatch = useDispatch();
   const [data, setData] = useState([
     // {description: 'Brighton', place_id: 'brighton'},
     // {description: 'Lahore', place_id: 'whoala'},
   ]);
   const [fetching, setFetching] = useState(false);
+  const [showLocationModal, setShowLocationModal] = useState(false);
 
   useEffect(() => {
     if (value.description && !value.place_id) {
@@ -44,46 +46,51 @@ const PlaceSelector = ({value, onChange, label, onCancel}) => {
     }
   }, [value]);
 
+  const handleLocationSelect = (location) => {
+    onChange(location);
+    setShowLocationModal(false);
+  };
+
   return (
     <View style={styles.container}>
       <VStack>
-        <FormControl w="100%" maxW="400px" bg={'red'}>
-          <FormControl.Label _text={{color: colors.BLACK}}>
-            {label}
-          </FormControl.Label>
-          <Input
-            w="100%"
-            backgroundColor={'white'}
-            bg="white"
-            value={value.description}
-            onChangeText={text => {
-              onChange({place_id: '', description: text});
-            }}
-            InputRightElement={
-              <CustomButton
-                size="xs"
-                rounded="none"
-                _text={{fontSize: 10, fontWeight: 'bold'}}
-                p="0"
-                bg="white"
-                w="1/6"
-                h="full"
-                variant="solid"
-                my="1"
-                onPress={onCancel}>
-                <MaterialCommunityIcons
-                  name="delete-forever"
-                  style={{marginLeft: 0, paddingLeft: 0}}
-                  size={25}
-                  color={colors.PRIMARY}
-                />
-              </CustomButton>
-            }
-          />
+        <FormControl w="100%" maxW="400px">
+          {/* From Section - Label and Input on same line */}
+          <View style={styles.labelInputRow}>
+            <Text style={styles.labelText}>
+              {label}
+            </Text>
+            
+            {/* Clickable Placeholder Text */}
+            {!value.description && (
+              <TouchableOpacity
+                style={styles.placeholderContainer}
+                onPress={() => setShowLocationModal(true)}>
+                <Text style={styles.placeholderText} numberOfLines={1}>
+                  {placeholder || 'Place, venue or postcode...'}
+                </Text>
+              </TouchableOpacity>
+            )}
+            
+            {/* Regular Input when there's a value */}
+            {value.description && (
+              <TouchableOpacity
+                style={styles.inputContainer}
+                onPress={() => setShowLocationModal(true)}>
+                <View style={styles.inputContent}>
+                  <Text style={styles.inputText} numberOfLines={1}>
+                    {value.description}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          </View>
+          
           <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size="xs" />}>
             Required
           </FormControl.ErrorMessage>
         </FormControl>
+        
         {fetching && (
           <View
             style={{
@@ -93,7 +100,7 @@ const PlaceSelector = ({value, onChange, label, onCancel}) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <View>
+            <View> 
               <Text style={{}}>Loading ...</Text>
             </View>
             <View>
@@ -101,6 +108,7 @@ const PlaceSelector = ({value, onChange, label, onCancel}) => {
             </View>
           </View>
         )}
+        
         {data.length > 0 && (
           <Box bg="white" p={5}>
             {data.map((d, index) => (
@@ -124,6 +132,15 @@ const PlaceSelector = ({value, onChange, label, onCancel}) => {
           </Box>
         )}
       </VStack>
+
+      {/* Location Picker Modal */}
+      <LocationPickerModal
+        visible={showLocationModal}
+        onClose={() => setShowLocationModal(false)}
+        onLocationSelect={handleLocationSelect}
+        placeholder={placeholder || 'Search for a place, venue or postcode...'}
+        locationType={label === 'To' ? 'dropoff' : 'pickup'}
+      />
     </View>
   );
 };
@@ -154,5 +171,55 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
+  },
+  placeholderContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 4,
+    borderWidth: 0,
+    minHeight: 28,
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  placeholderText: {
+    fontSize: 14,
+    color: '#666',
+    textAlign: 'left',
+    flexShrink: 1,
+    flexWrap: 'nowrap',
+  },
+  inputContainer: {
+    flex: 1,
+    backgroundColor: 'white',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 4,
+    borderWidth: 0,
+    minHeight: 28,
+  },
+  inputContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  inputText: {
+    flex: 1,
+    fontSize: 16,
+    color: '#333',
+  },
+  labelInputRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 10,
+  },
+  labelText: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '700',
+    minWidth: 40,
+    marginRight: 5,
   },
 });

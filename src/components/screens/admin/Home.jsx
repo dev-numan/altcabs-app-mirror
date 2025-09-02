@@ -60,7 +60,7 @@ const AdminHome = () => {
             </Center>
           </View>
           {/* <Text style={styles.description}>Compare the cab fares online</Text> */}
-          {/* <BookingWidget booking_type="normal" /> */}
+          <BookingWidget booking_type="normal" />
 
           <View style={styles.card}>
             <View style={styles.cardView}>

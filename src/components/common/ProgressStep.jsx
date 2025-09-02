@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   activeStep: {
-    backgroundColor: colors.YELLOW,
+    backgroundColor: colors.BLUE,
   },
   // line: {
   //   width: 50,

@@ -105,9 +105,10 @@ const Login = () => {
               /> */}
               <ContactTextInput
                 // refInner={emailRef}
-                placeHolderColor={colors.PRIMARY}
-                placeHolder={'Email address'}
+                placeHolderColor={colors.CAPTION}
+                placeHolder={'Your email address'}
                 headingName={'Email address'}
+                headingTxt={{color: colors.PRIMARY, fontSize: 14, fontWeight: '700', paddingBottom: 4}}
                 multiline={false}
                 value={login.username}
                 maxLength={50}
@@ -116,6 +117,8 @@ const Login = () => {
                 autoCapitalize="none"
                 returnKeyType={'next'}
                 blurOnSubmit={false}
+                container={{backgroundColor: 'transparent', borderWidth: 0, paddingStart: 0, borderRadius: 0, height: undefined}}
+                innerContainer={{height: 52, borderRadius: 8, backgroundColor: colors.WHITE, borderColor: '#E5E7EB', borderWidth: 1, paddingLeft: 12, alignItems: 'center'}}
                 // onSubmitEditing={() => {
                 //     passwordRef.current.focus();
                 // }}
@@ -124,9 +127,10 @@ const Login = () => {
             <View style={{marginBottom: 10}}>
               <ContactTextInput
                 // refInner={emailRef}
-                placeHolderColor={colors.PRIMARY}
-                placeHolder={'Password'}
+                placeHolderColor={colors.CAPTION}
+                placeHolder={'Your password'}
                 headingName={'Password'}
+                headingTxt={{color: colors.PRIMARY, fontSize: 14, fontWeight: '700', paddingBottom: 4}}
                 multiline={false}
                 value={login.password}
                 maxLength={50}
@@ -139,6 +143,8 @@ const Login = () => {
                 eyeOpen={displayPassword}
                 onPress={() => setDisplayPassword(!displayPassword)}
                 secureText
+                container={{backgroundColor: 'transparent', borderWidth: 0, paddingStart: 0, borderRadius: 0, height: undefined}}
+                innerContainer={{height: 52, borderRadius: 8, backgroundColor: colors.WHITE, borderColor: '#E5E7EB', borderWidth: 1, paddingLeft: 12, alignItems: 'center'}}
                 // onSubmitEditing={() => {
                 //     passwordRef.current.focus();
                 // }}
@@ -163,6 +169,8 @@ const Login = () => {
                 margin: 12,
                 textAlign: 'center',
                 color: 'rgb(28, 43, 57)',
+                 fontSize: 14,
+                 fontWeight: '600'
               }}>
               Connect with us:
             </Text>
@@ -188,7 +196,7 @@ const Login = () => {
               </Center>
             </HStack>
             <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
-              <Text style={{color: 'rgb(28, 43, 57)', textAlign: 'center'}}>
+              <Text style={{color: 'rgb(29, 128, 220)', textAlign: 'center', fontSize: 14,fontWeight: '600' }}>
                 New to altCabs? Sign Up
               </Text>
             </TouchableOpacity>
@@ -197,11 +205,13 @@ const Login = () => {
               onPress={() => navigation.navigate('Forget Password')}>
               <Text
                 style={{
-                  color: 'rgb(28, 43, 57)',
+                  color: 'rgb(29, 128, 220)',
                   textAlign: 'center',
-                  fontSize: 11,
+                  fontSize: 14,
+                  fontFamily: 'Poppins-Regular',
+                  fontWeight: '700'
                 }}>
-                Forgott Password ?
+                Forgot Password ?
               </Text>
             </TouchableOpacity>
           </View>
@@ -219,3 +229,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
 });
+
+
+
+
+
+
+
+// $env:NODE_ENV="production"
+// >> npm star

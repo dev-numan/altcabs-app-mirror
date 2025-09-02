@@ -66,7 +66,7 @@ const QuotationCheckout = ({booking, nextStep}) => {
               style={{
                 width: 20,
                 height: 20,
-                tintColor: colors.YELLOW,
+                tintColor: colors.BLUE,
               }}
             />
           ) : (
@@ -76,9 +76,9 @@ const QuotationCheckout = ({booking, nextStep}) => {
                 {
                   width: 20,
                   height: 20,
-                  tintColor: colors.YELLOW,
+                  tintColor: colors.BLUE,
                 },
-                {tintColor: colors.YELLOW},
+                {tintColor: colors.BLUE},
               ]}
             />
           )}
@@ -114,7 +114,7 @@ const QuotationCheckout = ({booking, nextStep}) => {
               style={{
                 width: 20,
                 height: 20,
-                tintColor: colors.YELLOW,
+                tintColor: colors.BLUE,
               }}
             />
           ) : (
@@ -124,9 +124,9 @@ const QuotationCheckout = ({booking, nextStep}) => {
                 {
                   width: 20,
                   height: 20,
-                  tintColor: colors.YELLOW,
+                  tintColor: colors.BLUE,
                 },
-                {tintColor: colors.YELLOW},
+                {tintColor: colors.BLUE},
               ]}
             />
           )}

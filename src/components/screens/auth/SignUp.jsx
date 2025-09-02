@@ -156,6 +156,12 @@ const SignUp = () => {
                         list[item.nextIndex].ref.current.focus();
                     }}
                     variant="filled"
+                    borderRadius={8}
+                    height={52}
+                    borderWidth={1}
+                    borderColor="#E5E7EB"
+                    backgroundColor={colors.WHITE}
+                    placeholderTextColor={colors.CAPTION}
                     my={2}
                     blurOnSubmit={item.blur}
                     returnKeyType={item.submitType}
@@ -180,16 +186,17 @@ const SignUp = () => {
               margin: 12,
               textAlign: 'center',
               color: 'rgb(28, 43, 57)',
+               fontSize: 14,fontWeight: '600'
             }}>
             Connect with us:
           </Text>
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <HStack alignItems="center" justifyContent="center" my={2}>
-              <Text color="#5d7280" fontSize="md">
+              <Text color="rgb(29, 128, 220)" fontSize= '15' fontWeight="600"  >
                 Already signed up?
               </Text>
-              <Text _text={{fontSize: 16, color: '#1C2B39'}}> Login</Text>
+              <Text color="rgb(29, 128, 220)" fontWeight={600} underline fontSize={15}> Login</Text>
             </HStack>
           </TouchableOpacity>
         </View>
