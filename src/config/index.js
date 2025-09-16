@@ -1,3 +1,5 @@
+import {Platform} from 'react-native';
+
 export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';
 
 /**
@@ -11,8 +13,9 @@ export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';
 /**
  * Use below credientials for development server
  */
-let baseURL = '192.168.1.3:8080';
-// let baseURL = '10.135.54.108:8080';
+const DEV_HOST = Platform.OS === 'ios' ? 'localhost' : '10.0.2.2';
+const DEV_PORT = 8080;
+let baseURL = `${DEV_HOST}:${DEV_PORT}`;
 export const URL = `http://${baseURL}/api`;
 export const SOCKET_URL = `ws://${baseURL}`;
 
