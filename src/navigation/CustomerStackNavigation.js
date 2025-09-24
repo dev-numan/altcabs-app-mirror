@@ -21,6 +21,7 @@ import AdminHome from '../components/screens/admin/Home';
 import NewRequest from '../components/screens/admin/NewRequests';
 import Break from '../components/screens/admin/Break';
 import InBiddingBookings from '../components/screens/customer/account/InBiddingBookings';
+import ContactUs from '../components/screens/customer/ContactUs';
 
 const Stack = createNativeStackNavigator();
 
@@ -104,6 +105,11 @@ const CustomerStackNavigation = () => {
         name="Bookings History"
         component={HistoryBookings}
         options={{headerTitle: 'Booking History'}}
+      />
+      <Stack.Screen
+        name="Contact with Us"
+        component={ContactUs}
+        options={{headerTitle: 'Contact Us'}}
       />
       <Stack.Screen
         name="Booking Details"

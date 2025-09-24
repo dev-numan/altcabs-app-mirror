@@ -16,12 +16,14 @@ const WidgetDatePicker = ({label, value, onChange}) => {
   };
   const handleConfirm = date => {
     console.log('A date has been picked: ', date);
-    onChange(date);
+    // Convert Date object to moment object
+    const momentDate = moment(date);
+    onChange(momentDate);
     hideDatePicker();
   };
   return (
     <FormControl>
-      <FormControl.Label _text={{color: colors.BLACK}}>
+      <FormControl.Label _text={{color: colors.PRIMARY}}>
         {label}
       </FormControl.Label>
       <DateTimePickerModal

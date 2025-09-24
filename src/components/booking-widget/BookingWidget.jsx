@@ -210,8 +210,8 @@ const BookingWidget = ({booking_type}) => {
           }}
           style={styles.swapRightButton}>
           <View style={styles.swapArrowsContainer}>
-            <MaterialCommunityIcons name="arrow-up" size={16} color={colors.BLUE} />
-            <MaterialCommunityIcons name="arrow-down" size={16} color={colors.BLUE} />
+            <MaterialCommunityIcons name="arrow-up" size={16} color={colors.PRIMARY_40_DARK} />
+            <MaterialCommunityIcons name="arrow-down" size={16} color={colors.PRIMARY_40_DARK} />
           </View>
         </TouchableOpacity>
         
@@ -343,7 +343,7 @@ const BookingWidget = ({booking_type}) => {
       {/* Passengers row */}
       <View style={styles.optionRow}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <MaterialCommunityIcons name="account-outline" size={28} color={colors.BLUE} />
+          <MaterialCommunityIcons name="account-outline" size={28} color={colors.PRIMARY_40_DARK} />
           <Text style={styles.optionLabel}>Passengers</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -355,7 +355,7 @@ const BookingWidget = ({booking_type}) => {
              style={[
                styles.counterMinus,
                {
-                 backgroundColor: colors.BLUE,
+                 backgroundColor: colors.PRIMARY_40_DARK,
                },
              ]}>
              <AntDesign name="minus" size={14} color="white" />
@@ -369,7 +369,7 @@ const BookingWidget = ({booking_type}) => {
              style={[
                styles.counterPlus,
                {
-                 backgroundColor: colors.BLUE,
+                 backgroundColor: colors.PRIMARY_40_DARK,
                },
              ]}>
              <AntDesign name="plus" size={16} color="white" />
@@ -380,14 +380,14 @@ const BookingWidget = ({booking_type}) => {
       {/* Luggage row */}
       <TouchableOpacity style={styles.optionRow} onPress={() => setShowLuggageModal(true)}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <MaterialCommunityIcons name="briefcase-outline" size={28} color={colors.BLUE} />
+          <MaterialCommunityIcons name="briefcase-outline" size={28} color={colors.PRIMARY_40_DARK} />
           <Text style={styles.optionLabel}>Luggage</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Text style={styles.optionValue}>
             {totalLuggage.length ? `${totalLuggage.length} item(s)` : 'No Luggage'}
           </Text>
-          <MaterialCommunityIcons name="chevron-right" size={25} color={colors.BLUE} />
+          <MaterialCommunityIcons name="chevron-right" size={25} color={colors.PRIMARY_40_DARK} />
         </View>
       </TouchableOpacity>
 
@@ -429,7 +429,7 @@ const BookingWidget = ({booking_type}) => {
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#24AAE0',
+            backgroundColor: colors.PRIMARY_40_DARK,
             width: 25,
             height: 25,
             borderRadius: 5,
@@ -440,20 +440,14 @@ const BookingWidget = ({booking_type}) => {
               oneWay: !form.oneWay,
             });
           }}>
-          {!form.oneWay ? (
+          {form.oneWay ? (
             <Icon
               name="check" // FontAwesome check icon
               size={16}
               color={colors.WHITE}
-              // Change the icon color
+              // White tick mark when checked
             />
-          ) : (
-            <Icon
-              name="check" // FontAwesome check icon (or any other you want)
-              size={16}
-              color={colors.PRIMARY} // White color when checked
-            />
-          )}
+          ) : null}
         </TouchableOpacity>
         <Text
           style={[
@@ -465,7 +459,7 @@ const BookingWidget = ({booking_type}) => {
               fontWeight: '400',
               color: colors.YELLOW,
             },
-            {marginTop: 0, color: colors.BLACK},
+            {marginTop: 0, color: colors.PRIMARY},
           ]}>
           One Way ?
         </Text>
@@ -547,21 +541,22 @@ const BookingWidget = ({booking_type}) => {
       {booking_type == 'client_bidding' && (
         <View style={{marginVertical: 10}}>
           <TextArea
-            totalLines={3}
-            h={16}
+            totalLines={2}
+            h={12}
             bordered
-            borderColor="#333333"
+            borderColor={colors.PRIMARY_40_DARK}
             fontSize={14}
             placeholder="Any Special Requirements?"
-            placeholderTextColor={colors.BLUE}
+            placeholderTextColor={colors.PRIMARY_40_DARK}
             value={form.special_requirements}
             onChangeText={value =>
               setForm({...form, special_requirements: value})
             }
-            color={colors.WHITE}
+            color={colors.PRIMARY_40_DARK}
             py={2}
             textAlignVertical="center"
             multiline={true}
+            backgroundColor="white"
             style={{
               textAlignVertical: 'center',
               justifyContent: 'center',
@@ -569,7 +564,7 @@ const BookingWidget = ({booking_type}) => {
           />
         </View>
       )}
-      <CustomButton onPress={submitBooking}>
+      <CustomButton onPress={submitBooking} style={{marginTop: 15}}>
         {booking_type == 'cabmatch'
           ? 'CHECK FOR CABMATCH'
           : booking_type == 'client_bidding'
@@ -663,34 +658,34 @@ const styles = StyleSheet.create({
   },
   routeRail: {
     position: 'absolute',
-    left: 20,
-    top: 24,
-    height: 65,
+    left: 28,
+    top: 16,
+    height: 57,
     width: 2.5,
     borderStyle: 'dashed',
     borderWidth: 1,
-    borderColor: '#24AAE0',
+    borderColor: colors.PRIMARY_40_DARK,
     borderRadius: 1,
     zIndex: 1,
   },
   routeDotTop: {
     position: 'absolute',
-    left: 17,
-    top: 23,
+    left: 25,
+    top: 16,
     height: 8,
     width: 8,
     borderRadius: 4,
-    backgroundColor: '#24AAE0',
+    backgroundColor: colors.PRIMARY_40_DARK,
     zIndex: 2,
   },
   routeDotBottom: {
     position: 'absolute',
-    left: 17,
-    top: 82,
+    left: 25,
+    top: 74,
     height: 8,
     width: 8,
     borderRadius: 4,
-    backgroundColor: '#24AAE0',
+    backgroundColor: colors.PRIMARY_40_DARK,
     zIndex: 2,
   },
   swapRightButton: {
@@ -727,12 +722,12 @@ const styles = StyleSheet.create({
   },
   optionLabel: {
     marginLeft: 8,
-    color: colors.WHITE,
+    color: colors.PRIMARY,
     fontSize: 14,
     fontWeight: '700',
   },
   optionValue: {
-    color: colors.WHITE,
+    color: colors.PRIMARY,
     fontSize: 14,
     marginRight: 4,
   },
@@ -751,7 +746,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   counterValue: {
-    color: colors.WHITE,
+    color: colors.PRIMARY,
     fontSize: 14,
     marginHorizontal: 10,
     minWidth: 12,
@@ -790,9 +785,9 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   fromSection: {
-    paddingLeft: 40,
+    paddingRight: 30,
   },
   toSection: {
-    paddingLeft: 40,
+    paddingRight: 30,
   },
 });

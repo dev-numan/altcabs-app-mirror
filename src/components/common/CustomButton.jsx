@@ -9,8 +9,8 @@ const CustomButton = props => {
       rounded="md"
       p="3"
       _text={{fontSize: 14, fontWeight: 'bold'}}
-      colorScheme={colors.YELLOW}
-      _pressed={{bg: 'yellow.200'}}
+      bg={colors.PRIMARY}
+      _pressed={{bg: colors.PRIMARY_40_DARK}}
       my="2"
       {...props}>
       {props.children}

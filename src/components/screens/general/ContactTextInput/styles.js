@@ -32,10 +32,16 @@ const styles = StyleSheet.create({
     padding: 0,
     color: colors.PRIMARY,
   },
+  iconContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+  },
   eyeOpenIcon: {
-    height: 15,
-    width: 15,
+    height: 20,
+    width: 20,
     marginRight: 10,
+    tintColor: colors.BLUE,
   },
   calendarIcon: {height: 16, width: 14, alignSelf: 'center', marginRight: 10},
 });

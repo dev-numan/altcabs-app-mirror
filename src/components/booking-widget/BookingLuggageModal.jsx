@@ -44,7 +44,7 @@ const BookingLuggageModal = ({
       { id: 'small-box', name: 'Small box (14 x 12 x 15 inches)', icon: 'package-variant' },
       { id: 'medium-box', name: 'Medium box (16 x 16 x 16 inches)', icon: 'package-variant' },
       { id: 'large-box', name: 'Large box (20 x 20 x 20 inches)', icon: 'package-variant' },
-      { id: 'xl-box', name: 'XL box (24 x 24 x 33 inches)', icon: 'package-variant' },
+      { id: 'xl-box', name: 'XL box (24 x 24 x 33 inche)', icon: 'package-variant' },
     ],
     'child-items': [
       { id: 'stroller', name: 'Stroller', icon: 'baby-buggy' },
@@ -165,7 +165,7 @@ const BookingLuggageModal = ({
                 <TouchableOpacity
                   style={[
                     styles.quantityButton,
-                    { backgroundColor: (luggageCounts[item.id] || 0) > 0 ? colors.BLUE : colors.BLUE }
+                    { backgroundColor: (luggageCounts[item.id] || 0) > 0 ? colors.PRIMARY_40_DARK : colors.PRIMARY_40_DARK }
                   ]}
                   onPress={() => updateLuggageCount(item.id, false)}
                   disabled={(luggageCounts[item.id] || 0) === 0}
@@ -174,7 +174,7 @@ const BookingLuggageModal = ({
                 </TouchableOpacity>
                 <Text style={styles.quantityText}>{luggageCounts[item.id] || 0}</Text>
                 <TouchableOpacity
-                  style={[styles.quantityButton, { backgroundColor: colors.BLUE }]}
+                  style={[styles.quantityButton, { backgroundColor: colors.PRIMARY_40_DARK }]}
                   onPress={() => updateLuggageCount(item.id, true)}
                 >
                   <Text style={styles.quantityButtonText}>+</Text>
@@ -182,7 +182,7 @@ const BookingLuggageModal = ({
               </View>
             ) : (
               <TouchableOpacity onPress={() => handleCategoryClick(item)}>
-                <MaterialCommunityIcons name="chevron-right" size={24} color={colors.BLUE} />
+                <MaterialCommunityIcons name="chevron-right" size={24} color={colors.PRIMARY_40_DARK} />
               </TouchableOpacity>
             )}
           </View>
@@ -227,7 +227,7 @@ const BookingLuggageModal = ({
                 <TouchableOpacity
                   style={[
                     styles.quantityButton,
-                    { backgroundColor: (luggageCounts[item.name] || 0) > 0 ? colors.BLUE : colors.BLUE }
+                    { backgroundColor: (luggageCounts[item.name] || 0) > 0 ? colors.PRIMARY_40_DARK : colors.PRIMARY_40_DARK }
                   ]}
                   onPress={() => updateLuggageCount(item.name, false)}
                   disabled={(luggageCounts[item.name] || 0) === 0}
@@ -236,7 +236,7 @@ const BookingLuggageModal = ({
                 </TouchableOpacity>
                 <Text style={styles.quantityText}>{luggageCounts[item.name] || 0}</Text>
                 <TouchableOpacity
-                  style={[styles.quantityButton, { backgroundColor: colors.BLUE }]}
+                  style={[styles.quantityButton, { backgroundColor: colors.PRIMARY_40_DARK }]}
                   onPress={() => updateLuggageCount(item.name, true)}
                 >
                   <Text style={styles.quantityButtonText}>+</Text>
@@ -310,6 +310,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     flex: 1,
+    paddingRight: 20,
   },
   itemIcon: {
     marginRight: 16,
@@ -327,7 +328,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: colors.BLUE,
+    backgroundColor: colors.PRIMARY_40_DARK,
     alignItems: 'center',
     justifyContent: 'center',
     marginHorizontal: 8,

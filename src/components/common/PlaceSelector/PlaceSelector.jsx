@@ -213,13 +213,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    marginBottom: 10,
+    marginBottom: 0,
+    paddingLeft: 40,
   },
   labelText: {
     fontSize: 16,
-    color: '#333',
+    color: colors.PRIMARY, 
     fontWeight: '700',
     minWidth: 40,
-    marginRight: 5,
+    marginRight: 2,
   },
 });

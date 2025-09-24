@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Image,
+  StatusBar,
 } from 'react-native';
 import colors from '../../../constants/colors';
 import BookingWidget from '../../booking-widget/BookingWidget';
@@ -19,17 +20,20 @@ import {Center} from 'native-base';
 
 const CabCompare = () => {
   return (
-    <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
-      <KeyboardAvoidingView>
-        <ScrollView
-          showsVerticalScrollIndicator={true}
-          keyboardShouldPersistTaps={'always'}>
-          <Header title="Compare" />
-          <Text style={styles.description}>Compare the cab fares online</Text>
-          <BookingWidget booking_type="normal" />
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </View>
+    <SafeAreaView style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+      <StatusBar backgroundColor={colors.PRIMARY} barStyle="light-content" />
+      <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+        <KeyboardAvoidingView>
+          <ScrollView
+            showsVerticalScrollIndicator={true}
+            keyboardShouldPersistTaps={'always'}>
+            <Header title="Compare" />
+            <Text style={styles.description}>Compare the cab fares online</Text>
+            <BookingWidget booking_type="normal" />
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </View>
+    </SafeAreaView>
   );
 };
 const getTitleTextByBookingType = booking_type => {

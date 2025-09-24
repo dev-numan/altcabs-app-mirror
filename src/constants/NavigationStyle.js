@@ -66,6 +66,8 @@ export const TabBarOptions = {
 
   tabBarStyle: {
     backgroundColor: colors.PRIMARY,
+    paddingBottom: 5,
+    height: 65,
   },
   tabBarInActiveTintColor: colors.IN_ACTIVE_TAB_BAR,
 };
