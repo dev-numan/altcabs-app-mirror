@@ -149,7 +149,7 @@ const Login = () => {
             </View>
             <View style={{marginBottom: 10}}>
               <ContactTextInput
-                // refInner={emailRef}
+                //  //refInner={emailRef}
                 placeHolderColor={colors.CAPTION}
                 placeHolder={'Your password'}
                 headingName={'Password'}
