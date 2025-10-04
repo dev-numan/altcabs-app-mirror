@@ -20,6 +20,7 @@ import CustomButton from '../../common/CustomButton';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import colors from '../../../constants/colors';
 import {LOGIN} from '../../../store/slices/auth.slice';
+import {ERROR} from '../../../store/slices/message.slice';
 import {useNavigation} from '@react-navigation/native';
 import ContactTextInput from '../general/ContactTextInput';
 import GoogleLogin from '../general/GoogleLogin';
@@ -30,10 +31,32 @@ const Login = () => {
   const navigation = useNavigation();
   const [displayPassword, setDisplayPassword] = useState(true);
   const [login, setLogin] = useState({
-    username: 'almasakram777@gmail.com',
-    password: 'almas',
+    username: '',
+    password: '',
   });
+  const validateLoginForm = () => {
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!login.username || !emailRegex.test(login.username)) {
+      dispatch(ERROR('Please enter a valid email address'));
+      return false;
+    }
+
+    // Validate password
+    if (!login.password || login.password.length < 6) {
+      dispatch(ERROR('Password must be at least 6 characters long'));
+      return false;
+    }
+
+    return true;
+  };
+
   const handleLogin = async () => {
+    // Validate form before submission
+    if (!validateLoginForm()) {
+      return;
+    }
+
     try {
       const fcmtoken = await AsyncStorage.getItem('fcmtoken');
       let data = {
@@ -164,37 +187,8 @@ const Login = () => {
             <CustomButton rounded="full" onPress={handleLogin}>
               Login
             </CustomButton>
-            <Text
-              style={{
-                margin: 12,
-                textAlign: 'center',
-                color: 'rgb(28, 43, 57)',
-                 fontSize: 14,
-                 fontWeight: '600'
-              }}>
-              Connect with us:
-            </Text>
-            <HStack
-              space={3}
-              my={3}
-              alignItems="center"
-              justifyContent="center">
-              <Center>
-                <IconButton
-                  onPress={handleGoogleLogin}
-                  variant="solid"
-                  rounded={25}
-                  bg="#ea4335"
-                  icon={
-                    <Icon
-                      size="md"
-                      as={<AntDesign name="google" />}
-                      color="white"
-                    />
-                  }
-                />
-              </Center>
-            </HStack>
+       
+        
             <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
               <Text style={{color: 'rgb(29, 128, 220)', textAlign: 'center', fontSize: 14,fontWeight: '600' }}>
                 New to altCabs? Sign Up

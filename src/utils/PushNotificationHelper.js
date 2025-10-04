@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import {firebase} from '@react-native-firebase/messaging';
+import notifee from '@notifee/react-native';
 
 export async function requestUserPermission() {
   const authStatus = await messaging().requestPermission();
@@ -25,13 +26,29 @@ async function GetFCMToken() {
 }
 
 export async function requestUserPermissionNotifee() {
-  const settings = await notifee.requestPermission();
+  try {
+    // Check if notifee is available
+    if (!notifee || !notifee.requestPermission) {
+      console.log('Notifee not available, skipping notification setup');
+      return;
+    }
 
-  if (settings.authorizationStatus === notifee.AuthorizationStatus.AUTHORIZED) {
-    console.log('Notification permissions granted.');
-  } else if (
-    settings.authorizationStatus === notifee.AuthorizationStatus.DENIED
-  ) {
-    console.log('Notification permissions denied.');
+    const settings = await notifee.requestPermission();
+
+    // Check if AuthorizationStatus enum is available
+    if (notifee.AuthorizationStatus) {
+      if (settings.authorizationStatus === notifee.AuthorizationStatus.AUTHORIZED) {
+        console.log('Notification permissions granted.');
+      } else if (
+        settings.authorizationStatus === notifee.AuthorizationStatus.DENIED
+      ) {
+        console.log('Notification permissions denied.');
+      }
+    } else {
+      // Fallback: check settings directly
+      console.log('Notifee permission settings:', settings);
+    }
+  } catch (error) {
+    console.log('Error requesting notifee permissions:', error);
   }
 }

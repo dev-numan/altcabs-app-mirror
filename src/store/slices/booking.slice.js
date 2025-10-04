@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import bookingService from '../../api/BookingService';
+import voucherService from '../../api/VoucherService';
 import uuid from 'react-native-uuid';
 import {ERROR, SUCCESS} from './message.slice';
 const initialState = {
@@ -50,6 +51,34 @@ export const ADD_BOOKING_DETAILS = createAsyncThunk(
     console.log(data);
   },
 );
+
+export const APPLY_VOUCHER = createAsyncThunk(
+  'booking/applyVoucher',
+  async ({bookingId, voucherCode}, {dispatch, rejectWithValue}) => {
+    try {
+      const response = await voucherService.applyVoucher(bookingId, voucherCode);
+      dispatch(SUCCESS(response.message));
+      return { bookingId, ...response };
+    } catch (error) {
+      dispatch(ERROR(error.message || 'Failed to apply voucher'));
+      return rejectWithValue(error.message);
+    }
+  },
+);
+
+export const REMOVE_VOUCHER = createAsyncThunk(
+  'booking/removeVoucher',
+  async (bookingId, {dispatch, rejectWithValue}) => {
+    try {
+      const response = await voucherService.removeVoucher(bookingId);
+      dispatch(SUCCESS(response.message));
+      return { bookingId, ...response };
+    } catch (error) {
+      dispatch(ERROR(error.message || 'Failed to remove voucher'));
+      return rejectWithValue(error.message);
+    }
+  },
+);
 export const bookingSlice = createSlice({
   name: 'booking',
   initialState,
@@ -76,6 +105,18 @@ export const bookingSlice = createSlice({
     });
     builder.addCase(POST_NEW_BOOKING.fulfilled, (state, {payload}) => {
       state.processBookings[payload?._id] = payload;
+    });
+    builder.addCase(APPLY_VOUCHER.fulfilled, (state, {payload}) => {
+      if (state.processBookings[payload.bookingId]) {
+        state.processBookings[payload.bookingId].discount = payload.discount;
+        state.processBookings[payload.bookingId].priceToCharge = payload.priceToCharge;
+      }
+    });
+    builder.addCase(REMOVE_VOUCHER.fulfilled, (state, {payload}) => {
+      if (state.processBookings[payload.bookingId]) {
+        state.processBookings[payload.bookingId].discount = 0;
+        state.processBookings[payload.bookingId].priceToCharge = payload.priceToCharge;
+      }
     });
   },
 });

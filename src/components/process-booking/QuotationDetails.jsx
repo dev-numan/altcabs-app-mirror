@@ -10,6 +10,8 @@ import VStack from '../common/VStack';
 import {
   ADD_BOOKING_DETAILS,
   LOAD_BOOKING,
+  APPLY_VOUCHER,
+  REMOVE_VOUCHER,
 } from '../../store/slices/booking.slice';
 import colors from '../../constants/colors';
 import bookingService from '../../api/BookingService';
@@ -36,6 +38,8 @@ const QuotationDetails = ({booking, nextStep}) => {
   const [fetching, setFetching] = useState(false);
   const [termsAndConditionsAccepted, setTermsAndConditionsAccepted] =
     useState(true);
+  const [voucherCode, setVoucherCode] = useState('');
+  const [voucherApplying, setVoucherApplying] = useState(false);
   const [form, setForm] = useState({
     name,
     email,
@@ -190,7 +194,122 @@ const QuotationDetails = ({booking, nextStep}) => {
   ];
 
   const darkShadeColor = '#472d61';
+
+  const applyVoucher = async () => {
+    if (!voucherCode.trim()) {
+      dispatch(ERROR('Please enter a voucher code'));
+      return;
+    }
+    
+    setVoucherApplying(true);
+    try {
+      await dispatch(APPLY_VOUCHER({
+        bookingId: booking._id,
+        voucherCode: voucherCode.trim()
+      })).unwrap();
+      setVoucherCode(''); // Clear the input on success
+    } catch (error) {
+      // Error is already handled in Redux action
+    } finally {
+      setVoucherApplying(false);
+    }
+  };
+
+  const removeVoucher = async () => {
+    setVoucherApplying(true);
+    try {
+      await dispatch(REMOVE_VOUCHER(booking._id)).unwrap();
+    } catch (error) {
+      // Error is already handled in Redux action
+    } finally {
+      setVoucherApplying(false);
+    }
+  };
+
+  const validatePassengerForm = () => {
+    // Validate name
+    if (!form.name || form.name.trim().length < 2) {
+      dispatch(ERROR('Please enter a valid full name (at least 2 characters)'));
+      return false;
+    }
+
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!form.email || !emailRegex.test(form.email)) {
+      dispatch(ERROR('Please enter a valid email address'));
+      return false;
+    }
+
+    // Validate phone
+    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{10,15}$/;
+    if (!form.phone || !phoneRegex.test(form.phone.replace(/\s/g, ''))) {
+      dispatch(ERROR('Please enter a valid phone number (10-15 digits)'));
+      return false;
+    }
+
+    // Validate pickup address
+    if (!form.pickUpFullAddress || form.pickUpFullAddress.trim().length < 10) {
+      dispatch(ERROR('Please provide a detailed pickup address (at least 10 characters)'));
+      return false;
+    }
+
+    // Validate drop-off address
+    if (!form.dropOffFullAddress || form.dropOffFullAddress.trim().length < 10) {
+      dispatch(ERROR('Please provide a detailed drop-off address (at least 10 characters)'));
+      return false;
+    }
+
+    // Validate flight number if provided
+    if (form.flightNum && form.flightNum.trim().length > 0) {
+      const flightRegex = /^[A-Z]{2,3}[0-9]{1,4}$/i;
+      if (!flightRegex.test(form.flightNum.replace(/\s/g, ''))) {
+        dispatch(ERROR('Please enter a valid flight number (e.g., BA123, EK456)'));
+        return false;
+      }
+    }
+
+    // Validate minutes after landing if flight number is provided
+    if (form.flightNum && form.flightNum.trim().length > 0) {
+      const minutes = parseInt(form.minutesAfterLanding, 10);
+      if (isNaN(minutes) || minutes < 15 || minutes > 180) {
+        dispatch(ERROR('Minutes after landing should be between 15 and 180'));
+        return false;
+      }
+    }
+
+    // Validate passenger details if booking for someone else
+    if (form.forElse) {
+      if (!form.pname || form.pname.trim().length < 2) {
+        dispatch(ERROR('Please enter the passenger\'s full name'));
+        return false;
+      }
+
+      if (!form.pemail || !emailRegex.test(form.pemail)) {
+        dispatch(ERROR('Please enter the passenger\'s valid email address'));
+        return false;
+      }
+
+      if (form.pphone && !phoneRegex.test(form.pphone.replace(/\s/g, ''))) {
+        dispatch(ERROR('Please enter a valid passenger phone number'));
+        return false;
+      }
+    }
+
+    // Validate terms acceptance
+    if (!termsAndConditionsAccepted) {
+      dispatch(ERROR('Please accept the Terms and Conditions to continue'));
+      return false;
+    }
+
+    return true;
+  };
+
   const addDetails = () => {
+    // Validate form before submission
+    if (!validatePassengerForm()) {
+      return;
+    }
+
     // nextStep();
     // return;
     console.log('Add Detail');
@@ -634,7 +753,106 @@ const QuotationDetails = ({booking, nextStep}) => {
           }}
         /> */}
 
-        <View style={{height: 300}}>
+        {/* Voucher Section */}
+        <View style={{
+          backgroundColor: 'rgba(255,255,255,0.1)',
+          borderRadius: 12,
+          padding: 16,
+          marginVertical: 16,
+          borderWidth: 1,
+          borderColor: 'rgba(255,255,255,0.2)'
+        }}>
+          <Text style={{
+            color: colors.WHITE,
+            fontSize: 16,
+            fontWeight: 'bold',
+            marginBottom: 12
+          }}>
+            Have a voucher code?
+          </Text>
+          
+          {booking?.discount > 0 ? (
+            // Show applied voucher
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              backgroundColor: 'rgba(46, 204, 113, 0.2)',
+              padding: 12,
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: 'rgba(46, 204, 113, 0.5)'
+            }}>
+              <View>
+                <Text style={{color: '#2ecc71', fontSize: 14, fontWeight: 'bold'}}>
+                  ✓ Voucher Applied
+                </Text>
+                <Text style={{color: colors.WHITE, fontSize: 12}}>
+                  Discount: £{booking.discount?.toFixed(2)}
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={removeVoucher}
+                disabled={voucherApplying}
+                style={{
+                  backgroundColor: 'rgba(231, 76, 60, 0.8)',
+                  paddingHorizontal: 12,
+                  paddingVertical: 6,
+                  borderRadius: 6
+                }}>
+                <Text style={{color: colors.WHITE, fontSize: 12}}>
+                  {voucherApplying ? 'Removing...' : 'Remove'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            // Show voucher input
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{flex: 1, marginRight: 12}}>
+                <Input
+                  placeholder="Enter voucher code"
+                  placeholderTextColor="rgba(255,255,255,0.6)"
+                  value={voucherCode}
+                  onChangeText={setVoucherCode}
+                  backgroundColor="rgba(255,255,255,0.1)"
+                  borderColor="rgba(255,255,255,0.3)"
+                  color={colors.WHITE}
+                  fontSize={14}
+                  autoCapitalize="characters"
+                  _focus={{
+                    borderColor: colors.PRIMARY,
+                    backgroundColor: "rgba(255,255,255,0.15)"
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                onPress={applyVoucher}
+                disabled={voucherApplying || !voucherCode.trim()}
+                style={{
+                  backgroundColor: voucherApplying || !voucherCode.trim() 
+                    ? 'rgba(255,255,255,0.3)' 
+                    : colors.PRIMARY,
+                  paddingHorizontal: 16,
+                  paddingVertical: 12,
+                  borderRadius: 8,
+                  minWidth: 80,
+                  alignItems: 'center'
+                }}>
+                <Text style={{
+                  color: voucherApplying || !voucherCode.trim() 
+                    ? 'rgba(255,255,255,0.6)' 
+                    : colors.WHITE,
+                  fontSize: 14,
+                  fontWeight: 'bold'
+                }}>
+                  {voucherApplying ? 'Applying...' : 'Apply'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
+        <View style={{minHeight: 300, paddingBottom: 20}}>
           <View
             style={{flexDirection: 'row', alignItems: 'center', padding: 5}}>
             <TouchableOpacity
@@ -770,10 +988,14 @@ const QuotationDetails = ({booking, nextStep}) => {
           </HStack> */}
           <CustomButton
             isDisabled={!termsAndConditionsAccepted || fetching}
-            colorScheme={colors.YELLOW}
+            bg={colors.YELLOW}
             onPress={addDetails}
             _pressed={{bg: darkShadeColor}}
-            _text={{color: colors.PRIMARY}}>
+            _text={{color: colors.PRIMARY, fontWeight: 'bold'}}
+            style={{
+              marginTop: 20,
+              marginBottom: 20
+            }}>
             Confirm Booking
           </CustomButton>
         </View>

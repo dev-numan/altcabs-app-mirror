@@ -193,7 +193,7 @@ const LocationPickerModal = ({
       <MaterialCommunityIcons
         name="map-marker"
         size={20}
-        color="#24AAE0"
+        color={colors.PRIMARY}
         style={styles.resultIcon}
       />
       <Text style={styles.resultText}>{item.description}</Text>
@@ -226,7 +226,7 @@ const LocationPickerModal = ({
             <MaterialCommunityIcons
               name="map-marker"
               size={20}
-              color="#24AAE0"
+              color={colors.PRIMARY}
               style={styles.searchIcon}
             />
             <TextInput
@@ -251,7 +251,7 @@ const LocationPickerModal = ({
           <MaterialCommunityIcons
             name="map-marker"
             size={20}
-            color="#10a9e8"
+            color={colors.PRIMARY}
             style={styles.locationIcon}
           />
           <Text style={styles.locationButtonText}>
@@ -266,7 +266,7 @@ const LocationPickerModal = ({
         <View style={styles.resultsContainer}>
           {isSearching && (
             <View style={styles.searchingContainer}>
-              <ActivityIndicator size="large" color="#24AAE0" />
+              <ActivityIndicator size="large" color={colors.PRIMARY} />
               <Text style={styles.searchingText}>Searching locations...</Text>
             </View>
           )}
@@ -389,6 +389,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'white',
     fontWeight: '500',
+    color:colors.PRIMARY
   },
   locationSpinner: {
     marginLeft: 10,

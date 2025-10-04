@@ -28,7 +28,12 @@ const QuotationCheckout = ({booking, nextStep}) => {
   const payment = () => {
     setFetching(true);
     if (value == 'one') {
+      // Pay with cash
+      payWithCash();
     } else {
+      // Card payment not implemented yet
+      dispatch(ERROR('Card payment feature is coming soon'));
+      setFetching(false);
     }
   };
   const payWithCash = () => {
@@ -209,8 +214,14 @@ const QuotationCheckout = ({booking, nextStep}) => {
       )}
       <CustomButton
         isDisabled={value == 'two' || fetching}
-        colorScheme={color}
-        onPress={payment}>
+        bg={colors.YELLOW}
+        onPress={payment}
+        _pressed={{bg: colors.PRIMARY_40_DARK}}
+        _text={{color: colors.PRIMARY, fontWeight: 'bold'}}
+        style={{
+          marginTop: 20,
+          marginBottom: 20
+        }}>
         {value == 'one'
           ? 'Payment And Confirmation'
           : 'Online Payment Feature is coming soon'}

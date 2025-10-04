@@ -119,7 +119,7 @@ export const REGISTRATION = createAsyncThunk(
       console.log(err);
       console.log('====================================');
       let error = ErrorType(err);
-      dispatch(ERROR(error));
+      // Don't dispatch ERROR to toast, let component handle it inline
       dispatch(SET_IS_PROCESSING_FINISHED());
       return rejectWithValue(error);
     }

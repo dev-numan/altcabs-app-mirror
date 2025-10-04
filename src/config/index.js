@@ -1,4 +1,4 @@
-export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';
+export const GOOGLE_PLACES_API = 'AIzaSyBxlCPMKTJnAEuy43rjvfhkZ8twF0Wumdo';
 
 /**
  * Use below Credientials for live server
@@ -12,7 +12,7 @@ export const GOOGLE_PLACES_API = 'AIzaSyCsn5C92b5e2G-gEiDhgbB9bXKHsKvmq1U';
  * Use below credientials for development server
  */
 // let baseURL = '192.168.10.6:8080';
-let baseURL =  '192.168.100.11:8080';
+let baseURL = '192.168.100.38:8080';
 export const URL = `http://${baseURL}/api`;
 export const SOCKET_URL = `ws://${baseURL}`;
 

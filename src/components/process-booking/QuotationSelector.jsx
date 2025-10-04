@@ -15,7 +15,7 @@ import {
   Heading,
 } from 'native-base';
 import DropDownPicker from 'react-native-dropdown-picker';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState, useCallback} from 'react';
 import {
   FlatList,
   Image,
@@ -407,6 +407,8 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
                     rating={item.companyRatings}
                     onChange={() => {}}
                     starSize={18}
+                    enableHalfStar={false}
+                    animationConfig={{ scale: 1, duration: 0 }}
                   />
                 </View>
               </View>
@@ -431,10 +433,13 @@ const QuotationSelector = ({bookingId, nextStep, previousStep}) => {
   );
 };
 const QuotationsLoader = () => (
-  <View>
-    {[0, 1, 2, 3, 4].map(i => (
-      <QuotationLoaderSkeleton key={i} />
-    ))}
+  <View style={{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: 400,
+  }}>
+    <QuotationLoaderSkeleton />
   </View>
 );
 export default QuotationSelector;

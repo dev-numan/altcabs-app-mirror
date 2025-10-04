@@ -56,7 +56,7 @@ const PlaceSelector = ({value, onChange, label, onCancel, placeholder}) => {
       <VStack>
         <FormControl w="100%" maxW="400px">
           {/* From Section - Label and Input on same line */}
-          <View style={styles.labelInputRow}>
+          <View style={[styles.labelInputRow, !label && styles.noLabelRow]}>
             <Text style={styles.labelText}>
               {label}
             </Text>
@@ -222,5 +222,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     minWidth: 40,
     marginRight: 2,
+  },
+  noLabelRow: {
+    paddingLeft: 0,
   },
 });

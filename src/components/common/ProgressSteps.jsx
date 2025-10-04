@@ -43,18 +43,22 @@ const CustomProgressSteps = ({steps, activeStep, label, children}) => {
       <View style={styles.container}>
         {stepsShow.map((step, index) => {
           const isActive = index === activeStep;
-          const stepStyle = [styles.step, isActive && styles.activeStep];
+          const isCompleted = index < activeStep;
+          const stepStyle = [
+            styles.step,
+            isActive && styles.activeStep,
+            isCompleted && styles.completedStep,
+          ];
+          const textStyle = [
+            styles.stepText,
+            isActive && styles.activeStepText,
+            isCompleted && styles.completedStepText,
+          ];
           return (
-            // <View style={stepStyle}>
-            //   <Text>{step.label}</Text>
-            // </View>
             <View key={step.label} style={styles.stepContainer}>
               <View style={stepStyle}>
-                <Text style={{fontSize: 18}}>{step.label}</Text>
+                <Text style={textStyle}>{step.label}</Text>
               </View>
-              {/* {index < steps.length - 1 && (
-                <View style={[styles.line, {left: (index + 1) * 60}]} />
-              )} */}
             </View>
           );
         })}
@@ -105,21 +109,62 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: 25,
+    paddingHorizontal: 30,
   },
   stepContainer: {
     alignItems: 'center',
   },
   step: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: colors.WHITE,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: colors.GRAY_LIGHT,
+    borderWidth: 2,
+    borderColor: colors.GRAY,
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 42,
+    shadowColor: colors.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 3,
   },
   activeStep: {
-    backgroundColor: colors.BLUE,
+    backgroundColor: colors.YELLOW,
+    borderColor: colors.SECONDARY,
+    borderWidth: 3,
+    shadowColor: colors.YELLOW,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.4,
+    shadowRadius: 5,
+    elevation: 8,
+    transform: [{scale: 1.1}],
+  },
+  completedStep: {
+    backgroundColor: colors.SECONDARY,
+    borderColor: colors.SECONDARY,
+    borderWidth: 2,
+  },
+  stepText: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: colors.GRAY,
+  },
+  activeStepText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: colors.PRIMARY,
+  },
+  completedStepText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.PRIMARY,
   },
   // line: {
   //   width: 50,

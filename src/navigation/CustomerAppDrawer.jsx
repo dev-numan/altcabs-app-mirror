@@ -143,12 +143,23 @@ export default function CustomerAppDrawer(props) {
     } else {
       let listmm = [
         {
-          name: 'Homes',
+          name: 'Home',
           icon: 'home',
           type: Ionicons,
           screen: 'Customer Landing',
         },
-
+        {
+          name: 'My Bookings',
+          icon: 'calendar-check',
+          type: Ionicons,
+          screen: 'MyBookings',
+        },
+        {
+          name: 'Completed Bookings',
+          icon: 'checkmark-done',
+          type: Ionicons,
+          screen: 'Bookings History',
+        },
         {
           name: 'Sign Out',
           icon: 'logout',
@@ -163,18 +174,26 @@ export default function CustomerAppDrawer(props) {
 
   return (
     <DrawerContentScrollView
-      contentContainerStyle={{flex: 1}}
+      contentContainerStyle={{flex: 1, backgroundColor: colors.PRIMARY}}
       {...props}
+      style={{backgroundColor: colors.PRIMARY}}
       showsVerticalScrollIndicator={false}>
       <View style={styles.drawerContent}>
-        <View>
-          <VStack space={3} alignItems="center" style={{margin: 10}}>
-            <Center size={16} shadow={3}>
+        <View style={styles.headerSection}>
+          <VStack space={3} alignItems="center" style={{margin: 20, marginTop: 30}}>
+            <Center size={20} shadow={3}>
               <Avatar
                 size="xl"
-                style={{alignSelf: 'center', backgroundColor: '#38bdf8'}}
+                style={{
+                  alignSelf: 'center',
+                  backgroundColor: colors.YELLOW,
+                  borderWidth: 3,
+                  borderColor: '#2a3442',
+                }}
                 source={require(`../assets/images/icon.png`)}>
-                FA
+                <Text style={{color: colors.PRIMARY, fontSize: 32, fontWeight: 'bold'}}>
+                  {User?.name[0].toUpperCase()}
+                </Text>
               </Avatar>
             </Center>
             <Center space={1}>
@@ -184,12 +203,12 @@ export default function CustomerAppDrawer(props) {
             </Center>
             <Center space={1}>
               <Text style={styles.caption}>
-                @ {User?.role[0].toUpperCase() + User?.role.substr(1)}
+                {User?.role[0].toUpperCase() + User?.role.substr(1)}
               </Text>
             </Center>
           </VStack>
         </View>
-        <Divider />
+        <Divider bg="#2a3442" />
         <VStack style={styles.drawerSection} {...props}>
           {list.map((item, i) => {
             if (item.child) {
@@ -215,12 +234,12 @@ export default function CustomerAppDrawer(props) {
                     key={i}
                     style={({pressed}) => [
                       {
-                        backgroundColor: pressed ? '#e0f2fe' : 'white',
+                        backgroundColor: pressed ? '#2a3442' : 'transparent',
                       },
                       {
-                        borderBottomStartRadius: 25,
-                        borderTopEndRadius: 25,
-                        marginHorizontal: 7,
+                        borderRadius: 12,
+                        marginHorizontal: 10,
+                        marginVertical: 4,
                         padding: 2,
                       },
                     ]}>
@@ -228,9 +247,9 @@ export default function CustomerAppDrawer(props) {
                       <Center>
                         <Icon
                           name={item.icon}
-                          color="#1C2B39"
+                          color={colors.YELLOW}
                           as={item.type}
-                          size="sm"
+                          size="md"
                         />
                       </Center>
                       <Center>
@@ -254,12 +273,12 @@ export default function CustomerAppDrawer(props) {
                             }}
                             style={({pressed}) => [
                               {
-                                backgroundColor: pressed ? '#e0f2fe' : 'white',
+                                backgroundColor: pressed ? '#2a3442' : 'transparent',
                               },
                               {
-                                borderBottomStartRadius: 25,
-                                borderTopEndRadius: 25,
-                                marginHorizontal: 7,
+                                borderRadius: 12,
+                                marginHorizontal: 10,
+                                marginVertical: 2,
                                 padding: 2,
                               },
                             ]}>
@@ -270,7 +289,7 @@ export default function CustomerAppDrawer(props) {
                               <Center>
                                 <Icon
                                   name={item1.icon}
-                                  color="#1C2B39"
+                                  color={colors.YELLOW}
                                   as={item1.type}
                                   size="sm"
                                 />
@@ -322,12 +341,12 @@ export default function CustomerAppDrawer(props) {
                   key={i}
                   style={({pressed}) => [
                     {
-                      backgroundColor: pressed ? '#e0f2fe' : 'white',
+                      backgroundColor: pressed ? '#2a3442' : 'transparent',
                     },
                     {
-                      borderBottomStartRadius: 25,
-                      borderTopEndRadius: 25,
-                      marginHorizontal: 7,
+                      borderRadius: 12,
+                      marginHorizontal: 10,
+                      marginVertical: 4,
                       padding: 2,
                     },
                   ]}>
@@ -335,9 +354,9 @@ export default function CustomerAppDrawer(props) {
                     <Center>
                       <Icon
                         name={item.icon}
-                        color="#1C2B39"
+                        color={colors.YELLOW}
                         as={item.type}
-                        size="sm"
+                        size="md"
                       />
                     </Center>
                     <Center>
@@ -351,15 +370,23 @@ export default function CustomerAppDrawer(props) {
           <Divider my={4} />
         </VStack>
 
-        <Center flex={1} justifyContent="flex-end">
-          <Image
-            source={require('../assets/images/altcabsNewLongLogo2.png')}
-            style={{
-              height: 20,
-              marginBottom: 21,
-              resizeMode: 'contain',
-            }}
-          />
+        <Center flex={1} justifyContent="flex-end" style={{paddingBottom: 20}}>
+          <View style={{
+            backgroundColor: '#1a2332',
+            paddingHorizontal: 20,
+            paddingVertical: 10,
+            borderRadius: 12,
+            borderWidth: 1,
+            borderColor: '#2a3442',
+          }}>
+            <Image
+              source={require('../assets/images/altcabsNewLongLogo2.png')}
+              style={{
+                height: 20,
+                resizeMode: 'contain',
+              }}
+            />
+          </View>
         </Center>
         {/* <Pressable
               onPress={() => setShift(!shift)}
@@ -408,19 +435,27 @@ export default function CustomerAppDrawer(props) {
 const styles = StyleSheet.create({
   drawerContent: {
     flex: 1,
-    marginTop: 12,
+    backgroundColor: colors.PRIMARY,
+  },
+  headerSection: {
+    backgroundColor: '#1a2332',
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#2a3442',
   },
   userInfoSection: {
     paddingLeft: 20,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     marginTop: 7,
     fontWeight: 'bold',
+    color: colors.YELLOW,
   },
   caption: {
-    fontSize: 12,
-    color: '#a1a1aa',
+    fontSize: 13,
+    color: '#94a3b8',
+    fontWeight: '500',
   },
   row: {
     flexDirection: 'row',
@@ -436,11 +471,12 @@ const styles = StyleSheet.create({
     marginRight: 3,
   },
   drawerSection: {
-    marginTop: 15,
+    marginTop: 10,
+    backgroundColor: colors.PRIMARY,
   },
   bottomDrawerSection: {
     marginBottom: 15,
-    borderTopColor: '#f4f4f4',
+    borderTopColor: '#2a3442',
     borderTopWidth: 1,
     marginRight: 15,
   },
@@ -455,12 +491,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     textAlign: 'left',
     fontSize: 16,
-    color: '#1C2B39',
+    color: 'white',
+    fontWeight: '500',
   },
   count: {
     flexGrow: 1,
     textAlign: 'left',
     fontSize: 16,
-    color: '#1C2B39',
+    color: 'white',
   },
 });

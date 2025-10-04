@@ -49,7 +49,22 @@ const CustomerStackNavigation = () => {
       <Stack.Screen
         name="ProcessBooking"
         component={ProcessBooking}
-        options={{title: 'Complete Booking'}}
+        options={{
+          title: 'Complete Booking',
+          headerStyle: {
+            backgroundColor: '#0F1922',
+            shadowColor: '#000',
+            shadowOffset: {height: 2},
+            shadowOpacity: 0.3,
+            shadowRadius: 3,
+            elevation: 5,
+          },
+          headerTintColor: '#FBBE24',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
       />
       <Stack.Screen
         name="AdminHome"
@@ -93,18 +108,63 @@ const CustomerStackNavigation = () => {
       <Stack.Screen
         name="MyBookings"
         component={ConfirmedBookings}
-        title="Test"
+        options={{
+          title: 'My Bookings',
+          headerStyle: {
+            backgroundColor: '#0F1922',
+            shadowColor: '#000',
+            shadowOffset: {height: 2},
+            shadowOpacity: 0.3,
+            shadowRadius: 3,
+            elevation: 5,
+          },
+          headerTintColor: '#FBBE24',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
       />
       <Stack.Screen
         name="BiddingBookings"
         component={InBiddingBookings}
-        options={{headerTitle: 'In Bidding Bookings'}}
+        options={{
+          headerTitle: 'In Bidding Bookings',
+          headerStyle: {
+            backgroundColor: '#0F1922',
+            shadowColor: '#000',
+            shadowOffset: {height: 2},
+            shadowOpacity: 0.3,
+            shadowRadius: 3,
+            elevation: 5,
+          },
+          headerTintColor: '#FBBE24',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
       />
       <Stack.Screen name="Break" component={Break} />
       <Stack.Screen
         name="Bookings History"
         component={HistoryBookings}
-        options={{headerTitle: 'Booking History'}}
+        options={{
+          headerTitle: 'Completed Bookings',
+          headerStyle: {
+            backgroundColor: '#0F1922',
+            shadowColor: '#000',
+            shadowOffset: {height: 2},
+            shadowOpacity: 0.3,
+            shadowRadius: 3,
+            elevation: 5,
+          },
+          headerTintColor: '#FBBE24',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
       />
       <Stack.Screen
         name="Contact with Us"
@@ -114,7 +174,22 @@ const CustomerStackNavigation = () => {
       <Stack.Screen
         name="Booking Details"
         component={BookingDetails}
-        options={{headerTitle: 'Booking Details'}}
+        options={{
+          headerTitle: 'Booking Details',
+          headerStyle: {
+            backgroundColor: '#0F1922',
+            shadowColor: '#000',
+            shadowOffset: {height: 2},
+            shadowOpacity: 0.3,
+            shadowRadius: 3,
+            elevation: 5,
+          },
+          headerTintColor: '#FBBE24',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+            fontSize: 20,
+          },
+        }}
       />
       <Stack.Screen
         name="MyDetails"

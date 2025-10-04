@@ -11,10 +11,9 @@ const QuotationLoaderSkeleton = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#27323D', // You can customize this background
+    padding: 20,
   },
 });
 

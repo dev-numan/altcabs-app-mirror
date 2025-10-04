@@ -32,6 +32,7 @@ const SignUp = () => {
   };
   const [form, setForm] = useState(initial);
   const [model, setModel] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
@@ -91,30 +92,30 @@ const SignUp = () => {
     },
   ];
   const handelData = async () => {
+    setErrorMessage(''); // Clear previous errors
     let data = {...form};
     data.email = data.email.toLowerCase();
     delete data.cPassword;
 
-    if (form.name.length > 4) {
-      if (form.cPassword === form.password) {
-        try {
-          await schema.validate(data);
-          await dispatch(REGISTRATION({...data, is_google: false})).unwrap();
-          navigation.navigate('Confirmation', {email: data.email});
-        } catch (err) {
-          console.log(err.message);
-          dispatch(ERROR(err.message));
-        }
-      } else {
-        dispatch(ERROR('Password not Matched!'));
-      }
-    }
-    else{
-      dispatch(ERROR('Name should contain atleast 5 characters'));
-
+    if (form.name.length <= 4) {
+      setErrorMessage('Name should contain at least 5 characters');
+      return;
     }
 
-    
+    if (form.cPassword !== form.password) {
+      setErrorMessage('Password not Matched!');
+      return;
+    }
+
+    try {
+      await schema.validate(data);
+      await dispatch(REGISTRATION({...data, is_google: false})).unwrap();
+      navigation.navigate('Confirmation', {email: data.email});
+    } catch (err) {
+      // Display error inline instead of toast
+      console.log('Registration error:', err);
+      setErrorMessage(err || 'Registration failed. Please try again.');
+    }
   };
   return (
     <KeyboardAvoidingView>
@@ -174,6 +175,24 @@ const SignUp = () => {
                 </View>
               ),
           )}
+          {errorMessage ? (
+            <View style={{marginVertical: 10, paddingHorizontal: 10}}>
+              <Text
+                style={{
+                  color: '#DC2626',
+                  fontSize: 14,
+                  fontWeight: '600',
+                  textAlign: 'center',
+                  backgroundColor: '#FEE2E2',
+                  padding: 12,
+                  borderRadius: 8,
+                  borderWidth: 1,
+                  borderColor: '#FCA5A5',
+                }}>
+                {errorMessage}
+              </Text>
+            </View>
+          ) : null}
           <CustomButton
             rounded="full"
             my={3}
@@ -181,15 +200,7 @@ const SignUp = () => {
             onPress={handelData}>
             Register
           </CustomButton>
-          <Text
-            style={{
-              margin: 12,
-              textAlign: 'center',
-              color: 'rgb(28, 43, 57)',
-               fontSize: 14,fontWeight: '600'
-            }}>
-            Connect with us:
-          </Text>
+        
 
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <HStack alignItems="center" justifyContent="center" my={2}>

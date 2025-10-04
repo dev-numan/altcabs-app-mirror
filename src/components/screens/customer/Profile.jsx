@@ -49,7 +49,7 @@ const Profile = () => {
     },
     {
       name: 'Bookings History',
-      label: 'History',
+      label: 'Completed Bookings',
       icon: (
         <MaterialCommunityIcons
           name="history"

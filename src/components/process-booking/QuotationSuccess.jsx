@@ -38,10 +38,14 @@ const QuotationSuccess = ({booking}) => {
           <Button
             my="4"
             rounded="full"
-            colorScheme={colors.YELLOW}
-            _text={{color: colors.PRIMARY}}
+            bg={colors.YELLOW}
+            _text={{color: colors.PRIMARY, fontWeight: 'bold'}}
             onPress={onNext}
-            _pressed={{bg: darkShadeColor}}>
+            _pressed={{bg: darkShadeColor}}
+            style={{
+              marginTop: 20,
+              marginBottom: 20
+            }}>
             Book Again ?
           </Button>
         </View>

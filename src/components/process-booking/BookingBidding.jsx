@@ -23,7 +23,16 @@ import bookingService from '../../api/BookingService';
 import {ERROR, SUCCESS} from '../../store/slices/message.slice';
 const BookingBidding = ({nextStep, hasReturnBooking, bookingId, booking}) => {
   const dispatch = useDispatch();
-  if (!booking) return <QuotationLoaderSkeleton />;
+  if (!booking) return (
+    <View style={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: 400,
+    }}>
+      <QuotationLoaderSkeleton />
+    </View>
+  );
   let bids = orderBy(booking.bids, ['offer'], ['asc']);
   return (
     <SafeAreaView style={styles.container}>
@@ -40,6 +49,8 @@ const BookingBidding = ({nextStep, hasReturnBooking, bookingId, booking}) => {
                     rating={b.companyRating}
                     onChange={() => {}}
                     starSize={18}
+                    enableHalfStar={false}
+                    animationConfig={{ scale: 1, duration: 0 }}
                   />
                 </VStack>
               </View>

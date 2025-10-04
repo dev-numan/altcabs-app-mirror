@@ -5,7 +5,7 @@ import bookingService from '../../../../api/BookingService';
 import colors from '../../../../constants/colors';
 import CustomerBookingViewSkeleton from '../../../common/skeletons/CustomerBookingViewSkeleton';
 import BookingSummaryView from './BookingSummaryView';
-import {Dimensions} from 'react-native';
+import {Dimensions, ScrollView} from 'react-native';
 let height = Dimensions.get('screen').height;
 const ConfirmedBookings = () => {
   const [state, setState] = useState({bookings: [], fetched: false});
@@ -23,45 +23,50 @@ const ConfirmedBookings = () => {
     };
   }, []);
   return (
-    <View style={{backgroundColor: colors.PRIMARY, color: 'white'}}>
-      {!state.fetched ? (
-        <View
-          style={{
-            height: height,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-          <Text style={{color: 'white', paddingBottom: '40%'}}>
-            Loading ...
-          </Text>
-          {[0, 1, 2, 3, 4, 5].map(key => {
-            <CustomerBookingViewSkeleton key={key} />;
-          })}
-        </View>
-      ) : (
-        <>
-          {state.bookings?.length > 0 ? (
-            state.bookings.map(booking => (
-              <BookingSummaryView
-                key={booking?._id}
-                booking={booking}
-                showContactDriver={true}
-              />
-            ))
-          ) : (
-            <View
-              style={{
-                height: height,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text style={{color: 'white', paddingBottom: '40%'}}>
-                No Confirmed Booking
-              </Text>
-            </View>
-          )}
-        </>
-      )}
+    <View style={{flex: 1, backgroundColor: colors.PRIMARY}}>
+      <ScrollView
+        style={{flex: 1}}
+        contentContainerStyle={{flexGrow: 1, backgroundColor: colors.PRIMARY}}>
+        {!state.fetched ? (
+          <View
+            style={{
+              paddingTop: 20,
+            }}>
+            <Text style={{color: 'white', textAlign: 'center', marginBottom: 20}}>
+              Loading ...
+            </Text>
+            {[0, 1, 2, 3, 4, 5].map(key => (
+              <CustomerBookingViewSkeleton key={key} />
+            ))}
+          </View>
+        ) : (
+          <>
+            {state.bookings?.length > 0 ? (
+              <View style={{backgroundColor: colors.PRIMARY, paddingBottom: 20}}>
+                {state.bookings.map((booking, index) => (
+                  <BookingSummaryView
+                    key={booking?._id}
+                    booking={booking}
+                    index={index}
+                  />
+                ))}
+              </View>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: colors.PRIMARY,
+                }}>
+                <Text style={{color: 'white', paddingBottom: '40%'}}>
+                  No Confirmed Booking
+                </Text>
+              </View>
+            )}
+          </>
+        )}
+      </ScrollView>
     </View>
   );
 };

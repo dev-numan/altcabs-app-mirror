@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 import {View, Button} from 'native-base';
+import {View as RNView, Text as RNText} from 'react-native';
 import Toast from 'react-native-toast-message';
 import SplashScreen from './src/components/SplashScreen';
 import {useDispatch, useSelector} from 'react-redux';
@@ -81,12 +82,12 @@ export default function App() {
         text1: msg.message,
         type: msg.type,
         autoHide: true,
-        visibilityTime: 3000,
+        visibilityTime: 4000,
         position: 'top',
       });
       setTimeout(() => {
         dispatch(MESSAGE_NULL());
-      }, 3000);
+      }, 4000);
     }
   }, [msg]);
 
@@ -105,7 +106,151 @@ export default function App() {
         {IS_LOGGED ? <CustomerAppDrawerNavigation /> : <AuthStackNavigator />}
 
         <SavingModel />
-        <Toast />
+        <Toast 
+          config={{
+            success: (props) => (
+              <RNView style={{
+                height: 70,
+                width: '90%',
+                backgroundColor: 'rgba(46, 204, 113, 0.95)',
+                borderRadius: 12,
+                borderLeftColor: 'rgba(39, 174, 96, 1)',
+                borderLeftWidth: 6,
+                paddingHorizontal: 20,
+                paddingVertical: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+              }}>
+                <RNView style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 15,
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 15,
+                }}>
+                  <RNText style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>✓</RNText>
+                </RNView>
+                <RNView style={{ flex: 1 }}>
+                  <RNText style={{
+                    color: 'white',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    marginBottom: 2,
+                  }}>
+                    Success
+                  </RNText>
+                  <RNText style={{
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontSize: 14,
+                  }}>
+                    {props.text1}
+                  </RNText>
+                </RNView>
+              </RNView>
+            ),
+            error: (props) => (
+              <RNView style={{
+                height: 70,
+                width: '90%',
+                backgroundColor: 'rgba(231, 76, 60, 0.95)',
+                borderRadius: 12,
+                borderLeftColor: 'rgba(192, 57, 43, 1)',
+                borderLeftWidth: 6,
+                paddingHorizontal: 20,
+                paddingVertical: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+              }}>
+                <RNView style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 15,
+                  backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 15,
+                }}>
+                  <RNText style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>✕</RNText>
+                </RNView>
+                <RNView style={{ flex: 1 }}>
+                  <RNText style={{
+                    color: 'white',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    marginBottom: 2,
+                  }}>
+                    Error
+                  </RNText>
+                  <RNText style={{
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontSize: 14,
+                  }}>
+                    {props.text1}
+                  </RNText>
+                </RNView>
+              </RNView>
+            ),
+            info: (props) => (
+              <RNView style={{
+                height: 70,
+                width: '90%',
+                backgroundColor: 'rgba(251, 191, 36, 0.95)',
+                borderRadius: 12,
+                borderLeftColor: 'rgba(243, 156, 18, 1)',
+                borderLeftWidth: 6,
+                paddingHorizontal: 20,
+                paddingVertical: 15,
+                flexDirection: 'row',
+                alignItems: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+              }}>
+                <RNView style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 15,
+                  backgroundColor: 'rgba(28, 44, 57, 0.2)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginRight: 15,
+                }}>
+                  <RNText style={{ color: 'rgba(28, 44, 57, 1)', fontSize: 16, fontWeight: 'bold' }}>i</RNText>
+                </RNView>
+                <RNView style={{ flex: 1 }}>
+                  <RNText style={{
+                    color: 'rgba(28, 44, 57, 1)',
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    marginBottom: 2,
+                  }}>
+                    Info
+                  </RNText>
+                  <RNText style={{
+                    color: 'rgba(28, 44, 57, 0.8)',
+                    fontSize: 14,
+                  }}>
+                    {props.text1}
+                  </RNText>
+                </RNView>
+              </RNView>
+            ),
+          }}
+        />
       </PersistGate>
     </Provider>
   );
